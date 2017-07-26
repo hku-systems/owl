@@ -1,0 +1,2 @@
+signal_hand (mysqld.cc:2315)
+wait_for_signal_thread_to_end (mysqld.cc:1200)

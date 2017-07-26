@@ -1,0 +1,407 @@
+\documentclass[]{article}
+\usepackage{epsfig}
+\usepackage{setspace}
+\usepackage{fancyheadings}
+%\usepackage{threeparttable}
+%\usepackage{graphicx}
+%\usepackage[lineno5]{lgrind}
+%\usepackage[hang]{subfigure}
+\usepackage{url}
+\usepackage{entry}
+
+\setlength{\oddsidemargin}{0in}
+\setlength{\topmargin}{-0.5in}
+\setlength{\textheight}{9.0in}
+\setlength{\textwidth}{6.5in}
+
+\pagestyle{fancyplain}
+\lhead{}
+\chead{
+    libsafe-2.0 White Paper \\
+    {\bf VERSION 3-21-01} 
+}
+\rhead{}
+
+\newcommand{\compress}{
+	\parskip 0in
+	\topsep 0in
+	\itemsep 0in
+	\partopsep 0in
+}
+
+\newlength{\figwidth}
+\setlength{\figwidth}{\columnwidth}
+
+\singlespacing
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\bibliographystyle{plain}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Title page
+
+\begin{singlespace}
+
+\title{ Libsafe 2.0: Detection of Format String Vulnerability Exploits }
+
+\author{
+	Timothy Tsai and Navjot Singh \\
+	Avaya Labs, Avaya Inc. \\
+	600 Mountain Ave \\
+	Murray Hill, NJ  07974  USA \\
+	\{ttsai,singh\}@avaya.com \\
+	%{\tt http://www.research.avayalabs.com/project/libsafe.html}
+}
+
+\date{February 6, 2001}
+
+\maketitle
+
+\end{singlespace}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Abstract
+
+\begin{singlespace}
+
+\begin{abstract}
+
+This white paper describes a significant new feature of libsafe version 2.0:
+the ability to detect and handle format string vulnerability exploits.  Such
+exploits have recently garnered attention in security advisories, discussion
+lists, web sites devoted to security, and even conventional media such as
+television and newspapers.  Examples of vulnerable software include {\tt
+wu-ftpd} (a common FTP daemon) and {\tt bind} (A DNS [Domain Name System]
+server).  This paper describes the vulnerability and the technique libsafe uses
+to detect and handle exploits.
+
+\begin{Ventry}{NOTE}
+\item[NOTE]
+    This paper only describes one particular feature of libsafe version 2.0:
+    the ability to detect and handle format string vulnerability exploits.
+    Other features include support for code compiled without frame pointer
+    instructions, extra debugging facilities, and bug fixes.  See \cite{usenix}
+    for details of the original version of libsafe.
+\end{Ventry}
+
+\end{abstract}
+
+\end{singlespace}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Introduction}
+\label{sec:introduction}
+
+Buffer overflow exploits constitute perhaps the most common form of computer
+security attack~\cite{SSP89*326,Rochlis89,Seeley89}.  Such exploits take
+advantage of programming errors to overflow buffers, thus writing unintended
+data to the part of memory that immediately follows the targeted buffers.  If
+the targeted buffer exists on the process stack, then the exploit often
+attempts to overwrite a return address on the stack, which often results in
+obtaining root access to that machine.  The original version of libsafe,
+version 1.3~\cite{usenix}, presented a significant advance in the detection and
+handling of buffer overflow attacks by offering a solution that detects a large
+number of exploits with low overhead and tremendous ease of
+use\footnote{Libsafe requires no specific security expertise and can be
+installed in under one minute!}.
+
+Recently, another widespread vulnerability has received a great deal of
+attention:  the format string vulnerability\cite{bind_report,wuftpd_report}.
+The latest version of libsafe, version 2.0, implements a solution for detecting
+and handling the most dangerous format string vulnerability exploits, while
+preserving the low overhead and ease of use of the original libsafe.
+
+The most common source of this vulnerability is the ubiquitous {\tt printf()}
+function.  Consider the following vulnerable piece of code:
+
+\begin{verbatim}
+    printf("%x %x %x %x\n");
+\end{verbatim}
+
+The above code will usually compile with no warnings\footnote{For {\tt gcc},
+warnings are produced with the {\tt -Wall} option, but not with the default
+warning level.}, even though it obviously lacks the required number of
+arguments.  If this code is executed, it will print out four hexadecimal
+numbers, corresponding to the values on the stack where it expects the missing
+arguments to be present.  This allows an attacker to examine the contents of
+the stack.
+
+The following code illustrates an even more insidious form of the format string
+vulnerability:
+
+\begin{verbatim}
+    printf("%.*d%n\n", (int) start_attack_code, 0, return_addr_ptr);
+\end{verbatim}
+
+The above example takes advantage of a relatively seldom used {\tt printf()}
+specifier:  {\tt \%n}.  This specifier calculates the current number of
+characters produced by the {\tt printf()} function and writes this number to
+the memory location indicated by the corresponding pointer in the argument
+list.  In our example, the pointer is {\tt return\_addr\_ptr}.  The astute
+observer may realize at this point that a malicious attacker can potentially
+overwrite any memory location, including locations containing return addresses.
+Furthermore, the above form of the {\tt printf()} statement controls the exact
+number that is written to the memory location.  Our example writes the value
+{\tt start\_attack\_code} to the location {\tt return\_addr\_ptr}.  Assuming
+that {\tt start\_attack\_code} is the starting address for some attack code,
+the next return from that exploited function will cause the attack code to be
+executed.  Often, this attack code causes a shell to be started, and if the
+process under attack is privileged (as is the case with many daemon process),
+then an attacker can obtain a root shell.
+
+Fortunately, it takes a bit more ingenuity to actually take advantage of this
+vulnerability.  Usually, vulnerable code occurs in a form similar to the
+following:
+
+\begin{verbatim}
+    if (illegal_command(command)) {
+        sprintf(error_msg, "Illegal command: %s", command);
+        ...
+        syslog(LOG_WARNING, error_msg);
+        return;
+    }
+\end{verbatim}
+
+In this example, {\tt command} is a character buffer that contains a command
+from the user.  If the command is illegal, then the {\tt sprintf()} statement
+forms an error message that is passed to {\tt syslog()}.  Under normal
+circumstances, {\tt syslog()} will simply append {\tt error\_msg} to the
+appropriate log file.  However, if {\tt command} contains {\tt printf()}
+specifiers, such as those in the first two code examples, then bad things can
+happen.
+
+Such code vulnerabilities exist in real life, and the
+corresponding exploits also exist.  In fact, existence of these and similar
+vulnerabilities and the relative ease of obtaining exploits has largely led to
+the prevalence of so-called ``script kiddies,'' or attackers who systematically
+attack remote machines using downloaded scripts in the hopes of finding a
+machine that is vulnerable.  Such attackers often possess only a rudimentary
+knowledge of networks and systems.  However, they often find great success due
+to the surprisingly large number of Internet-connected machines that execute
+vulnerable software.  Part of the problem is the complexity of system
+maintenance.  Making sure that one's machine has the latest version of every
+software package is not simple, especially since system maintenance is
+often a secondary responsibility.  Also, some vulnerabilities are still mostly
+unknown, and software updates to fix the problem may not yet be available.
+
+This is where libsafe version 2.0 is valuable.  Libsafe version 2.0 will foil
+all format string vulnerability exploits that attempt to overwrite return
+addresses on the stack.  If such an attack is attempted, libsafe will log a
+warning and terminate the targeted process.  As with version 1.3, installation
+is extremely easy and requires no knowledge of the system, applications,
+exploits, or even libsafe itself.  Also, because libsafe incurs relatively
+little overhead, it can be used to protect all processes on a machine, thereby
+potentially detecting instances of vulnerabilities that may yet be unknown.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Implementation}
+\label{sec:implementation}
+
+%interception
+%    -- glibc code
+%ra check
+%    -- uint _libsafe_raVariableP(void *addr)
+%span check
+%    -- uint _libsafe_span_stack_frames(void *start_addr, void *end_addr)
+%handling
+%    -- _libsafe_die()
+
+The implementation of format string vulnerability detection in libsafe version
+2.0 borrows heavily from the basic detection mechanism in version 1.3.  There
+are three main steps in the detection mechanism:
+
+\begin{Ventry}{Violation handling}
+\item[Interception]
+    Libsafe executes its own version of selected vulnerable functions.
+\item[Safety check]
+    Libsafe determines if the function can be safely executed.
+\item[Violation handling]
+    If the function cannot be safely executed, libsafe executes warning and
+    termination actions.
+\end{Ventry}
+
+%----------------------------------------------------------------------
+
+\subsection{Interception}
+\label{subsec:interception}
+
+The basic idea behind libsafe is the interception of vulnerable functions by
+safer alternatives that first check to make sure that the functions can be
+safely executed based on their arguments.  If the check passes, libsafe either
+calls the original function or executes code that is functionally equivalent.
+Otherwise, warnings are posted and the process is terminated.
+
+Libsafe is able to intercept functions (i.e., substitute its alternatives in
+place of the original functions) because it is implemented as a shared library
+that is loaded into memory before the standard library (i.e., {\tt
+/lib/libc.so}).  For Linux systems, the run-time loader, {\tt ld.so}, is
+responsible for loading the various program code and libraries into memory.
+For programs that require the standard library, {\tt ld.so} loads this library
+into memory and links all references to library functions in the program code
+to the library functions.  If libsafe is activated, {\tt ld.so} loads the
+libsafe library into memory before the standard library.  Because the libsafe
+alternative functions have the same names as the original standard library
+functions, {\tt ld.so} uses the libsafe functions in place of the standard
+library functions.
+
+Most of the libsafe functions perform a safety check and then call the original
+function or a safer alternative (e.g., {\tt snprintf()} is called in place of
+{\tt sprintf()}).  However, two functions are treated differently:  {\tt
+\_IO\_vfprintf()} and {\tt \_IO\_vfscanf()}\footnote{{\tt \_IO\_vfprintf()} and
+{\tt \_IO\_vfscanf()} are the core functions that all other {\tt *printf()} and
+{\tt *scanf()} functions eventually call.  Thus, intercepting these two core
+functions effectively intercepts the entire family of {\tt *printf()} and {\tt
+*scanf()} functions.  Note: {\tt syslog()} also eventually calls {\tt
+\_IO\_vfprintf()}}.  For {\tt \_IO\_vfprintf()} and {\tt \_IO\_vfscanf()}, the
+original source code from libc-2.1.3-91 is incorporated directly into libsafe.
+Libsafe needs the original source code because the safety checks for these two
+functions require knowledge of local variables.
+
+
+%----------------------------------------------------------------------
+
+\subsection{Safety check}
+\label{subsec:safety_check}
+
+The safety checks for each function are highly specific to each function.  For
+{\tt \_IO\_vfprintf()}, libsafe performs two checks:
+
+\begin{Lentry}
+\item[Return address and frame pointer check]
+    For each {\tt \%n} specifier, libsafe checks the associated pointer
+    argument.  Each such pointer argument is passed to {\tt
+    \_libsafe\_raVariableP(void *addr)}, where {\tt addr} is the pointer
+    argument.  {\tt \_libsafe\_raVariableP(void *addr)} returns {\tt 1} only if
+    it determines that {\tt addr} points to a return address or a frame pointer
+    on the stack.  Otherwise, it returns {\tt 0}, which means that {\tt addr}
+    points to an address that is either not on the stack or which is on the
+    stack, but which is not a return address or a frame pointer.  If {\tt
+    \_libsafe\_raVariableP()} returns {\tt 1}, then libsafe has found a
+    violation.
+\item[Frame span check]
+    The argument list for any function should always be contained within a
+    single stack frame.  Thus, attacks that attempt to probe the stack using
+    statements such as {\tt printf("\%x \%x ...")} might require arguments that
+    extend beyond the current stack frame.  The {\tt
+    \_libsafe\_span\_stack\_frames(void *start\_addr, void *end\_addr)}
+    function returns {\tt 1} only if {\tt start\_addr} and {\tt end\_addr} are
+    located in two different stack frames.  If {\tt
+    \_libsafe\_span\_stack\_frames()} returns {\tt 1}, then libsafe has found a
+    violation.
+\end{Lentry}
+
+\begin{figure}[htbp]
+\centerline{\psfig{figure=stack.eps,height=3.5in}}
+\caption{Stack Frames}
+\label{fig:stack_frames}
+\end{figure}
+
+To perform these two checks, libsafe determines the locations and sizes of the
+frames on the stack.  Figure~\ref{fig:stack_frames} illustrates the
+organization of a process stack.  The beginning of each stack frame is
+indicated by the presence of a frame pointer that points back to the previous
+stack frame.  Libsafe finds each stack frame by starting at the top-most frame
+and traversing the frame pointers until it finds the stack frame for {\tt
+main()}.  The top-most frame corresponds to a libsafe function.  Within this
+libsafe function, the frame pointer is found by using the gcc function {\tt
+\_\_builtin\_frame\_pointer(0)}.  The return address back into the calling
+function is located immediately before each frame pointer.  This technique
+works for most processes, with a few exceptions.  Certain compilers may not
+produce code that places frame pointers on the stack (e.g., {\tt gcc
+-fomit-frame-pointer}), and some customized compilers may not locate return
+addresses immediately next to the frame pointer (e.g., the StackGuard
+compiler~\cite{stackguard98}).
+
+%----------------------------------------------------------------------
+
+\subsection{Violation handling}
+\label{subsec:handling}
+
+If libsafe finds a violation during a safety check, then it performs the
+actions in Table~\ref{tab:actions}.
+
+\begin{table}[htbp]
+\begin{center}
+\caption{Libsafe Actions After Finding a Violation}
+\label{tab:actions}
+\begin{tabular}{|l||c|c|} \hline
+Action	& Default   & Optional? \\ \hline\hline
+Terminate process
+	& Off/On    & Not optional  \\ \hline
+Add a entry to {\tt /var/log/secure} using {\tt syslog()}
+	& On	    & Optional \\ \hline
+Print a warning to {\tt stderr}
+	& On	    & Not optional \\ \hline
+Dump a hexadecimal version of the stack contents to a file
+	& Off	    & Optional \\ \hline
+Send email to a list of recipients
+	& Off	    & Optional \\ \hline
+Produce a core dump by calling {\tt abort()}
+	& Off	    & Optional \\ \hline
+\end{tabular}
+\end{center}
+\end{table}
+
+The main libsafe action after detecting a violation is to terminate the
+process.  Data integrity after a violation cannot be assured, and therefore,
+the safest course of action is to terminate the entire process.  However, for
+violations of the return address and frame pointer check, libsafe can
+optionally allow the process to continue execution.  This exception is based on
+the assumption that programmers will almost never (or at least should never)
+produce code that attempts to use the {\tt \%n} specifier to overwrite a return
+address or frame pointer.  In practice, most occurrences of such attacks result
+from processing user input that unexpectedly contains the {\tt \%n} specifier.
+In such instances, since the input is garbage, libsafe can usually allow the
+process to continue to process the input as long as the {\tt \%n} specifier is
+not permitted to write to memory.
+
+%----------------------------------------------------------------------
+
+\subsection{Notes}
+\label{subsec:notes}
+
+\begin{enumerate}
+\item Libsafe relies on the location of frame pointers on the stack to
+    determine the location of stack frames and return addresses.  Some programs
+    have been compiled without code to embed frame pointers on the stack (e.g.,
+    by using {\tt gcc -fomit-frame-pointer}).  For such code, libsafe will
+    automatically detect the absence of frame pointers on the stack and allow
+    the program to execute normally.  However, it will not be able to detect
+    any exploits for such programs.
+\item Libsafe is linked with glibc and is incompatible with libc5.  If you have
+    a program that is linked with libc5, you will need to either obtain an
+    updated version linked with glibc or recompile the source code yourself
+    with glibc.
+\end{enumerate}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Software Availability}
+\label{sec:software_availability}
+
+Libsafe version 2.0 has not yet been released to the general public.  However,
+it is our intention to release the software under the Lesser GNU Public License
+sometime in the near future.  Please contact Timothy Tsai (ttsai@avaya.com) if
+you have any questions or are interested in evaluating the software.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{singlespace}
+%\compress
+\bibliography{whitepaper-20}
+\end{singlespace}
+
+\end{document}
+

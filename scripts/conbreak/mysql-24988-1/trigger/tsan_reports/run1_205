@@ -1,0 +1,2 @@
+buf_LRU_block_remove_hashed_page (buf0lru.c:870)
+buf_block_peek_if_too_old (buf0buf.ic:30)

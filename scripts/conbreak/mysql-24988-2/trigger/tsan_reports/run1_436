@@ -1,0 +1,2 @@
+buf_LRU_block_remove_hashed_page (buf0lru.c:903)
+btr_search_guess_on_hash (btr0sea.c:779)

@@ -1,0 +1,102 @@
+LOGGER::init_error_log (log.cc:1076)
+LOGGER::error_log_print (log.cc:833)
+
+mi_open (mi_open.c:617)
+_mi_write_static_record (mi_statrec.c:67)
+
+mi_lock_database (mi_locking.c:183)
+_mi_read_static_record (mi_statrec.c:196)
+
+_mi_mark_file_changed (mi_locking.c:535)
+mi_lock_database (mi_locking.c:34)
+
+_mi_mark_file_changed (mi_locking.c:536)
+mi_lock_database (mi_locking.c:34)
+
+mi_lock_database (mi_locking.c:98)
+_mi_test_if_changed (mi_locking.c:491)
+
+_mi_test_if_changed (mi_locking.c:491)
+_mi_test_if_changed (mi_locking.c:484)
+
+mi_lock_database (mi_locking.c:59)
+mi_lock_database (mi_locking.c:34)
+
+mi_lock_database (mi_locking.c:232)
+mi_lock_database (mi_locking.c:34)
+
+check_stack_overrun (sql_parse.cc:5564)
+check_stack_overrun (sql_parse.cc:5564)
+
+mi_lock_database (mi_locking.c:61)
+mi_lock_database (mi_locking.c:34)
+
+acl_load (sql_acl.cc:625)
+acl_getroot (sql_acl.cc:879)
+
+mi_lock_database (mi_locking.c:183)
+_mi_read_rnd_static_record (mi_statrec.c:258)
+
+mi_lock_database (mi_locking.c:100)
+_mi_test_if_changed (mi_locking.c:486)
+
+_mi_writeinfo (mi_locking.c:473)
+mi_lock_database (mi_locking.c:82)
+
+mi_open (mi_open.c:617)
+mi_extra (mi_extra.c:105)
+
+mi_lock_database (mi_locking.c:62)
+_mi_read_rnd_dynamic_record (mi_dynrec.c:1858)
+
+mi_lock_database (mi_locking.c:183)
+_mi_read_static_record (mi_statrec.c:183)
+
+mi_lock_database (mi_locking.c:182)
+mi_lock_database (mi_locking.c:34)
+
+clean_up (mysqld.cc:1223)
+signal_hand (mysqld.cc:2739)
+
+mi_lock_database (mi_locking.c:98)
+_mi_test_if_changed (mi_locking.c:484)
+
+mi_lock_database (mi_locking.c:99)
+_mi_test_if_changed (mi_locking.c:485)
+
+mi_lock_database (mi_locking.c:100)
+_mi_test_if_changed (mi_locking.c:493)
+
+replace_user_table (sql_acl.cc:2049)
+mysql_parse (sql_parse.cc:5899)
+
+LOGGER::init_general_log (log.cc:1117)
+LOGGER::log_command (log.cc:4112)
+
+signal_hand (mysqld.cc:2759)
+handle_connections_sockets (mysqld.cc:4964)
+
+_db_end_ (dbug.c:1521)
+_db_keyword_ (dbug.c:1658)
+
+LOGGER::init_error_log (log.cc:1075)
+LOGGER::error_log_print (log.cc:833)
+
+insert_dynamic (array.c:107)
+find_acl_user (sql_acl.cc:1699)
+
+freeze_size (array.c:354)
+find_acl_user (sql_acl.cc:1701)
+
+mi_lock_database (mi_locking.c:62)
+_mi_read_rnd_static_record (mi_statrec.c:258)
+
+mi_lock_database (mi_locking.c:233)
+_mi_read_rnd_dynamic_record (mi_dynrec.c:1858)
+
+bitmap_is_set_all (my_bitmap.c:299)
+bitmap_is_set (my_bitmap.h:141)
+
+alloc_dynamic (array.c:156)
+find_acl_user (sql_acl.cc:1701)
+

@@ -1,0 +1,26 @@
+==12092== Possible data race during read of size 4 at 0x80E3AC4 by thread #6
+==12092== Locks held: none
+==12092==    at 0x8082893: cached_explode (util_time.c:66)
+==12092==    by 0x8082A2E: ap_explode_recent_gmt (util_time.c:143)
+==12092==    by 0x8082DD7: ap_recent_rfc822_date (util_time.c:200)
+==12092==    by 0x809E944: basic_http_header (http_filters.c:909)
+==12092==    by 0x809F270: ap_http_header_filter (http_filters.c:1207)
+==12092==    by 0x80869AF: ap_pass_brigade (util_filter.c:526)
+==12092==    by 0x806F2DB: ap_content_length_filter (protocol.c:1338)
+==12092==    by 0x80869AF: ap_pass_brigade (util_filter.c:526)
+==12092==    by 0x80A005E: ap_byterange_filter (byterange_filter.c:177)
+==12092==    by 0x80869AF: ap_pass_brigade (util_filter.c:526)
+==12092==    by 0x8089B08: cache_save_filter (mod_cache.c:838)
+==12092==    by 0x80869AF: ap_pass_brigade (util_filter.c:526)
+==12092==
+==12092== This conflicts with a previous write of size 4 by thread #5
+==12092== Locks held: none
+==12092==    at 0x8082988: cached_explode (util_time.c:125)
+==12092==    by 0x8082A2E: ap_explode_recent_gmt (util_time.c:143)
+==12092==    by 0x8082DD7: ap_recent_rfc822_date (util_time.c:200)
+==12092==    by 0x809E944: basic_http_header (http_filters.c:909)
+==12092==    by 0x809F270: ap_http_header_filter (http_filters.c:1207)
+==12092==    by 0x80869AF: ap_pass_brigade (util_filter.c:526)
+==12092==    by 0x806F2DB: ap_content_length_filter (protocol.c:1338)
+==12092==    by 0x80869AF: ap_pass_brigade (util_filter.c:526)
+==12092==  Address 0x80e3ac4 is 4 bytes inside data symbol "exploded_cache_gmt"

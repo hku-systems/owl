@@ -1,0 +1,2 @@
+remove_entity (mod_mem_cache.c:653)
+decrement_refcount (mod_mem_cache.c:354)

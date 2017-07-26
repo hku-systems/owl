@@ -1,0 +1,26 @@
+If libsafe is compiled on a system with libprelude installed, libsafe will
+additionally emit a stack overflow alert to the Prelude Manager.
+
+Using libprelude, libsafe becomes a Prelude sensor, and acquires the ability
+to issue alerts to the Prelude Manager.  This allows you to centralize
+reports from distributed sensors in one place, and allows you to correlate
+events detected by different sensors (for more information about the
+Prelude Hybrid IDS, please see http://www.prelude-ids.org).
+
+In order for libsafe to be able to contact the Prelude Manager, you'll
+have a little configuration to do first:
+
+    1.  Run the manager-adduser program on the Prelude Manager host.
+    2.  Run the sensor-adduser program, on the sensor host with the following
+	    arguments : sensor-adduser --sensorname libsafe --uid <uid of the
+	    libsafe protected program> --manager-addr <address of the Prelude
+	    Manager>
+
+That's all you have to do to enable your libsafe-protected application
+to report to Prelude.
+
+The Libsafe/Prelude configuration is stored in the default sensor configuration
+file: /etc/prelude-sensors/sensors-default.conf.
+
+This configuration file should contain settings like the Prelude Manager
+address, so that a given sensor knows where an alert should be emitted.

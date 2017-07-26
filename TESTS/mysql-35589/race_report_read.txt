@@ -1,0 +1,8 @@
+grant_reload_procs_priv (sql_acl.cc:3733)
+grant_reload (sql_acl.cc:3827)
+reload_acl_and_cache (sql_parse.cc:6763)
+mysql_execute_command (sql_parse.cc:3945)
+mysql_parse (sql_parse.cc:5929)
+dispatch_command (sql_parse.cc:1216)
+do_command (sql_parse.cc:857)
+handle_one_connection (sql_connect.cc:1115)

@@ -1,0 +1,2 @@
+clock_handler (memcached.c:4801)
+process_bin_flush (memcached.c:2165)

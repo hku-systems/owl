@@ -1,0 +1,1033 @@
+==================
+WARNING: ThreadSanitizer: data race (pid=30065)
+  Read of size 4 at 0x7d9000059018 by thread T3:
+    #0 ap_queue_info_set_idle /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/fdqueue.c:112 (httpd+0x0000001dc805)
+    #1 worker_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:940 (httpd+0x0000001d897c)
+    #2 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Previous atomic write of size 4 at 0x7d9000059018 by thread T2:
+    #0 __tsan_atomic32_compare_exchange_val /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interface_atomic.cc:843 (httpd+0x00000009ea39)
+    #1 apr_atomic_cas32 /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/atomic/unix/builtins.c:59 (libapr-1.so.0+0x00000002fcf9)
+    #2 ap_queue_info_set_idle /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/fdqueue.c:113 (httpd+0x0000001dc828)
+    #3 worker_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:940 (httpd+0x0000001d897c)
+    #4 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Location is heap block of size 8192 at 0x7d9000058000 allocated by main thread:
+    #0 malloc /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:514 (httpd+0x00000007225f)
+    #1 allocator_alloc /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/memory/unix/apr_pools.c:349 (libapr-1.so.0+0x000000042e4d)
+    #2 apr_palloc /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/memory/unix/apr_pools.c:696 (libapr-1.so.0+0x0000000446ef)
+    #3 trie_node_alloc /home/bg2539/workspace/apache/httpd-2.4.18/server/util_filter.c:138 (httpd+0x0000000f6a41)
+    #4 register_filter /home/bg2539/workspace/apache/httpd-2.4.18/server/util_filter.c:223 (httpd+0x0000000f26a8)
+    #5 ap_register_output_filter_protocol /home/bg2539/workspace/apache/httpd-2.4.18/server/util_filter.c:276 (httpd+0x0000000f2a8f)
+    #6 ap_register_output_filter /home/bg2539/workspace/apache/httpd-2.4.18/server/util_filter.c:262 (httpd+0x0000000f2a07)
+    #7 charset_register_hooks /home/bg2539/workspace/apache/httpd-2.4.18/modules/filters/mod_charset_lite.c:1126 (mod_charset_lite.so+0x000000001951)
+    #8 ap_register_hooks /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:488 (httpd+0x00000015da28)
+    #9 ap_add_module /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:639 (httpd+0x00000015e2ee)
+    #10 ap_add_loaded_module /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:702 (httpd+0x00000015e9a8)
+    #11 load_module /home/bg2539/workspace/apache/httpd-2.4.18/modules/core/mod_so.c:302 (httpd+0x0000001a0727)
+    #12 invoke_cmd /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:922 (httpd+0x00000016837e)
+    #13 execute_now /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:1677 (httpd+0x00000016757b)
+    #14 ap_build_config_sub /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:1146 (httpd+0x0000001601db)
+    #15 ap_build_cont_config /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:1248 (httpd+0x00000015fab3)
+    #16 start_ifmod /home/bg2539/workspace/apache/httpd-2.4.18/server/core.c:2593 (httpd+0x000000120d6f)
+    #17 invoke_cmd /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:912 (httpd+0x000000168093)
+    #18 execute_now /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:1677 (httpd+0x00000016757b)
+    #19 ap_build_config_sub /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:1146 (httpd+0x0000001601db)
+    #20 ap_build_config /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:1398 (httpd+0x0000001613b1)
+    #21 ap_process_resource_config /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:1807 (httpd+0x0000001627a5)
+    #22 ap_read_config /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:2420 (httpd+0x0000001659ec)
+    #23 main /home/bg2539/workspace/apache/httpd-2.4.18/server/main.c:624 (httpd+0x0000000d6022)
+
+  Thread T3 (tid=30069, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1098 (httpd+0x0000001d770f)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Thread T2 (tid=30068, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1098 (httpd+0x0000001d770f)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/fdqueue.c:112 in ap_queue_info_set_idle
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=30065)
+  Write of size 4 at 0x7f15ad907024 by thread T3:
+    #0 update_child_status_internal /home/bg2539/workspace/apache/httpd-2.4.18/server/scoreboard.c:477 (httpd+0x0000000f9c55)
+    #1 ap_update_child_status_from_indexes /home/bg2539/workspace/apache/httpd-2.4.18/server/scoreboard.c:529 (httpd+0x0000000f9a0d)
+    #2 worker_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:952 (httpd+0x0000001d8a66)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Previous write of size 4 at 0x7f15ad907024 by thread T2:
+    #0 update_child_status_internal /home/bg2539/workspace/apache/httpd-2.4.18/server/scoreboard.c:477 (httpd+0x0000000f9c55)
+    #1 ap_update_child_status_from_indexes /home/bg2539/workspace/apache/httpd-2.4.18/server/scoreboard.c:529 (httpd+0x0000000f9a0d)
+    #2 worker_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:952 (httpd+0x0000001d8a66)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Thread T3 (tid=30069, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1098 (httpd+0x0000001d770f)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Thread T2 (tid=30068, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1098 (httpd+0x0000001d770f)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/apache/httpd-2.4.18/server/scoreboard.c:477 in update_child_status_internal
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=30065)
+  Write of size 4 at 0x7f15b0b59110 by thread T2:
+    #0 worker_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:992 (httpd+0x0000001d8d0f)
+    #1 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Previous read of size 4 at 0x7f15b0b59110 by thread T4:
+    #0 listener_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:746 (httpd+0x0000001d9595)
+    #1 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Location is global '<null>' of size 0 at 0x000000000000 (httpd+0x000001209110)
+
+  Thread T2 (tid=30068, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1098 (httpd+0x0000001d770f)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Thread T4 (tid=30071, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 create_listener_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1025 (httpd+0x0000001d8eed)
+    #3 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1110 (httpd+0x0000001d7808)
+    #4 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:992 in worker_thread
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=30065)
+  Atomic write of size 8 at 0x7d9000059038 by thread T2:
+    #0 __tsan_atomic64_compare_exchange_val /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interface_atomic.cc:849 (httpd+0x00000009ecd9)
+    #1 apr_atomic_casptr /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/atomic/unix/builtins.c:71 (libapr-1.so.0+0x00000002fdd0)
+    #2 ap_queue_info_set_idle /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/fdqueue.c:103 (httpd+0x0000001dc7d1)
+    #3 worker_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:940 (httpd+0x0000001d897c)
+    #4 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Previous read of size 8 at 0x7d9000059038 by thread T4:
+    #0 ap_queue_info_wait_for_idler /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/fdqueue.c:208 (httpd+0x0000001dcb4b)
+    #1 listener_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:755 (httpd+0x0000001d95f1)
+    #2 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Location is heap block of size 8192 at 0x7d9000058000 allocated by main thread:
+    #0 malloc /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:514 (httpd+0x00000007225f)
+    #1 allocator_alloc /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/memory/unix/apr_pools.c:349 (libapr-1.so.0+0x000000042e4d)
+    #2 apr_palloc /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/memory/unix/apr_pools.c:696 (libapr-1.so.0+0x0000000446ef)
+    #3 trie_node_alloc /home/bg2539/workspace/apache/httpd-2.4.18/server/util_filter.c:138 (httpd+0x0000000f6a41)
+    #4 register_filter /home/bg2539/workspace/apache/httpd-2.4.18/server/util_filter.c:223 (httpd+0x0000000f26a8)
+    #5 ap_register_output_filter_protocol /home/bg2539/workspace/apache/httpd-2.4.18/server/util_filter.c:276 (httpd+0x0000000f2a8f)
+    #6 ap_register_output_filter /home/bg2539/workspace/apache/httpd-2.4.18/server/util_filter.c:262 (httpd+0x0000000f2a07)
+    #7 charset_register_hooks /home/bg2539/workspace/apache/httpd-2.4.18/modules/filters/mod_charset_lite.c:1126 (mod_charset_lite.so+0x000000001951)
+    #8 ap_register_hooks /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:488 (httpd+0x00000015da28)
+    #9 ap_add_module /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:639 (httpd+0x00000015e2ee)
+    #10 ap_add_loaded_module /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:702 (httpd+0x00000015e9a8)
+    #11 load_module /home/bg2539/workspace/apache/httpd-2.4.18/modules/core/mod_so.c:302 (httpd+0x0000001a0727)
+    #12 invoke_cmd /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:922 (httpd+0x00000016837e)
+    #13 execute_now /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:1677 (httpd+0x00000016757b)
+    #14 ap_build_config_sub /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:1146 (httpd+0x0000001601db)
+    #15 ap_build_cont_config /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:1248 (httpd+0x00000015fab3)
+    #16 start_ifmod /home/bg2539/workspace/apache/httpd-2.4.18/server/core.c:2593 (httpd+0x000000120d6f)
+    #17 invoke_cmd /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:912 (httpd+0x000000168093)
+    #18 execute_now /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:1677 (httpd+0x00000016757b)
+    #19 ap_build_config_sub /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:1146 (httpd+0x0000001601db)
+    #20 ap_build_config /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:1398 (httpd+0x0000001613b1)
+    #21 ap_process_resource_config /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:1807 (httpd+0x0000001627a5)
+    #22 ap_read_config /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:2420 (httpd+0x0000001659ec)
+    #23 main /home/bg2539/workspace/apache/httpd-2.4.18/server/main.c:624 (httpd+0x0000000d6022)
+
+  Thread T2 (tid=30068, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1098 (httpd+0x0000001d770f)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Thread T4 (tid=30071, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 create_listener_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1025 (httpd+0x0000001d8eed)
+    #3 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1110 (httpd+0x0000001d7808)
+    #4 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/atomic/unix/builtins.c:71 in apr_atomic_casptr
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=30065)
+  Read of size 4 at 0x7f15b0b590e0 by thread T3 (mutexes: write M0):
+    #0 worker_query /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:375 (httpd+0x0000001d40d7)
+    #1 ap_run_mpm_query /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm_common.c:97 (httpd+0x0000000ee508)
+    #2 ap_mpm_query /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm_common.c:420 (httpd+0x0000000f0a48)
+    #3 is_mpm_running /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_protocol.c:185 (httpd+0x0000001a379e)
+    #4 ap_set_keepalive /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_protocol.c:258 (httpd+0x0000001a31d6)
+    #5 ap_http_header_filter /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_filters.c:1260 (httpd+0x0000001c3ca1)
+    #6 ap_pass_brigade /home/bg2539/workspace/apache/httpd-2.4.18/server/util_filter.c:590 (httpd+0x0000000f4938)
+    #7 ap_content_length_filter /home/bg2539/workspace/apache/httpd-2.4.18/server/protocol.c:1441 (httpd+0x00000010a40e)
+    #8 ap_pass_brigade /home/bg2539/workspace/apache/httpd-2.4.18/server/util_filter.c:590 (httpd+0x0000000f4938)
+    #9 ap_byterange_filter /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/byterange_filter.c:481 (httpd+0x0000001c862e)
+    #10 ap_pass_brigade /home/bg2539/workspace/apache/httpd-2.4.18/server/util_filter.c:590 (httpd+0x0000000f4938)
+    #11 ap_headers_output_filter /home/bg2539/workspace/apache/httpd-2.4.18/modules/metadata/mod_headers.c:884 (mod_headers.so+0x000000004591)
+    #12 ap_pass_brigade /home/bg2539/workspace/apache/httpd-2.4.18/server/util_filter.c:590 (httpd+0x0000000f4938)
+    #13 session_output_filter /home/bg2539/workspace/apache/httpd-2.4.18/modules/session/mod_session.c:478 (mod_session.so+0x000000003b7c)
+    #14 ap_pass_brigade /home/bg2539/workspace/apache/httpd-2.4.18/server/util_filter.c:590 (httpd+0x0000000f4938)
+    #15 send_parsed_content /home/bg2539/workspace/apache/httpd-2.4.18/modules/filters/mod_include.c:3459 (mod_include.so+0x000000020c59)
+    #16 includes_filter /home/bg2539/workspace/apache/httpd-2.4.18/modules/filters/mod_include.c:3949 (mod_include.so+0x000000006a5f)
+    #17 ap_pass_brigade /home/bg2539/workspace/apache/httpd-2.4.18/server/util_filter.c:590 (httpd+0x0000000f4938)
+    #18 default_handler /home/bg2539/workspace/apache/httpd-2.4.18/server/core.c:4517 (httpd+0x00000012fbd5)
+    #19 ap_run_handler /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:169 (httpd+0x00000015bfbc)
+    #20 ap_invoke_handler /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:433 (httpd+0x00000015d3a9)
+    #21 ap_process_async_request /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_request.c:410 (httpd+0x0000001adbc1)
+    #22 ap_process_request /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_request.c:445 (httpd+0x0000001adde0)
+    #23 ap_process_http_sync_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:210 (httpd+0x0000001a24ea)
+    #24 ap_process_http_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:251 (httpd+0x0000001a1bb8)
+    #25 ap_run_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:41 (httpd+0x0000001818ac)
+    #26 ap_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:213 (httpd+0x000000182434)
+    #27 process_socket /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:631 (httpd+0x0000001d9162)
+    #28 worker_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:990 (httpd+0x0000001d8c9a)
+    #29 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Previous write of size 4 at 0x7f15b0b590e0 by main thread:
+    #0 child_main /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1325 (httpd+0x0000001d6775)
+    #1 make_child /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1454 (httpd+0x0000001d5a15)
+    #2 startup_children /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1482 (httpd+0x0000001d4b90)
+    #3 worker_run /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1853 (httpd+0x0000001d29a9)
+    #4 ap_run_mpm /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm_common.c:94 (httpd+0x0000000ee14c)
+    #5 main /home/bg2539/workspace/apache/httpd-2.4.18/server/main.c:777 (httpd+0x0000000d7237)
+
+  Location is global '<null>' of size 0 at 0x000000000000 (httpd+0x0000012090e0)
+
+  Mutex M0 (0x7d9000254120) created at:
+    #0 pthread_mutex_init /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1063 (httpd+0x000000064f05)
+    #1 apr_thread_mutex_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/locks/unix/thread_mutex.c:71 (libapr-1.so.0+0x00000004175a)
+    #2 ap_process_async_request /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_request.c:403 (httpd+0x0000001adb21)
+    #3 ap_process_request /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_request.c:445 (httpd+0x0000001adde0)
+    #4 ap_process_http_sync_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:210 (httpd+0x0000001a24ea)
+    #5 ap_process_http_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:251 (httpd+0x0000001a1bb8)
+    #6 ap_run_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:41 (httpd+0x0000001818ac)
+    #7 ap_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:213 (httpd+0x000000182434)
+    #8 process_socket /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:631 (httpd+0x0000001d9162)
+    #9 worker_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:990 (httpd+0x0000001d8c9a)
+    #10 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Thread T3 (tid=30069, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1098 (httpd+0x0000001d770f)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:375 in worker_query
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=30065)
+  Write of size 8 at 0x7f15a4ffb378 by thread T2:
+    #0 memcpy /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:595 (httpd+0x00000007e86b)
+    #1 log_request_time /home/bg2539/workspace/apache/httpd-2.4.18/modules/loggers/mod_log_config.c:765 (mod_log_config.so+0x000000007615)
+    #2 process_item /home/bg2539/workspace/apache/httpd-2.4.18/modules/loggers/mod_log_config.c:1094 (mod_log_config.so+0x00000000b54d)
+    #3 config_log_transaction /home/bg2539/workspace/apache/httpd-2.4.18/modules/loggers/mod_log_config.c:1166 (mod_log_config.so+0x00000000ae7a)
+    #4 multi_log_transaction /home/bg2539/workspace/apache/httpd-2.4.18/modules/loggers/mod_log_config.c:1206 (mod_log_config.so+0x000000006543)
+    #5 ap_run_log_transaction /home/bg2539/workspace/apache/httpd-2.4.18/server/protocol.c:2013 (httpd+0x000000107a5c)
+    #6 eor_bucket_cleanup /home/bg2539/workspace/apache/httpd-2.4.18/server/eor_bucket.c:35 (httpd+0x0000001468c9)
+    #7 run_cleanups /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/memory/unix/apr_pools.c:2352 (libapr-1.so.0+0x000000045309)
+    #8 apr_pool_destroy /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/memory/unix/apr_pools.c:804 (libapr-1.so.0+0x000000043fdf)
+    #9 eor_bucket_destroy /home/bg2539/workspace/apache/httpd-2.4.18/server/eor_bucket.c:90 (httpd+0x0000001469a1)
+    #10 remove_empty_buckets /home/bg2539/workspace/apache/httpd-2.4.18/server/core_filters.c:721 (httpd+0x00000014cb8a)
+    #11 send_brigade_nonblocking /home/bg2539/workspace/apache/httpd-2.4.18/server/core_filters.c:711 (httpd+0x00000014c51c)
+    #12 send_brigade_blocking /home/bg2539/workspace/apache/httpd-2.4.18/server/core_filters.c:734 (httpd+0x00000014c8a0)
+    #13 ap_core_output_filter /home/bg2539/workspace/apache/httpd-2.4.18/server/core_filters.c:542 (httpd+0x00000014b102)
+    #14 ap_pass_brigade /home/bg2539/workspace/apache/httpd-2.4.18/server/util_filter.c:590 (httpd+0x0000000f4938)
+    #15 ap_process_request /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_request.c:451 (httpd+0x0000001adfc9)
+    #16 ap_process_http_sync_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:210 (httpd+0x0000001a24ea)
+    #17 ap_process_http_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:251 (httpd+0x0000001a1bb8)
+    #18 ap_run_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:41 (httpd+0x0000001818ac)
+    #19 ap_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:213 (httpd+0x000000182434)
+    #20 process_socket /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:631 (httpd+0x0000001d9162)
+    #21 worker_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:990 (httpd+0x0000001d8c9a)
+    #22 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Previous read of size 8 at 0x7f15a4ffb378 by thread T3:
+    #0 memcpy /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:595 (httpd+0x00000007e86b)
+    #1 log_request_time /home/bg2539/workspace/apache/httpd-2.4.18/modules/loggers/mod_log_config.c:739 (mod_log_config.so+0x0000000073cc)
+    #2 process_item /home/bg2539/workspace/apache/httpd-2.4.18/modules/loggers/mod_log_config.c:1094 (mod_log_config.so+0x00000000b54d)
+    #3 config_log_transaction /home/bg2539/workspace/apache/httpd-2.4.18/modules/loggers/mod_log_config.c:1166 (mod_log_config.so+0x00000000ae7a)
+    #4 multi_log_transaction /home/bg2539/workspace/apache/httpd-2.4.18/modules/loggers/mod_log_config.c:1206 (mod_log_config.so+0x000000006543)
+    #5 ap_run_log_transaction /home/bg2539/workspace/apache/httpd-2.4.18/server/protocol.c:2013 (httpd+0x000000107a5c)
+    #6 eor_bucket_cleanup /home/bg2539/workspace/apache/httpd-2.4.18/server/eor_bucket.c:35 (httpd+0x0000001468c9)
+    #7 run_cleanups /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/memory/unix/apr_pools.c:2352 (libapr-1.so.0+0x000000045309)
+    #8 apr_pool_destroy /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/memory/unix/apr_pools.c:804 (libapr-1.so.0+0x000000043fdf)
+    #9 eor_bucket_destroy /home/bg2539/workspace/apache/httpd-2.4.18/server/eor_bucket.c:90 (httpd+0x0000001469a1)
+    #10 remove_empty_buckets /home/bg2539/workspace/apache/httpd-2.4.18/server/core_filters.c:721 (httpd+0x00000014cb8a)
+    #11 send_brigade_nonblocking /home/bg2539/workspace/apache/httpd-2.4.18/server/core_filters.c:711 (httpd+0x00000014c51c)
+    #12 send_brigade_blocking /home/bg2539/workspace/apache/httpd-2.4.18/server/core_filters.c:734 (httpd+0x00000014c8a0)
+    #13 ap_core_output_filter /home/bg2539/workspace/apache/httpd-2.4.18/server/core_filters.c:542 (httpd+0x00000014b102)
+    #14 ap_pass_brigade /home/bg2539/workspace/apache/httpd-2.4.18/server/util_filter.c:590 (httpd+0x0000000f4938)
+    #15 ap_process_request /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_request.c:451 (httpd+0x0000001adfc9)
+    #16 ap_process_http_sync_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:210 (httpd+0x0000001a24ea)
+    #17 ap_process_http_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:251 (httpd+0x0000001a1bb8)
+    #18 ap_run_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:41 (httpd+0x0000001818ac)
+    #19 ap_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:213 (httpd+0x000000182434)
+    #20 process_socket /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:631 (httpd+0x0000001d9162)
+    #21 worker_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:990 (httpd+0x0000001d8c9a)
+    #22 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Location is global '<null>' of size 0 at 0x000000000000 (mod_log_config.so+0x00000020d378)
+
+  Thread T2 (tid=30068, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1098 (httpd+0x0000001d770f)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Thread T3 (tid=30069, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1098 (httpd+0x0000001d770f)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/apache/httpd-2.4.18/modules/loggers/mod_log_config.c:765 in log_request_time
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=30065)
+  Read of size 8 at 0x7f15b0b58a90 by thread T2 (mutexes: write M0):
+    #0 cached_explode /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:76 (httpd+0x00000017f23a)
+    #1 ap_explode_recent_localtime /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:147 (httpd+0x00000017f171)
+    #2 ap_recent_ctime_ex /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:200 (httpd+0x00000017f64b)
+    #3 log_ctime /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:638 (httpd+0x00000016d0af)
+    #4 do_errorlog_default /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:928 (httpd+0x000000172b2d)
+    #5 log_error_core /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:1270 (httpd+0x00000016ece6)
+    #6 ap_log_error_ /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:1319 (httpd+0x00000016abbe)
+    #7 ap_proxy_release_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/proxy/proxy_util.c:2173 (mod_proxy.so+0x000000033203)
+    #8 ap_proxy_http_process_response /home/bg2539/workspace/apache/httpd-2.4.18/modules/proxy/mod_proxy_http.c:1812 (mod_proxy_http.so+0x0000000118ca)
+    #9 proxy_http_handler /home/bg2539/workspace/apache/httpd-2.4.18/modules/proxy/mod_proxy_http.c:2036 (mod_proxy_http.so+0x000000005dc3)
+    #10 proxy_run_scheme_handler /home/bg2539/workspace/apache/httpd-2.4.18/modules/proxy/mod_proxy.c:2801 (mod_proxy.so+0x00000000b959)
+    #11 proxy_handler /home/bg2539/workspace/apache/httpd-2.4.18/modules/proxy/mod_proxy.c:1162 (mod_proxy.so+0x00000001a5de)
+    #12 ap_run_handler /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:169 (httpd+0x00000015bfbc)
+    #13 ap_invoke_handler /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:433 (httpd+0x00000015d3a9)
+    #14 ap_process_async_request /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_request.c:410 (httpd+0x0000001adbc1)
+    #15 ap_process_request /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_request.c:445 (httpd+0x0000001adde0)
+    #16 ap_process_http_sync_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:210 (httpd+0x0000001a24ea)
+    #17 ap_process_http_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:251 (httpd+0x0000001a1bb8)
+    #18 ap_run_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:41 (httpd+0x0000001818ac)
+    #19 ap_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:213 (httpd+0x000000182434)
+    #20 process_socket /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:631 (httpd+0x0000001d9162)
+    #21 worker_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:990 (httpd+0x0000001d8c9a)
+    #22 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Previous write of size 8 at 0x7f15b0b58a90 by thread T3:
+    #0 cached_explode /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:135 (httpd+0x00000017f34b)
+    #1 ap_explode_recent_localtime /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:147 (httpd+0x00000017f171)
+    #2 ap_recent_ctime_ex /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:200 (httpd+0x00000017f64b)
+    #3 log_ctime /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:638 (httpd+0x00000016d0af)
+    #4 do_errorlog_default /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:928 (httpd+0x000000172b2d)
+    #5 log_error_core /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:1270 (httpd+0x00000016ece6)
+    #6 ap_log_error_ /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:1319 (httpd+0x00000016abbe)
+    #7 ImportOptionalHookTestHook /home/bg2539/workspace/apache/httpd-2.4.18/modules/test/mod_optional_hook_import.c:24 (mod_optional_hook_import.so+0x000000000a06)
+    #8 ap_run_optional_hook_test /home/bg2539/workspace/apache/httpd-2.4.18/modules/test/mod_optional_hook_export.c:22 (mod_optional_hook_export.so+0x000000000a55)
+    #9 ExportLogTransaction /home/bg2539/workspace/apache/httpd-2.4.18/modules/test/mod_optional_hook_export.c:27 (mod_optional_hook_export.so+0x000000000b43)
+    #10 ap_run_log_transaction /home/bg2539/workspace/apache/httpd-2.4.18/server/protocol.c:2013 (httpd+0x000000107a5c)
+    #11 eor_bucket_cleanup /home/bg2539/workspace/apache/httpd-2.4.18/server/eor_bucket.c:35 (httpd+0x0000001468c9)
+    #12 run_cleanups /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/memory/unix/apr_pools.c:2352 (libapr-1.so.0+0x000000045309)
+    #13 apr_pool_destroy /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/memory/unix/apr_pools.c:804 (libapr-1.so.0+0x000000043fdf)
+    #14 eor_bucket_destroy /home/bg2539/workspace/apache/httpd-2.4.18/server/eor_bucket.c:90 (httpd+0x0000001469a1)
+    #15 remove_empty_buckets /home/bg2539/workspace/apache/httpd-2.4.18/server/core_filters.c:721 (httpd+0x00000014cb8a)
+    #16 send_brigade_nonblocking /home/bg2539/workspace/apache/httpd-2.4.18/server/core_filters.c:711 (httpd+0x00000014c51c)
+    #17 send_brigade_blocking /home/bg2539/workspace/apache/httpd-2.4.18/server/core_filters.c:734 (httpd+0x00000014c8a0)
+    #18 ap_core_output_filter /home/bg2539/workspace/apache/httpd-2.4.18/server/core_filters.c:542 (httpd+0x00000014b102)
+    #19 ap_pass_brigade /home/bg2539/workspace/apache/httpd-2.4.18/server/util_filter.c:590 (httpd+0x0000000f4938)
+    #20 ap_process_request /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_request.c:451 (httpd+0x0000001adfc9)
+    #21 ap_process_http_sync_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:210 (httpd+0x0000001a24ea)
+    #22 ap_process_http_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:251 (httpd+0x0000001a1bb8)
+    #23 ap_run_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:41 (httpd+0x0000001818ac)
+    #24 ap_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:213 (httpd+0x000000182434)
+    #25 process_socket /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:631 (httpd+0x0000001d9162)
+    #26 worker_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:990 (httpd+0x0000001d8c9a)
+    #27 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Location is global '<null>' of size 0 at 0x000000000000 (httpd+0x000001208a90)
+
+  Mutex M0 (0x7d900027c120) created at:
+    #0 pthread_mutex_init /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1063 (httpd+0x000000064f05)
+    #1 apr_thread_mutex_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/locks/unix/thread_mutex.c:71 (libapr-1.so.0+0x00000004175a)
+    #2 ap_process_async_request /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_request.c:403 (httpd+0x0000001adb21)
+    #3 ap_process_request /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_request.c:445 (httpd+0x0000001adde0)
+    #4 ap_process_http_sync_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:210 (httpd+0x0000001a24ea)
+    #5 ap_process_http_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:251 (httpd+0x0000001a1bb8)
+    #6 ap_run_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:41 (httpd+0x0000001818ac)
+    #7 ap_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:213 (httpd+0x000000182434)
+    #8 process_socket /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:631 (httpd+0x0000001d9162)
+    #9 worker_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:990 (httpd+0x0000001d8c9a)
+    #10 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Thread T2 (tid=30068, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1098 (httpd+0x0000001d770f)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Thread T3 (tid=30069, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1098 (httpd+0x0000001d770f)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:76 in cached_explode
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=30065)
+  Read of size 8 at 0x7f15b0b58a98 by thread T2 (mutexes: write M0):
+    #0 memcpy /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:595 (httpd+0x00000007e86b)
+    #1 cached_explode /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:106 (httpd+0x00000017f265)
+    #2 ap_explode_recent_localtime /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:147 (httpd+0x00000017f171)
+    #3 ap_recent_ctime_ex /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:200 (httpd+0x00000017f64b)
+    #4 log_ctime /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:638 (httpd+0x00000016d0af)
+    #5 do_errorlog_default /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:928 (httpd+0x000000172b2d)
+    #6 log_error_core /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:1270 (httpd+0x00000016ece6)
+    #7 ap_log_error_ /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:1319 (httpd+0x00000016abbe)
+    #8 ap_proxy_release_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/proxy/proxy_util.c:2173 (mod_proxy.so+0x000000033203)
+    #9 ap_proxy_http_process_response /home/bg2539/workspace/apache/httpd-2.4.18/modules/proxy/mod_proxy_http.c:1812 (mod_proxy_http.so+0x0000000118ca)
+    #10 proxy_http_handler /home/bg2539/workspace/apache/httpd-2.4.18/modules/proxy/mod_proxy_http.c:2036 (mod_proxy_http.so+0x000000005dc3)
+    #11 proxy_run_scheme_handler /home/bg2539/workspace/apache/httpd-2.4.18/modules/proxy/mod_proxy.c:2801 (mod_proxy.so+0x00000000b959)
+    #12 proxy_handler /home/bg2539/workspace/apache/httpd-2.4.18/modules/proxy/mod_proxy.c:1162 (mod_proxy.so+0x00000001a5de)
+    #13 ap_run_handler /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:169 (httpd+0x00000015bfbc)
+    #14 ap_invoke_handler /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:433 (httpd+0x00000015d3a9)
+    #15 ap_process_async_request /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_request.c:410 (httpd+0x0000001adbc1)
+    #16 ap_process_request /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_request.c:445 (httpd+0x0000001adde0)
+    #17 ap_process_http_sync_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:210 (httpd+0x0000001a24ea)
+    #18 ap_process_http_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:251 (httpd+0x0000001a1bb8)
+    #19 ap_run_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:41 (httpd+0x0000001818ac)
+    #20 ap_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:213 (httpd+0x000000182434)
+    #21 process_socket /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:631 (httpd+0x0000001d9162)
+    #22 worker_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:990 (httpd+0x0000001d8c9a)
+    #23 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Previous write of size 8 at 0x7f15b0b58a98 by thread T3:
+    #0 memcpy /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:595 (httpd+0x00000007e86b)
+    #1 cached_explode /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:136 (httpd+0x00000017f385)
+    #2 ap_explode_recent_localtime /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:147 (httpd+0x00000017f171)
+    #3 ap_recent_ctime_ex /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:200 (httpd+0x00000017f64b)
+    #4 log_ctime /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:638 (httpd+0x00000016d0af)
+    #5 do_errorlog_default /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:928 (httpd+0x000000172b2d)
+    #6 log_error_core /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:1270 (httpd+0x00000016ece6)
+    #7 ap_log_error_ /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:1319 (httpd+0x00000016abbe)
+    #8 ImportOptionalHookTestHook /home/bg2539/workspace/apache/httpd-2.4.18/modules/test/mod_optional_hook_import.c:24 (mod_optional_hook_import.so+0x000000000a06)
+    #9 ap_run_optional_hook_test /home/bg2539/workspace/apache/httpd-2.4.18/modules/test/mod_optional_hook_export.c:22 (mod_optional_hook_export.so+0x000000000a55)
+    #10 ExportLogTransaction /home/bg2539/workspace/apache/httpd-2.4.18/modules/test/mod_optional_hook_export.c:27 (mod_optional_hook_export.so+0x000000000b43)
+    #11 ap_run_log_transaction /home/bg2539/workspace/apache/httpd-2.4.18/server/protocol.c:2013 (httpd+0x000000107a5c)
+    #12 eor_bucket_cleanup /home/bg2539/workspace/apache/httpd-2.4.18/server/eor_bucket.c:35 (httpd+0x0000001468c9)
+    #13 run_cleanups /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/memory/unix/apr_pools.c:2352 (libapr-1.so.0+0x000000045309)
+    #14 apr_pool_destroy /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/memory/unix/apr_pools.c:804 (libapr-1.so.0+0x000000043fdf)
+    #15 eor_bucket_destroy /home/bg2539/workspace/apache/httpd-2.4.18/server/eor_bucket.c:90 (httpd+0x0000001469a1)
+    #16 remove_empty_buckets /home/bg2539/workspace/apache/httpd-2.4.18/server/core_filters.c:721 (httpd+0x00000014cb8a)
+    #17 send_brigade_nonblocking /home/bg2539/workspace/apache/httpd-2.4.18/server/core_filters.c:711 (httpd+0x00000014c51c)
+    #18 send_brigade_blocking /home/bg2539/workspace/apache/httpd-2.4.18/server/core_filters.c:734 (httpd+0x00000014c8a0)
+    #19 ap_core_output_filter /home/bg2539/workspace/apache/httpd-2.4.18/server/core_filters.c:542 (httpd+0x00000014b102)
+    #20 ap_pass_brigade /home/bg2539/workspace/apache/httpd-2.4.18/server/util_filter.c:590 (httpd+0x0000000f4938)
+    #21 ap_process_request /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_request.c:451 (httpd+0x0000001adfc9)
+    #22 ap_process_http_sync_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:210 (httpd+0x0000001a24ea)
+    #23 ap_process_http_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:251 (httpd+0x0000001a1bb8)
+    #24 ap_run_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:41 (httpd+0x0000001818ac)
+    #25 ap_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:213 (httpd+0x000000182434)
+    #26 process_socket /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:631 (httpd+0x0000001d9162)
+    #27 worker_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:990 (httpd+0x0000001d8c9a)
+    #28 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Location is global '<null>' of size 0 at 0x000000000000 (httpd+0x000001208a98)
+
+  Mutex M0 (0x7d900027c120) created at:
+    #0 pthread_mutex_init /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1063 (httpd+0x000000064f05)
+    #1 apr_thread_mutex_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/locks/unix/thread_mutex.c:71 (libapr-1.so.0+0x00000004175a)
+    #2 ap_process_async_request /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_request.c:403 (httpd+0x0000001adb21)
+    #3 ap_process_request /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_request.c:445 (httpd+0x0000001adde0)
+    #4 ap_process_http_sync_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:210 (httpd+0x0000001a24ea)
+    #5 ap_process_http_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:251 (httpd+0x0000001a1bb8)
+    #6 ap_run_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:41 (httpd+0x0000001818ac)
+    #7 ap_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:213 (httpd+0x000000182434)
+    #8 process_socket /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:631 (httpd+0x0000001d9162)
+    #9 worker_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:990 (httpd+0x0000001d8c9a)
+    #10 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Thread T2 (tid=30068, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1098 (httpd+0x0000001d770f)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Thread T3 (tid=30069, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1098 (httpd+0x0000001d770f)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:106 in cached_explode
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=30065)
+  Read of size 8 at 0x7f15b0b58ac8 by thread T2 (mutexes: write M0):
+    #0 memcpy /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:595 (httpd+0x00000007e86b)
+    #1 cached_explode /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:106 (httpd+0x00000017f265)
+    #2 ap_explode_recent_localtime /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:147 (httpd+0x00000017f171)
+    #3 ap_recent_ctime_ex /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:200 (httpd+0x00000017f64b)
+    #4 log_ctime /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:638 (httpd+0x00000016d0af)
+    #5 do_errorlog_default /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:928 (httpd+0x000000172b2d)
+    #6 log_error_core /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:1270 (httpd+0x00000016ece6)
+    #7 ap_log_error_ /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:1319 (httpd+0x00000016abbe)
+    #8 ap_proxy_release_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/proxy/proxy_util.c:2173 (mod_proxy.so+0x000000033203)
+    #9 ap_proxy_http_process_response /home/bg2539/workspace/apache/httpd-2.4.18/modules/proxy/mod_proxy_http.c:1812 (mod_proxy_http.so+0x0000000118ca)
+    #10 proxy_http_handler /home/bg2539/workspace/apache/httpd-2.4.18/modules/proxy/mod_proxy_http.c:2036 (mod_proxy_http.so+0x000000005dc3)
+    #11 proxy_run_scheme_handler /home/bg2539/workspace/apache/httpd-2.4.18/modules/proxy/mod_proxy.c:2801 (mod_proxy.so+0x00000000b959)
+    #12 proxy_handler /home/bg2539/workspace/apache/httpd-2.4.18/modules/proxy/mod_proxy.c:1162 (mod_proxy.so+0x00000001a5de)
+    #13 ap_run_handler /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:169 (httpd+0x00000015bfbc)
+    #14 ap_invoke_handler /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:433 (httpd+0x00000015d3a9)
+    #15 ap_process_async_request /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_request.c:410 (httpd+0x0000001adbc1)
+    #16 ap_process_request /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_request.c:445 (httpd+0x0000001adde0)
+    #17 ap_process_http_sync_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:210 (httpd+0x0000001a24ea)
+    #18 ap_process_http_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:251 (httpd+0x0000001a1bb8)
+    #19 ap_run_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:41 (httpd+0x0000001818ac)
+    #20 ap_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:213 (httpd+0x000000182434)
+    #21 process_socket /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:631 (httpd+0x0000001d9162)
+    #22 worker_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:990 (httpd+0x0000001d8c9a)
+    #23 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Previous write of size 8 at 0x7f15b0b58ac8 by thread T3:
+    #0 cached_explode /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:137 (httpd+0x00000017f3b1)
+    #1 ap_explode_recent_localtime /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:147 (httpd+0x00000017f171)
+    #2 ap_recent_ctime_ex /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:200 (httpd+0x00000017f64b)
+    #3 log_ctime /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:638 (httpd+0x00000016d0af)
+    #4 do_errorlog_default /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:928 (httpd+0x000000172b2d)
+    #5 log_error_core /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:1270 (httpd+0x00000016ece6)
+    #6 ap_log_error_ /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:1319 (httpd+0x00000016abbe)
+    #7 ImportOptionalHookTestHook /home/bg2539/workspace/apache/httpd-2.4.18/modules/test/mod_optional_hook_import.c:24 (mod_optional_hook_import.so+0x000000000a06)
+    #8 ap_run_optional_hook_test /home/bg2539/workspace/apache/httpd-2.4.18/modules/test/mod_optional_hook_export.c:22 (mod_optional_hook_export.so+0x000000000a55)
+    #9 ExportLogTransaction /home/bg2539/workspace/apache/httpd-2.4.18/modules/test/mod_optional_hook_export.c:27 (mod_optional_hook_export.so+0x000000000b43)
+    #10 ap_run_log_transaction /home/bg2539/workspace/apache/httpd-2.4.18/server/protocol.c:2013 (httpd+0x000000107a5c)
+    #11 eor_bucket_cleanup /home/bg2539/workspace/apache/httpd-2.4.18/server/eor_bucket.c:35 (httpd+0x0000001468c9)
+    #12 run_cleanups /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/memory/unix/apr_pools.c:2352 (libapr-1.so.0+0x000000045309)
+    #13 apr_pool_destroy /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/memory/unix/apr_pools.c:804 (libapr-1.so.0+0x000000043fdf)
+    #14 eor_bucket_destroy /home/bg2539/workspace/apache/httpd-2.4.18/server/eor_bucket.c:90 (httpd+0x0000001469a1)
+    #15 remove_empty_buckets /home/bg2539/workspace/apache/httpd-2.4.18/server/core_filters.c:721 (httpd+0x00000014cb8a)
+    #16 send_brigade_nonblocking /home/bg2539/workspace/apache/httpd-2.4.18/server/core_filters.c:711 (httpd+0x00000014c51c)
+    #17 send_brigade_blocking /home/bg2539/workspace/apache/httpd-2.4.18/server/core_filters.c:734 (httpd+0x00000014c8a0)
+    #18 ap_core_output_filter /home/bg2539/workspace/apache/httpd-2.4.18/server/core_filters.c:542 (httpd+0x00000014b102)
+    #19 ap_pass_brigade /home/bg2539/workspace/apache/httpd-2.4.18/server/util_filter.c:590 (httpd+0x0000000f4938)
+    #20 ap_process_request /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_request.c:451 (httpd+0x0000001adfc9)
+    #21 ap_process_http_sync_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:210 (httpd+0x0000001a24ea)
+    #22 ap_process_http_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:251 (httpd+0x0000001a1bb8)
+    #23 ap_run_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:41 (httpd+0x0000001818ac)
+    #24 ap_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:213 (httpd+0x000000182434)
+    #25 process_socket /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:631 (httpd+0x0000001d9162)
+    #26 worker_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:990 (httpd+0x0000001d8c9a)
+    #27 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Location is global '<null>' of size 0 at 0x000000000000 (httpd+0x000001208ac8)
+
+  Mutex M0 (0x7d900027c120) created at:
+    #0 pthread_mutex_init /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1063 (httpd+0x000000064f05)
+    #1 apr_thread_mutex_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/locks/unix/thread_mutex.c:71 (libapr-1.so.0+0x00000004175a)
+    #2 ap_process_async_request /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_request.c:403 (httpd+0x0000001adb21)
+    #3 ap_process_request /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_request.c:445 (httpd+0x0000001adde0)
+    #4 ap_process_http_sync_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:210 (httpd+0x0000001a24ea)
+    #5 ap_process_http_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:251 (httpd+0x0000001a1bb8)
+    #6 ap_run_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:41 (httpd+0x0000001818ac)
+    #7 ap_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:213 (httpd+0x000000182434)
+    #8 process_socket /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:631 (httpd+0x0000001d9162)
+    #9 worker_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:990 (httpd+0x0000001d8c9a)
+    #10 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Thread T2 (tid=30068, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1098 (httpd+0x0000001d770f)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Thread T3 (tid=30069, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1098 (httpd+0x0000001d770f)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:106 in cached_explode
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=30065)
+  Write of size 1 at 0x7f15ad9073ac by thread T3:
+    #0 update_child_status_internal /home/bg2539/workspace/apache/httpd-2.4.18/server/scoreboard.c:469 (httpd+0x0000000f9b46)
+    #1 ap_update_child_status /home/bg2539/workspace/apache/httpd-2.4.18/server/scoreboard.c:540 (httpd+0x0000000fa1ba)
+    #2 ap_read_request /home/bg2539/workspace/apache/httpd-2.4.18/server/protocol.c:993 (httpd+0x0000001029d0)
+    #3 ap_process_http_sync_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:192 (httpd+0x0000001a2352)
+    #4 ap_process_http_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:251 (httpd+0x0000001a1bb8)
+    #5 ap_run_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:41 (httpd+0x0000001818ac)
+    #6 ap_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:213 (httpd+0x000000182434)
+    #7 process_socket /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:631 (httpd+0x0000001d9162)
+    #8 worker_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:990 (httpd+0x0000001d8c9a)
+    #9 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Previous read of size 8 at 0x7f15ad9073a8 by thread T2:
+    [failed to restore the stack]
+
+  Thread T3 (tid=30069, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1098 (httpd+0x0000001d770f)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Thread T2 (tid=30068, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1098 (httpd+0x0000001d770f)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/apache/httpd-2.4.18/server/scoreboard.c:469 in update_child_status_internal
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=30065)
+  Write of size 8 at 0x7f15ad9073e8 by thread T3:
+    #0 update_child_status_internal /home/bg2539/workspace/apache/httpd-2.4.18/server/scoreboard.c:481 (httpd+0x0000000f9caa)
+    #1 ap_update_child_status /home/bg2539/workspace/apache/httpd-2.4.18/server/scoreboard.c:540 (httpd+0x0000000fa1ba)
+    #2 ap_read_request /home/bg2539/workspace/apache/httpd-2.4.18/server/protocol.c:993 (httpd+0x0000001029d0)
+    #3 ap_process_http_sync_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:192 (httpd+0x0000001a2352)
+    #4 ap_process_http_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:251 (httpd+0x0000001a1bb8)
+    #5 ap_run_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:41 (httpd+0x0000001818ac)
+    #6 ap_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:213 (httpd+0x000000182434)
+    #7 process_socket /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:631 (httpd+0x0000001d9162)
+    #8 worker_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:990 (httpd+0x0000001d8c9a)
+    #9 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Previous read of size 8 at 0x7f15ad9073e8 by thread T2:
+    [failed to restore the stack]
+
+  Thread T3 (tid=30069, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1098 (httpd+0x0000001d770f)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Thread T2 (tid=30068, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1098 (httpd+0x0000001d770f)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/apache/httpd-2.4.18/server/scoreboard.c:481 in update_child_status_internal
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=30065)
+  Write of size 1 at 0x7f15ad907410 by thread T3:
+    #0 apr_cpystrn /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/strings/apr_cpystrn.c:59 (libapr-1.so.0+0x000000013216)
+    #1 update_child_status_internal /home/bg2539/workspace/apache/httpd-2.4.18/server/scoreboard.c:497 (httpd+0x0000000f9e7e)
+    #2 ap_update_child_status /home/bg2539/workspace/apache/httpd-2.4.18/server/scoreboard.c:540 (httpd+0x0000000fa1ba)
+    #3 ap_read_request /home/bg2539/workspace/apache/httpd-2.4.18/server/protocol.c:993 (httpd+0x0000001029d0)
+    #4 ap_process_http_sync_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:192 (httpd+0x0000001a2352)
+    #5 ap_process_http_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:251 (httpd+0x0000001a1bb8)
+    #6 ap_run_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:41 (httpd+0x0000001818ac)
+    #7 ap_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:213 (httpd+0x000000182434)
+    #8 process_socket /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:631 (httpd+0x0000001d9162)
+    #9 worker_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:990 (httpd+0x0000001d8c9a)
+    #10 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Previous read of size 8 at 0x7f15ad907410 by thread T2:
+    [failed to restore the stack]
+
+  Thread T3 (tid=30069, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1098 (httpd+0x0000001d770f)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Thread T2 (tid=30068, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1098 (httpd+0x0000001d770f)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/strings/apr_cpystrn.c:59 in apr_cpystrn
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=30065)
+  Write of size 1 at 0x7f15ad907430 by thread T3:
+    #0 apr_cpystrn /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/strings/apr_cpystrn.c:59 (libapr-1.so.0+0x000000013216)
+    #1 copy_request /home/bg2539/workspace/apache/httpd-2.4.18/server/scoreboard.c:425 (httpd+0x0000000fa974)
+    #2 update_child_status_internal /home/bg2539/workspace/apache/httpd-2.4.18/server/scoreboard.c:502 (httpd+0x0000000f9eca)
+    #3 ap_update_child_status /home/bg2539/workspace/apache/httpd-2.4.18/server/scoreboard.c:540 (httpd+0x0000000fa1ba)
+    #4 ap_read_request /home/bg2539/workspace/apache/httpd-2.4.18/server/protocol.c:993 (httpd+0x0000001029d0)
+    #5 ap_process_http_sync_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:192 (httpd+0x0000001a2352)
+    #6 ap_process_http_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:251 (httpd+0x0000001a1bb8)
+    #7 ap_run_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:41 (httpd+0x0000001818ac)
+    #8 ap_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:213 (httpd+0x000000182434)
+    #9 process_socket /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:631 (httpd+0x0000001d9162)
+    #10 worker_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:990 (httpd+0x0000001d8c9a)
+    #11 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Previous read of size 8 at 0x7f15ad907430 by thread T2:
+    [failed to restore the stack]
+
+  Thread T3 (tid=30069, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1098 (httpd+0x0000001d770f)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Thread T2 (tid=30068, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1098 (httpd+0x0000001d770f)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/strings/apr_cpystrn.c:59 in apr_cpystrn
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=30065)
+  Write of size 1 at 0x7f15ad907470 by thread T3:
+    #0 apr_vformatter /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/strings/apr_snprintf.c:1331 (libapr-1.so.0+0x00000001c37a)
+    #1 apr_snprintf /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/strings/apr_snprintf.c:1379 (libapr-1.so.0+0x00000001eae2)
+    #2 update_child_status_internal /home/bg2539/workspace/apache/httpd-2.4.18/server/scoreboard.c:504 (httpd+0x0000000f9fda)
+    #3 ap_update_child_status /home/bg2539/workspace/apache/httpd-2.4.18/server/scoreboard.c:540 (httpd+0x0000000fa1ba)
+    #4 ap_read_request /home/bg2539/workspace/apache/httpd-2.4.18/server/protocol.c:993 (httpd+0x0000001029d0)
+    #5 ap_process_http_sync_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:192 (httpd+0x0000001a2352)
+    #6 ap_process_http_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/http/http_core.c:251 (httpd+0x0000001a1bb8)
+    #7 ap_run_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:41 (httpd+0x0000001818ac)
+    #8 ap_process_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:213 (httpd+0x000000182434)
+    #9 process_socket /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:631 (httpd+0x0000001d9162)
+    #10 worker_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:990 (httpd+0x0000001d8c9a)
+    #11 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Previous read of size 8 at 0x7f15ad907470 by thread T2:
+    [failed to restore the stack]
+
+  Thread T3 (tid=30069, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1098 (httpd+0x0000001d770f)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Thread T2 (tid=30068, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1098 (httpd+0x0000001d770f)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/strings/apr_snprintf.c:1331 in apr_vformatter
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=30065)
+  Read of size 8 at 0x7f15b0b58a50 by thread T2:
+    #0 cached_explode /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:76 (httpd+0x00000017f23a)
+    #1 ap_explode_recent_localtime /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:147 (httpd+0x00000017f171)
+    #2 ap_recent_ctime_ex /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:200 (httpd+0x00000017f64b)
+    #3 log_ctime /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:638 (httpd+0x00000016d0af)
+    #4 do_errorlog_default /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:928 (httpd+0x000000172b2d)
+    #5 log_error_core /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:1270 (httpd+0x00000016ece6)
+    #6 ap_log_perror_ /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:1331 (httpd+0x00000016efa5)
+    #7 trace_nocontext /home/bg2539/workspace/apache/httpd-2.4.18/modules/examples/mod_example_hooks.c:494 (mod_example_hooks.so+0x0000000045c8)
+    #8 x_create_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/examples/mod_example_hooks.c:1356 (mod_example_hooks.so+0x000000003c77)
+    #9 ap_run_create_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:38 (httpd+0x0000001814fe)
+    #10 process_socket /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:627 (httpd+0x0000001d9106)
+    #11 worker_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:990 (httpd+0x0000001d8c9a)
+    #12 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Previous write of size 8 at 0x7f15b0b58a50 by thread T3:
+    #0 cached_explode /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:135 (httpd+0x00000017f34b)
+    #1 ap_explode_recent_localtime /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:147 (httpd+0x00000017f171)
+    #2 ap_recent_ctime_ex /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:200 (httpd+0x00000017f64b)
+    #3 log_ctime /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:638 (httpd+0x00000016d0af)
+    #4 do_errorlog_default /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:928 (httpd+0x000000172b2d)
+    #5 log_error_core /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:1270 (httpd+0x00000016ece6)
+    #6 ap_log_perror_ /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:1331 (httpd+0x00000016efa5)
+    #7 trace_nocontext /home/bg2539/workspace/apache/httpd-2.4.18/modules/examples/mod_example_hooks.c:494 (mod_example_hooks.so+0x0000000045c8)
+    #8 x_create_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/examples/mod_example_hooks.c:1356 (mod_example_hooks.so+0x000000003c77)
+    #9 ap_run_create_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:38 (httpd+0x0000001814fe)
+    #10 process_socket /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:627 (httpd+0x0000001d9106)
+    #11 worker_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:990 (httpd+0x0000001d8c9a)
+    #12 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Location is global '<null>' of size 0 at 0x000000000000 (httpd+0x000001208a50)
+
+  Thread T2 (tid=30068, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1098 (httpd+0x0000001d770f)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Thread T3 (tid=30069, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1098 (httpd+0x0000001d770f)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:76 in cached_explode
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=30065)
+  Read of size 8 at 0x7f15b0b58a58 by thread T2:
+    #0 memcpy /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:595 (httpd+0x00000007e86b)
+    #1 cached_explode /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:106 (httpd+0x00000017f265)
+    #2 ap_explode_recent_localtime /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:147 (httpd+0x00000017f171)
+    #3 ap_recent_ctime_ex /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:200 (httpd+0x00000017f64b)
+    #4 log_ctime /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:638 (httpd+0x00000016d0af)
+    #5 do_errorlog_default /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:928 (httpd+0x000000172b2d)
+    #6 log_error_core /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:1270 (httpd+0x00000016ece6)
+    #7 ap_log_perror_ /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:1331 (httpd+0x00000016efa5)
+    #8 trace_nocontext /home/bg2539/workspace/apache/httpd-2.4.18/modules/examples/mod_example_hooks.c:494 (mod_example_hooks.so+0x0000000045c8)
+    #9 x_create_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/examples/mod_example_hooks.c:1356 (mod_example_hooks.so+0x000000003c77)
+    #10 ap_run_create_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:38 (httpd+0x0000001814fe)
+    #11 process_socket /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:627 (httpd+0x0000001d9106)
+    #12 worker_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:990 (httpd+0x0000001d8c9a)
+    #13 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Previous write of size 8 at 0x7f15b0b58a58 by thread T3:
+    #0 memcpy /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:595 (httpd+0x00000007e86b)
+    #1 cached_explode /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:136 (httpd+0x00000017f385)
+    #2 ap_explode_recent_localtime /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:147 (httpd+0x00000017f171)
+    #3 ap_recent_ctime_ex /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:200 (httpd+0x00000017f64b)
+    #4 log_ctime /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:638 (httpd+0x00000016d0af)
+    #5 do_errorlog_default /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:928 (httpd+0x000000172b2d)
+    #6 log_error_core /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:1270 (httpd+0x00000016ece6)
+    #7 ap_log_perror_ /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:1331 (httpd+0x00000016efa5)
+    #8 trace_nocontext /home/bg2539/workspace/apache/httpd-2.4.18/modules/examples/mod_example_hooks.c:494 (mod_example_hooks.so+0x0000000045c8)
+    #9 x_create_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/examples/mod_example_hooks.c:1356 (mod_example_hooks.so+0x000000003c77)
+    #10 ap_run_create_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:38 (httpd+0x0000001814fe)
+    #11 process_socket /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:627 (httpd+0x0000001d9106)
+    #12 worker_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:990 (httpd+0x0000001d8c9a)
+    #13 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Location is global '<null>' of size 0 at 0x000000000000 (httpd+0x000001208a58)
+
+  Thread T2 (tid=30068, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1098 (httpd+0x0000001d770f)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Thread T3 (tid=30069, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1098 (httpd+0x0000001d770f)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:106 in cached_explode
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=30065)
+  Read of size 8 at 0x7f15b0b58a88 by thread T2:
+    #0 memcpy /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:595 (httpd+0x00000007e86b)
+    #1 cached_explode /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:106 (httpd+0x00000017f265)
+    #2 ap_explode_recent_localtime /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:147 (httpd+0x00000017f171)
+    #3 ap_recent_ctime_ex /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:200 (httpd+0x00000017f64b)
+    #4 log_ctime /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:638 (httpd+0x00000016d0af)
+    #5 do_errorlog_default /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:928 (httpd+0x000000172b2d)
+    #6 log_error_core /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:1270 (httpd+0x00000016ece6)
+    #7 ap_log_perror_ /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:1331 (httpd+0x00000016efa5)
+    #8 trace_nocontext /home/bg2539/workspace/apache/httpd-2.4.18/modules/examples/mod_example_hooks.c:494 (mod_example_hooks.so+0x0000000045c8)
+    #9 x_create_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/examples/mod_example_hooks.c:1356 (mod_example_hooks.so+0x000000003c77)
+    #10 ap_run_create_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:38 (httpd+0x0000001814fe)
+    #11 process_socket /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:627 (httpd+0x0000001d9106)
+    #12 worker_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:990 (httpd+0x0000001d8c9a)
+    #13 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Previous write of size 8 at 0x7f15b0b58a88 by thread T3:
+    #0 cached_explode /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:137 (httpd+0x00000017f3b1)
+    #1 ap_explode_recent_localtime /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:147 (httpd+0x00000017f171)
+    #2 ap_recent_ctime_ex /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:200 (httpd+0x00000017f64b)
+    #3 log_ctime /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:638 (httpd+0x00000016d0af)
+    #4 do_errorlog_default /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:928 (httpd+0x000000172b2d)
+    #5 log_error_core /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:1270 (httpd+0x00000016ece6)
+    #6 ap_log_perror_ /home/bg2539/workspace/apache/httpd-2.4.18/server/log.c:1331 (httpd+0x00000016efa5)
+    #7 trace_nocontext /home/bg2539/workspace/apache/httpd-2.4.18/modules/examples/mod_example_hooks.c:494 (mod_example_hooks.so+0x0000000045c8)
+    #8 x_create_connection /home/bg2539/workspace/apache/httpd-2.4.18/modules/examples/mod_example_hooks.c:1356 (mod_example_hooks.so+0x000000003c77)
+    #9 ap_run_create_connection /home/bg2539/workspace/apache/httpd-2.4.18/server/connection.c:38 (httpd+0x0000001814fe)
+    #10 process_socket /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:627 (httpd+0x0000001d9106)
+    #11 worker_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:990 (httpd+0x0000001d8c9a)
+    #12 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Location is global '<null>' of size 0 at 0x000000000000 (httpd+0x000001208a88)
+
+  Thread T2 (tid=30068, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1098 (httpd+0x0000001d770f)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Thread T3 (tid=30069, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1098 (httpd+0x0000001d770f)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/apache/httpd-2.4.18/server/util_time.c:106 in cached_explode
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=30065)
+  Write of size 4 at 0x7f15b0b59138 by main thread:
+    #0 join_start_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1213 (httpd+0x0000001d7cce)
+    #1 child_main /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1378 (httpd+0x0000001d693b)
+    #2 make_child /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1454 (httpd+0x0000001d5a15)
+    #3 startup_children /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1482 (httpd+0x0000001d4b90)
+    #4 worker_run /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1853 (httpd+0x0000001d29a9)
+    #5 ap_run_mpm /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm_common.c:94 (httpd+0x0000000ee14c)
+    #6 main /home/bg2539/workspace/apache/httpd-2.4.18/server/main.c:777 (httpd+0x0000000d7237)
+
+  Previous read of size 4 at 0x7f15b0b59138 by thread T1:
+    #0 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1113 (httpd+0x0000001d781e)
+    #1 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Location is global '<null>' of size 0 at 0x000000000000 (httpd+0x000001209138)
+
+  Thread T1 (tid=30067, finished) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 child_main /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1316 (httpd+0x0000001d6665)
+    #3 make_child /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1454 (httpd+0x0000001d5a15)
+    #4 startup_children /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1482 (httpd+0x0000001d4b90)
+    #5 worker_run /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1853 (httpd+0x0000001d29a9)
+    #6 ap_run_mpm /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm_common.c:94 (httpd+0x0000000ee14c)
+    #7 main /home/bg2539/workspace/apache/httpd-2.4.18/server/main.c:777 (httpd+0x0000000d7237)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1213 in join_start_thread
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=30065)
+  Write of size 4 at 0x7f15b0b59150 by main thread:
+    #0 wakeup_listener /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:279 (httpd+0x0000001dad8c)
+    #1 signal_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:321 (httpd+0x0000001d7e1b)
+    #2 child_main /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1379 (httpd+0x0000001d695f)
+    #3 make_child /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1454 (httpd+0x0000001d5a15)
+    #4 startup_children /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1482 (httpd+0x0000001d4b90)
+    #5 worker_run /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1853 (httpd+0x0000001d29a9)
+    #6 ap_run_mpm /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm_common.c:94 (httpd+0x0000000ee14c)
+    #7 main /home/bg2539/workspace/apache/httpd-2.4.18/server/main.c:777 (httpd+0x0000000d7237)
+
+  Previous read of size 4 at 0x7f15b0b59150 by thread T4:
+    #0 listener_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:787 (httpd+0x0000001d98bf)
+    #1 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Location is global '<null>' of size 0 at 0x000000000000 (httpd+0x000001209150)
+
+  Thread T4 (tid=30071, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 create_listener_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1025 (httpd+0x0000001d8eed)
+    #3 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1110 (httpd+0x0000001d7808)
+    #4 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:279 in wakeup_listener
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=30065)
+  Write of size 4 at 0x7d9000059030 by main thread (mutexes: write M172):
+    #0 ap_queue_info_term /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/fdqueue.c:234 (httpd+0x0000001dccf2)
+    #1 wakeup_listener /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:290 (httpd+0x0000001dadd0)
+    #2 signal_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:321 (httpd+0x0000001d7e1b)
+    #3 child_main /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1379 (httpd+0x0000001d695f)
+    #4 make_child /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1454 (httpd+0x0000001d5a15)
+    #5 startup_children /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1482 (httpd+0x0000001d4b90)
+    #6 worker_run /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1853 (httpd+0x0000001d29a9)
+    #7 ap_run_mpm /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm_common.c:94 (httpd+0x0000000ee14c)
+    #8 main /home/bg2539/workspace/apache/httpd-2.4.18/server/main.c:777 (httpd+0x0000000d7237)
+
+  Previous read of size 4 at 0x7d9000059030 by thread T4:
+    #0 ap_queue_info_wait_for_idler /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/fdqueue.c:219 (httpd+0x0000001dcc30)
+    #1 listener_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:755 (httpd+0x0000001d95f1)
+    #2 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Location is heap block of size 8192 at 0x7d9000058000 allocated by main thread:
+    #0 malloc /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:514 (httpd+0x00000007225f)
+    #1 allocator_alloc /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/memory/unix/apr_pools.c:349 (libapr-1.so.0+0x000000042e4d)
+    #2 apr_palloc /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/memory/unix/apr_pools.c:696 (libapr-1.so.0+0x0000000446ef)
+    #3 trie_node_alloc /home/bg2539/workspace/apache/httpd-2.4.18/server/util_filter.c:138 (httpd+0x0000000f6a41)
+    #4 register_filter /home/bg2539/workspace/apache/httpd-2.4.18/server/util_filter.c:223 (httpd+0x0000000f26a8)
+    #5 ap_register_output_filter_protocol /home/bg2539/workspace/apache/httpd-2.4.18/server/util_filter.c:276 (httpd+0x0000000f2a8f)
+    #6 ap_register_output_filter /home/bg2539/workspace/apache/httpd-2.4.18/server/util_filter.c:262 (httpd+0x0000000f2a07)
+    #7 charset_register_hooks /home/bg2539/workspace/apache/httpd-2.4.18/modules/filters/mod_charset_lite.c:1126 (mod_charset_lite.so+0x000000001951)
+    #8 ap_register_hooks /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:488 (httpd+0x00000015da28)
+    #9 ap_add_module /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:639 (httpd+0x00000015e2ee)
+    #10 ap_add_loaded_module /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:702 (httpd+0x00000015e9a8)
+    #11 load_module /home/bg2539/workspace/apache/httpd-2.4.18/modules/core/mod_so.c:302 (httpd+0x0000001a0727)
+    #12 invoke_cmd /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:922 (httpd+0x00000016837e)
+    #13 execute_now /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:1677 (httpd+0x00000016757b)
+    #14 ap_build_config_sub /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:1146 (httpd+0x0000001601db)
+    #15 ap_build_cont_config /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:1248 (httpd+0x00000015fab3)
+    #16 start_ifmod /home/bg2539/workspace/apache/httpd-2.4.18/server/core.c:2593 (httpd+0x000000120d6f)
+    #17 invoke_cmd /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:912 (httpd+0x000000168093)
+    #18 execute_now /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:1677 (httpd+0x00000016757b)
+    #19 ap_build_config_sub /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:1146 (httpd+0x0000001601db)
+    #20 ap_build_config /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:1398 (httpd+0x0000001613b1)
+    #21 ap_process_resource_config /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:1807 (httpd+0x0000001627a5)
+    #22 ap_read_config /home/bg2539/workspace/apache/httpd-2.4.18/server/config.c:2420 (httpd+0x0000001659ec)
+    #23 main /home/bg2539/workspace/apache/httpd-2.4.18/server/main.c:624 (httpd+0x0000000d6022)
+
+  Mutex M172 (0x7d9000059048) created at:
+    #0 pthread_mutex_init /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1063 (httpd+0x000000064f05)
+    #1 apr_thread_mutex_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/locks/unix/thread_mutex.c:71 (libapr-1.so.0+0x00000004175a)
+    #2 ap_queue_info_create /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/fdqueue.c:63 (httpd+0x0000001dc4d4)
+    #3 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1066 (httpd+0x0000001d738f)
+    #4 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Thread T4 (tid=30071, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 create_listener_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1025 (httpd+0x0000001d8eed)
+    #3 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1110 (httpd+0x0000001d7808)
+    #4 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/fdqueue.c:234 in ap_queue_info_term
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=30065)
+  Write of size 4 at 0x7f15b0b5913c by main thread:
+    #0 signal_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:328 (httpd+0x0000001d7e34)
+    #1 child_main /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1379 (httpd+0x0000001d695f)
+    #2 make_child /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1454 (httpd+0x0000001d5a15)
+    #3 startup_children /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1482 (httpd+0x0000001d4b90)
+    #4 worker_run /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1853 (httpd+0x0000001d29a9)
+    #5 ap_run_mpm /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm_common.c:94 (httpd+0x0000000ee14c)
+    #6 main /home/bg2539/workspace/apache/httpd-2.4.18/server/main.c:777 (httpd+0x0000000d7237)
+
+  Previous read of size 4 at 0x7f15b0b5913c by thread T2:
+    #0 worker_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:954 (httpd+0x0000001d8a7b)
+    #1 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Location is global '<null>' of size 0 at 0x000000000000 (httpd+0x00000120913c)
+
+  Thread T2 (tid=30068, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1098 (httpd+0x0000001d770f)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:328 in signal_threads
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=30065)
+  Read of size 4 at 0x7f15b0b59140 by thread T2:
+    #0 worker_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:998 (httpd+0x0000001d8d6a)
+    #1 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Previous write of size 4 at 0x7f15b0b59140 by thread T4:
+    #0 listener_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:897 (httpd+0x0000001da493)
+    #1 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Location is global '<null>' of size 0 at 0x000000000000 (httpd+0x000001209140)
+
+  Thread T2 (tid=30068, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1098 (httpd+0x0000001d770f)
+    #3 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+  Thread T4 (tid=30071, running) created by thread T1 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (httpd+0x00000007afb3)
+    #1 apr_thread_create /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:179 (libapr-1.so.0+0x00000006d167)
+    #2 create_listener_thread /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1025 (httpd+0x0000001d8eed)
+    #3 start_threads /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:1110 (httpd+0x0000001d7808)
+    #4 dummy_worker /home/bg2539/workspace/apache/httpd-2.4.18/srclib/apr/threadproc/unix/thread.c:142 (libapr-1.so.0+0x00000006d22b)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/apache/httpd-2.4.18/server/mpm/worker/worker.c:998 in worker_thread
+==================

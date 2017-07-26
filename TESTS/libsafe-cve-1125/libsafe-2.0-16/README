@@ -1,0 +1,73 @@
+// $Name: release2_0-16 $
+// $Id: README,v 1.11 2002/05/30 14:13:04 ttsai Exp $
+//
+// Copyright (C) 2002 Avaya Labs, Avaya Inc.
+// Copyright (C) 1999 Bell Labs, Lucent Technologies.
+// Copyright (C) Arash Baratloo, Timothy Tsai, and Navjot Singh.
+//
+// This file is part of the Libsafe library.
+// Libsafe version 2.x: protecting against stack smashing attacks.
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+// 
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+// 
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+//
+// For more information, 
+//   visit http://www.research.avayalabs.com/project/libsafe/index.html
+//   or email libsafe@research.avayalabs.com
+
+The libsafe-1.3 library protects a process against the exploitation of buffer
+overflow vulnerabilities in process stacks.  Libsafe-2.0 adds the capability of
+protecting against format string exploits.  [See Note 1.] Libsafe works with
+any existing pre-compiled executable and can be used transparently, even on a
+system-wide basis.  The method intercepts all calls to library functions that
+are known to be vulnerable.  A substitute version of the corresponding function
+implements the original functionality, but in a manner that ensures that any
+buffer overflows are contained within the current stack frame.  Libsafe has
+been shown to detect several known attacks and can potentially prevent yet
+unknown attacks.  Experiments indicate that the performance overhead of libsafe
+is negligible.
+
+The following unsafe functions are currently monitored by libsafe:
+
+              strcpy(char *dest, const char *src)
+                     May overflow the dest buffer.
+
+              strcat(char *dest, const char *src)
+                     May overflow the dest buffer.
+
+              getwd(char *buf)
+                     May overflow the buf buffer.
+
+              gets(char *s)
+                     May overflow the s buffer.
+
+              [vf]scanf(const char *format, ...)
+                     May overflow its arguments.
+
+              realpath(char *path, char resolved_path[])
+                     May overflow the path buffer.
+
+              [v]sprintf(char *str, const char *format, ...)
+                     May overflow the str buffer.
+
+
+
+For more information see libsafe/doc/libsafe.8.html.
+
+--------------------------------------------------
+Note 1:   Tim Robbins has created an alternative solution to detecting format
+string attacks.  Tim's solution is called libformat.  Both libformat and
+libsafe use function interception via shared libraries to sanity check function
+arguments, but the particular methods for checking arguments differ.  See
+http://box3n.gumbynet.org/~fyre/software/libformat.php3 for more information.

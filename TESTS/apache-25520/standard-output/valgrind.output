@@ -1,0 +1,734 @@
+==27639== Helgrind, a thread error detector
+==27639== Copyright (C) 2007-2015, and GNU GPL'd, by OpenWorks LLP et al.
+==27639== Using Valgrind-3.11.0 and LibVEX; rerun with -h for copyright info
+==27639== Command: bin/apachectl -f conf/httpd.conf -k start
+==27639== 
+==27640== 
+==27640== For counts of detected and suppressed errors, rerun with: -v
+==27640== Use --history-level=approx or =none to gain increased speed, at
+==27640== the cost of reduced accuracy of conflicting-access information
+==27640== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==27641== Helgrind, a thread error detector
+==27641== Copyright (C) 2007-2015, and GNU GPL'd, by OpenWorks LLP et al.
+==27641== Using Valgrind-3.11.0 and LibVEX; rerun with -h for copyright info
+==27641== Command: /home/ruigu/Workspace/concurrency-exploits/apache-25520/httpd-2.0.48/../apache-install/bin/httpd -f conf/httpd.conf -k start
+==27641== 
+==27641== 
+==27641== For counts of detected and suppressed errors, rerun with: -v
+==27641== Use --history-level=approx or =none to gain increased speed, at
+==27641== the cost of reduced accuracy of conflicting-access information
+==27641== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==27639== 
+==27639== For counts of detected and suppressed errors, rerun with: -v
+==27639== Use --history-level=approx or =none to gain increased speed, at
+==27639== the cost of reduced accuracy of conflicting-access information
+==27639== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+==27644== ---Thread-Announcement------------------------------------------
+==27644== 
+==27644== Thread #4 was created
+==27644==    at 0x5F1443E: clone (clone.S:74)
+==27644==    by 0x5C03199: do_clone.constprop.3 (createthread.c:75)
+==27644==    by 0x5C048BA: create_thread (createthread.c:245)
+==27644==    by 0x5C048BA: pthread_create@@GLIBC_2.2.5 (pthread_create.c:611)
+==27644==    by 0x4C3175A: pthread_create_WRK (hg_intercepts.c:427)
+==27644==    by 0x4C32838: pthread_create@* (hg_intercepts.c:460)
+==27644==    by 0x52A7753: apr_thread_create (thread.c:165)
+==27644==    by 0x448DE7: start_threads (worker.c:1065)
+==27644==    by 0x52A7610: dummy_worker (thread.c:127)
+==27644==    by 0x4C3194E: mythread_wrapper (hg_intercepts.c:389)
+==27644==    by 0x5C04181: start_thread (pthread_create.c:312)
+==27644==    by 0x5F1447C: clone (clone.S:111)
+==27644== 
+==27644== ---Thread-Announcement------------------------------------------
+==27644== 
+==27644== Thread #3 was created
+==27644==    at 0x5F1443E: clone (clone.S:74)
+==27644==    by 0x5C03199: do_clone.constprop.3 (createthread.c:75)
+==27644==    by 0x5C048BA: create_thread (createthread.c:245)
+==27644==    by 0x5C048BA: pthread_create@@GLIBC_2.2.5 (pthread_create.c:611)
+==27644==    by 0x4C3175A: pthread_create_WRK (hg_intercepts.c:427)
+==27644==    by 0x4C32838: pthread_create@* (hg_intercepts.c:460)
+==27644==    by 0x52A7753: apr_thread_create (thread.c:165)
+==27644==    by 0x448DE7: start_threads (worker.c:1065)
+==27644==    by 0x52A7610: dummy_worker (thread.c:127)
+==27644==    by 0x4C3194E: mythread_wrapper (hg_intercepts.c:389)
+==27644==    by 0x5C04181: start_thread (pthread_create.c:312)
+==27644==    by 0x5F1447C: clone (clone.S:111)
+==27644== 
+==27644== ----------------------------------------------------------------
+==27644== 
+==27644== Possible data race during write of size 4 at 0x4028024 by thread #4
+==27644== Locks held: none
+==27644==    at 0x45F99B: ap_update_child_status_from_indexes (scoreboard.c:422)
+==27644==    by 0x4488B6: worker_thread (worker.c:908)
+==27644==    by 0x52A7610: dummy_worker (thread.c:127)
+==27644==    by 0x4C3194E: mythread_wrapper (hg_intercepts.c:389)
+==27644==    by 0x5C04181: start_thread (pthread_create.c:312)
+==27644==    by 0x5F1447C: clone (clone.S:111)
+==27644== 
+==27644== This conflicts with a previous write of size 4 by thread #3
+==27644== Locks held: none
+==27644==    at 0x45F99B: ap_update_child_status_from_indexes (scoreboard.c:422)
+==27644==    by 0x4488B6: worker_thread (worker.c:908)
+==27644==    by 0x52A7610: dummy_worker (thread.c:127)
+==27644==    by 0x4C3194E: mythread_wrapper (hg_intercepts.c:389)
+==27644==    by 0x5C04181: start_thread (pthread_create.c:312)
+==27644==    by 0x5F1447C: clone (clone.S:111)
+==27644==  Address 0x4028024 is in a rw- anonymous segment
+==27644== 
+==27644== ----------------------------------------------------------------
+==27644== 
+==27644== Possible data race during read of size 8 at 0x69B520 by thread #4
+==27644== Locks held: none
+==27644==    at 0x45B0AB: cached_explode (util_time.c:105)
+==27644==    by 0x45B244: ap_explode_recent_gmt (util_time.c:182)
+==27644==    by 0x45B653: ap_recent_rfc822_date (util_time.c:239)
+==27644==    by 0x42FC56: basic_http_header (http_protocol.c:1276)
+==27644==    by 0x4308E5: ap_http_header_filter (http_protocol.c:1670)
+==27644==    by 0x45EA5C: ap_pass_brigade (util_filter.c:550)
+==27644==    by 0x462056: ap_content_length_filter (protocol.c:1263)
+==27644==    by 0x45EA5C: ap_pass_brigade (util_filter.c:550)
+==27644==    by 0x4329D2: ap_byterange_filter (http_protocol.c:2902)
+==27644==    by 0x45EA5C: ap_pass_brigade (util_filter.c:550)
+==27644==    by 0x469AE7: default_handler (core.c:3558)
+==27644==    by 0x44C199: ap_run_handler (config.c:194)
+==27644== 
+==27644== This conflicts with a previous write of size 8 by thread #3
+==27644== Locks held: none
+==27644==    at 0x45B17F: cached_explode (util_time.c:164)
+==27644==    by 0x45B244: ap_explode_recent_gmt (util_time.c:182)
+==27644==    by 0x45B653: ap_recent_rfc822_date (util_time.c:239)
+==27644==    by 0x42FC56: basic_http_header (http_protocol.c:1276)
+==27644==    by 0x4308E5: ap_http_header_filter (http_protocol.c:1670)
+==27644==    by 0x45EA5C: ap_pass_brigade (util_filter.c:550)
+==27644==    by 0x462056: ap_content_length_filter (protocol.c:1263)
+==27644==    by 0x45EA5C: ap_pass_brigade (util_filter.c:550)
+==27644==  Address 0x69b520 is 128 bytes inside data symbol "exploded_cache_gmt"
+==27644== 
+==27644== ----------------------------------------------------------------
+==27644== 
+==27644== Possible data race during read of size 8 at 0x69B528 by thread #4
+==27644== Locks held: none
+==27644==    at 0x4C3495E: memcpy@@GLIBC_2.14 (vg_replace_strmem.c:1018)
+==27644==    by 0x45B0CF: cached_explode (util_time.c:135)
+==27644==    by 0x45B244: ap_explode_recent_gmt (util_time.c:182)
+==27644==    by 0x45B653: ap_recent_rfc822_date (util_time.c:239)
+==27644==    by 0x42FC56: basic_http_header (http_protocol.c:1276)
+==27644==    by 0x4308E5: ap_http_header_filter (http_protocol.c:1670)
+==27644==    by 0x45EA5C: ap_pass_brigade (util_filter.c:550)
+==27644==    by 0x462056: ap_content_length_filter (protocol.c:1263)
+==27644==    by 0x45EA5C: ap_pass_brigade (util_filter.c:550)
+==27644==    by 0x4329D2: ap_byterange_filter (http_protocol.c:2902)
+==27644==    by 0x45EA5C: ap_pass_brigade (util_filter.c:550)
+==27644==    by 0x469AE7: default_handler (core.c:3558)
+==27644== 
+==27644== This conflicts with a previous write of size 8 by thread #3
+==27644== Locks held: none
+==27644==    at 0x4C34961: memcpy@@GLIBC_2.14 (vg_replace_strmem.c:1018)
+==27644==    by 0x45B19D: cached_explode (util_time.c:165)
+==27644==    by 0x45B244: ap_explode_recent_gmt (util_time.c:182)
+==27644==    by 0x45B653: ap_recent_rfc822_date (util_time.c:239)
+==27644==    by 0x42FC56: basic_http_header (http_protocol.c:1276)
+==27644==    by 0x4308E5: ap_http_header_filter (http_protocol.c:1670)
+==27644==    by 0x45EA5C: ap_pass_brigade (util_filter.c:550)
+==27644==    by 0x462056: ap_content_length_filter (protocol.c:1263)
+==27644==  Address 0x69b528 is 136 bytes inside data symbol "exploded_cache_gmt"
+==27644== 
+==27644== ----------------------------------------------------------------
+==27644== 
+==27644== Possible data race during read of size 8 at 0x69B530 by thread #4
+==27644== Locks held: none
+==27644==    at 0x4C3496C: memcpy@@GLIBC_2.14 (vg_replace_strmem.c:1018)
+==27644==    by 0x45B0CF: cached_explode (util_time.c:135)
+==27644==    by 0x45B244: ap_explode_recent_gmt (util_time.c:182)
+==27644==    by 0x45B653: ap_recent_rfc822_date (util_time.c:239)
+==27644==    by 0x42FC56: basic_http_header (http_protocol.c:1276)
+==27644==    by 0x4308E5: ap_http_header_filter (http_protocol.c:1670)
+==27644==    by 0x45EA5C: ap_pass_brigade (util_filter.c:550)
+==27644==    by 0x462056: ap_content_length_filter (protocol.c:1263)
+==27644==    by 0x45EA5C: ap_pass_brigade (util_filter.c:550)
+==27644==    by 0x4329D2: ap_byterange_filter (http_protocol.c:2902)
+==27644==    by 0x45EA5C: ap_pass_brigade (util_filter.c:550)
+==27644==    by 0x469AE7: default_handler (core.c:3558)
+==27644== 
+==27644== This conflicts with a previous write of size 8 by thread #3
+==27644== Locks held: none
+==27644==    at 0x4C34961: memcpy@@GLIBC_2.14 (vg_replace_strmem.c:1018)
+==27644==    by 0x45B19D: cached_explode (util_time.c:165)
+==27644==    by 0x45B244: ap_explode_recent_gmt (util_time.c:182)
+==27644==    by 0x45B653: ap_recent_rfc822_date (util_time.c:239)
+==27644==    by 0x42FC56: basic_http_header (http_protocol.c:1276)
+==27644==    by 0x4308E5: ap_http_header_filter (http_protocol.c:1670)
+==27644==    by 0x45EA5C: ap_pass_brigade (util_filter.c:550)
+==27644==    by 0x462056: ap_content_length_filter (protocol.c:1263)
+==27644==  Address 0x69b530 is 144 bytes inside data symbol "exploded_cache_gmt"
+==27644== 
+==27644== ----------------------------------------------------------------
+==27644== 
+==27644== Possible data race during read of size 4 at 0x69B550 by thread #4
+==27644== Locks held: none
+==27644==    at 0x4C3496C: memcpy@@GLIBC_2.14 (vg_replace_strmem.c:1018)
+==27644==    by 0x45B0CF: cached_explode (util_time.c:135)
+==27644==    by 0x45B244: ap_explode_recent_gmt (util_time.c:182)
+==27644==    by 0x45B653: ap_recent_rfc822_date (util_time.c:239)
+==27644==    by 0x42FC56: basic_http_header (http_protocol.c:1276)
+==27644==    by 0x4308E5: ap_http_header_filter (http_protocol.c:1670)
+==27644==    by 0x45EA5C: ap_pass_brigade (util_filter.c:550)
+==27644==    by 0x462056: ap_content_length_filter (protocol.c:1263)
+==27644==    by 0x45EA5C: ap_pass_brigade (util_filter.c:550)
+==27644==    by 0x4329D2: ap_byterange_filter (http_protocol.c:2902)
+==27644==    by 0x45EA5C: ap_pass_brigade (util_filter.c:550)
+==27644==    by 0x469AE7: default_handler (core.c:3558)
+==27644== 
+==27644== This conflicts with a previous write of size 2 by thread #3
+==27644== Locks held: none
+==27644==    at 0x4C349C3: memcpy@@GLIBC_2.14 (vg_replace_strmem.c:1018)
+==27644==    by 0x45B19D: cached_explode (util_time.c:165)
+==27644==    by 0x45B244: ap_explode_recent_gmt (util_time.c:182)
+==27644==    by 0x45B653: ap_recent_rfc822_date (util_time.c:239)
+==27644==    by 0x42FC56: basic_http_header (http_protocol.c:1276)
+==27644==    by 0x4308E5: ap_http_header_filter (http_protocol.c:1670)
+==27644==    by 0x45EA5C: ap_pass_brigade (util_filter.c:550)
+==27644==    by 0x462056: ap_content_length_filter (protocol.c:1263)
+==27644==  Address 0x69b550 is 176 bytes inside data symbol "exploded_cache_gmt"
+==27644== 
+==27644== ----------------------------------------------------------------
+==27644== 
+==27644== Possible data race during read of size 8 at 0x69A6B0 by thread #4
+==27644== Locks held: none
+==27644==    at 0x4C3495E: memcpy@@GLIBC_2.14 (vg_replace_strmem.c:1018)
+==27644==    by 0x4293DD: log_request_time (mod_log_config.c:549)
+==27644==    by 0x429DE8: process_item (mod_log_config.c:856)
+==27644==    by 0x429FFF: config_log_transaction (mod_log_config.c:919)
+==27644==    by 0x42A179: multi_log_transaction (mod_log_config.c:950)
+==27644==    by 0x462E4D: ap_run_log_transaction (protocol.c:1563)
+==27644==    by 0x433AEA: ap_process_request (http_request.c:312)
+==27644==    by 0x42CC46: ap_process_http_connection (http_core.c:293)
+==27644==    by 0x45BD33: ap_run_process_connection (connection.c:85)
+==27644==    by 0x45C1A6: ap_process_connection (connection.c:211)
+==27644==    by 0x448158: process_socket (worker.c:632)
+==27644==    by 0x448995: worker_thread (worker.c:946)
+==27644== 
+==27644== This conflicts with a previous write of size 8 by thread #3
+==27644== Locks held: none
+==27644==    at 0x4C34961: memcpy@@GLIBC_2.14 (vg_replace_strmem.c:1018)
+==27644==    by 0x429524: log_request_time (mod_log_config.c:575)
+==27644==    by 0x429DE8: process_item (mod_log_config.c:856)
+==27644==    by 0x429FFF: config_log_transaction (mod_log_config.c:919)
+==27644==    by 0x42A179: multi_log_transaction (mod_log_config.c:950)
+==27644==    by 0x462E4D: ap_run_log_transaction (protocol.c:1563)
+==27644==    by 0x433AEA: ap_process_request (http_request.c:312)
+==27644==    by 0x42CC46: ap_process_http_connection (http_core.c:293)
+==27644==  Address 0x69a6b0 is 80 bytes inside data symbol "request_time_cache"
+==27644== 
+==27644== ----------------------------------------------------------------
+==27644== 
+==27644== Possible data race during read of size 8 at 0x69A6C0 by thread #4
+==27644== Locks held: none
+==27644==    at 0x4C3496C: memcpy@@GLIBC_2.14 (vg_replace_strmem.c:1018)
+==27644==    by 0x4293DD: log_request_time (mod_log_config.c:549)
+==27644==    by 0x429DE8: process_item (mod_log_config.c:856)
+==27644==    by 0x429FFF: config_log_transaction (mod_log_config.c:919)
+==27644==    by 0x42A179: multi_log_transaction (mod_log_config.c:950)
+==27644==    by 0x462E4D: ap_run_log_transaction (protocol.c:1563)
+==27644==    by 0x433AEA: ap_process_request (http_request.c:312)
+==27644==    by 0x42CC46: ap_process_http_connection (http_core.c:293)
+==27644==    by 0x45BD33: ap_run_process_connection (connection.c:85)
+==27644==    by 0x45C1A6: ap_process_connection (connection.c:211)
+==27644==    by 0x448158: process_socket (worker.c:632)
+==27644==    by 0x448995: worker_thread (worker.c:946)
+==27644== 
+==27644== This conflicts with a previous write of size 8 by thread #3
+==27644== Locks held: none
+==27644==    at 0x4C34961: memcpy@@GLIBC_2.14 (vg_replace_strmem.c:1018)
+==27644==    by 0x429524: log_request_time (mod_log_config.c:575)
+==27644==    by 0x429DE8: process_item (mod_log_config.c:856)
+==27644==    by 0x429FFF: config_log_transaction (mod_log_config.c:919)
+==27644==    by 0x42A179: multi_log_transaction (mod_log_config.c:950)
+==27644==    by 0x462E4D: ap_run_log_transaction (protocol.c:1563)
+==27644==    by 0x433AEA: ap_process_request (http_request.c:312)
+==27644==    by 0x42CC46: ap_process_http_connection (http_core.c:293)
+==27644==  Address 0x69a6c0 is 96 bytes inside data symbol "request_time_cache"
+==27644== 
+==27644== ---Thread-Announcement------------------------------------------
+==27644== 
+==27644== Thread #1 is the program's root thread
+==27644== 
+==27644== ----------------------------------------------------------------
+==27644== 
+==27644== Possible data race during read of size 8 at 0x627E5A0 by thread #4
+==27644== Locks held: none
+==27644==    at 0x42ADC9: ap_buffered_log_writer (mod_log_config.c:1342)
+==27644==    by 0x42A0D3: config_log_transaction (mod_log_config.c:930)
+==27644==    by 0x42A179: multi_log_transaction (mod_log_config.c:950)
+==27644==    by 0x462E4D: ap_run_log_transaction (protocol.c:1563)
+==27644==    by 0x433AEA: ap_process_request (http_request.c:312)
+==27644==    by 0x42CC46: ap_process_http_connection (http_core.c:293)
+==27644==    by 0x45BD33: ap_run_process_connection (connection.c:85)
+==27644==    by 0x45C1A6: ap_process_connection (connection.c:211)
+==27644==    by 0x448158: process_socket (worker.c:632)
+==27644==    by 0x448995: worker_thread (worker.c:946)
+==27644==    by 0x52A7610: dummy_worker (thread.c:127)
+==27644==    by 0x4C3194E: mythread_wrapper (hg_intercepts.c:389)
+==27644== 
+==27644== This conflicts with a previous write of size 8 by thread #3
+==27644== Locks held: none
+==27644==    at 0x42AF50: ap_buffered_log_writer (mod_log_config.c:1362)
+==27644==    by 0x42A0D3: config_log_transaction (mod_log_config.c:930)
+==27644==    by 0x42A179: multi_log_transaction (mod_log_config.c:950)
+==27644==    by 0x462E4D: ap_run_log_transaction (protocol.c:1563)
+==27644==    by 0x433AEA: ap_process_request (http_request.c:312)
+==27644==    by 0x42CC46: ap_process_http_connection (http_core.c:293)
+==27644==    by 0x45BD33: ap_run_process_connection (connection.c:85)
+==27644==    by 0x45C1A6: ap_process_connection (connection.c:211)
+==27644==  Address 0x627e5a0 is 304 bytes inside a block of size 8,192 alloc'd
+==27644==    at 0x4C2C05D: malloc (vg_replace_malloc.c:299)
+==27644==    by 0x52AD3F8: allocator_alloc (apr_pools.c:331)
+==27644==    by 0x52AD85C: apr_palloc (apr_pools.c:645)
+==27644==    by 0x42982D: parse_log_misc_string (mod_log_config.c:668)
+==27644==    by 0x429986: parse_log_item (mod_log_config.c:719)
+==27644==    by 0x429CA0: parse_log_string (mod_log_config.c:813)
+==27644==    by 0x42A7C2: open_multi_logs (mod_log_config.c:1150)
+==27644==    by 0x42AA2E: init_config_log (mod_log_config.c:1221)
+==27644==    by 0x44BED2: ap_run_open_logs (config.c:185)
+==27644==    by 0x453658: main (main.c:601)
+==27644==  Block was alloc'd by thread #1
+==27644== 
+==27644== ----------------------------------------------------------------
+==27644== 
+==27644== Possible data race during write of size 8 at 0x627E5A0 by thread #4
+==27644== Locks held: none
+==27644==    at 0x52A141E: apr_file_write (readwrite.c:266)
+==27644==    by 0x429E49: flush_log (mod_log_config.c:863)
+==27644==    by 0x42ADE7: ap_buffered_log_writer (mod_log_config.c:1343)
+==27644==    by 0x42A0D3: config_log_transaction (mod_log_config.c:930)
+==27644==    by 0x42A179: multi_log_transaction (mod_log_config.c:950)
+==27644==    by 0x462E4D: ap_run_log_transaction (protocol.c:1563)
+==27644==    by 0x433AEA: ap_process_request (http_request.c:312)
+==27644==    by 0x42CC46: ap_process_http_connection (http_core.c:293)
+==27644==    by 0x45BD33: ap_run_process_connection (connection.c:85)
+==27644==    by 0x45C1A6: ap_process_connection (connection.c:211)
+==27644==    by 0x448158: process_socket (worker.c:632)
+==27644==    by 0x448995: worker_thread (worker.c:946)
+==27644== 
+==27644== This conflicts with a previous write of size 8 by thread #3
+==27644== Locks held: none
+==27644==    at 0x42AF50: ap_buffered_log_writer (mod_log_config.c:1362)
+==27644==    by 0x42A0D3: config_log_transaction (mod_log_config.c:930)
+==27644==    by 0x42A179: multi_log_transaction (mod_log_config.c:950)
+==27644==    by 0x462E4D: ap_run_log_transaction (protocol.c:1563)
+==27644==    by 0x433AEA: ap_process_request (http_request.c:312)
+==27644==    by 0x42CC46: ap_process_http_connection (http_core.c:293)
+==27644==    by 0x45BD33: ap_run_process_connection (connection.c:85)
+==27644==    by 0x45C1A6: ap_process_connection (connection.c:211)
+==27644==  Address 0x627e5a0 is 304 bytes inside a block of size 8,192 alloc'd
+==27644==    at 0x4C2C05D: malloc (vg_replace_malloc.c:299)
+==27644==    by 0x52AD3F8: allocator_alloc (apr_pools.c:331)
+==27644==    by 0x52AD85C: apr_palloc (apr_pools.c:645)
+==27644==    by 0x42982D: parse_log_misc_string (mod_log_config.c:668)
+==27644==    by 0x429986: parse_log_item (mod_log_config.c:719)
+==27644==    by 0x429CA0: parse_log_string (mod_log_config.c:813)
+==27644==    by 0x42A7C2: open_multi_logs (mod_log_config.c:1150)
+==27644==    by 0x42AA2E: init_config_log (mod_log_config.c:1221)
+==27644==    by 0x44BED2: ap_run_open_logs (config.c:185)
+==27644==    by 0x453658: main (main.c:601)
+==27644==  Block was alloc'd by thread #1
+==27644== 
+==27644== ----------------------------------------------------------------
+==27644== 
+==27644== Possible data race during write of size 8 at 0x627E5A8 by thread #4
+==27644== Locks held: none
+==27644==    at 0x4C34961: memcpy@@GLIBC_2.14 (vg_replace_strmem.c:1018)
+==27644==    by 0x42AF14: ap_buffered_log_writer (mod_log_config.c:1359)
+==27644==    by 0x42A0D3: config_log_transaction (mod_log_config.c:930)
+==27644==    by 0x42A179: multi_log_transaction (mod_log_config.c:950)
+==27644==    by 0x462E4D: ap_run_log_transaction (protocol.c:1563)
+==27644==    by 0x433AEA: ap_process_request (http_request.c:312)
+==27644==    by 0x42CC46: ap_process_http_connection (http_core.c:293)
+==27644==    by 0x45BD33: ap_run_process_connection (connection.c:85)
+==27644==    by 0x45C1A6: ap_process_connection (connection.c:211)
+==27644==    by 0x448158: process_socket (worker.c:632)
+==27644==    by 0x448995: worker_thread (worker.c:946)
+==27644==    by 0x52A7610: dummy_worker (thread.c:127)
+==27644== 
+==27644== This conflicts with a previous write of size 8 by thread #3
+==27644== Locks held: none
+==27644==    at 0x4C34961: memcpy@@GLIBC_2.14 (vg_replace_strmem.c:1018)
+==27644==    by 0x42AF14: ap_buffered_log_writer (mod_log_config.c:1359)
+==27644==    by 0x42A0D3: config_log_transaction (mod_log_config.c:930)
+==27644==    by 0x42A179: multi_log_transaction (mod_log_config.c:950)
+==27644==    by 0x462E4D: ap_run_log_transaction (protocol.c:1563)
+==27644==    by 0x433AEA: ap_process_request (http_request.c:312)
+==27644==    by 0x42CC46: ap_process_http_connection (http_core.c:293)
+==27644==    by 0x45BD33: ap_run_process_connection (connection.c:85)
+==27644==  Address 0x627e5a8 is 312 bytes inside a block of size 8,192 alloc'd
+==27644==    at 0x4C2C05D: malloc (vg_replace_malloc.c:299)
+==27644==    by 0x52AD3F8: allocator_alloc (apr_pools.c:331)
+==27644==    by 0x52AD85C: apr_palloc (apr_pools.c:645)
+==27644==    by 0x42982D: parse_log_misc_string (mod_log_config.c:668)
+==27644==    by 0x429986: parse_log_item (mod_log_config.c:719)
+==27644==    by 0x429CA0: parse_log_string (mod_log_config.c:813)
+==27644==    by 0x42A7C2: open_multi_logs (mod_log_config.c:1150)
+==27644==    by 0x42AA2E: init_config_log (mod_log_config.c:1221)
+==27644==    by 0x44BED2: ap_run_open_logs (config.c:185)
+==27644==    by 0x453658: main (main.c:601)
+==27644==  Block was alloc'd by thread #1
+==27644== 
+==27644== ----------------------------------------------------------------
+==27644== 
+==27644== Possible data race during write of size 1 at 0x627E5B0 by thread #4
+==27644== Locks held: none
+==27644==    at 0x4C349E1: memcpy@@GLIBC_2.14 (vg_replace_strmem.c:1018)
+==27644==    by 0x42AF14: ap_buffered_log_writer (mod_log_config.c:1359)
+==27644==    by 0x42A0D3: config_log_transaction (mod_log_config.c:930)
+==27644==    by 0x42A179: multi_log_transaction (mod_log_config.c:950)
+==27644==    by 0x462E4D: ap_run_log_transaction (protocol.c:1563)
+==27644==    by 0x433AEA: ap_process_request (http_request.c:312)
+==27644==    by 0x42CC46: ap_process_http_connection (http_core.c:293)
+==27644==    by 0x45BD33: ap_run_process_connection (connection.c:85)
+==27644==    by 0x45C1A6: ap_process_connection (connection.c:211)
+==27644==    by 0x448158: process_socket (worker.c:632)
+==27644==    by 0x448995: worker_thread (worker.c:946)
+==27644==    by 0x52A7610: dummy_worker (thread.c:127)
+==27644== 
+==27644== This conflicts with a previous write of size 1 by thread #3
+==27644== Locks held: none
+==27644==    at 0x4C349E1: memcpy@@GLIBC_2.14 (vg_replace_strmem.c:1018)
+==27644==    by 0x42AF14: ap_buffered_log_writer (mod_log_config.c:1359)
+==27644==    by 0x42A0D3: config_log_transaction (mod_log_config.c:930)
+==27644==    by 0x42A179: multi_log_transaction (mod_log_config.c:950)
+==27644==    by 0x462E4D: ap_run_log_transaction (protocol.c:1563)
+==27644==    by 0x433AEA: ap_process_request (http_request.c:312)
+==27644==    by 0x42CC46: ap_process_http_connection (http_core.c:293)
+==27644==    by 0x45BD33: ap_run_process_connection (connection.c:85)
+==27644==  Address 0x627e5b0 is 320 bytes inside a block of size 8,192 alloc'd
+==27644==    at 0x4C2C05D: malloc (vg_replace_malloc.c:299)
+==27644==    by 0x52AD3F8: allocator_alloc (apr_pools.c:331)
+==27644==    by 0x52AD85C: apr_palloc (apr_pools.c:645)
+==27644==    by 0x42982D: parse_log_misc_string (mod_log_config.c:668)
+==27644==    by 0x429986: parse_log_item (mod_log_config.c:719)
+==27644==    by 0x429CA0: parse_log_string (mod_log_config.c:813)
+==27644==    by 0x42A7C2: open_multi_logs (mod_log_config.c:1150)
+==27644==    by 0x42AA2E: init_config_log (mod_log_config.c:1221)
+==27644==    by 0x44BED2: ap_run_open_logs (config.c:185)
+==27644==    by 0x453658: main (main.c:601)
+==27644==  Block was alloc'd by thread #1
+==27644== 
+==27644== ----------------------------------------------------------------
+==27644== 
+==27644== Possible data race during write of size 2 at 0x627E5B6 by thread #4
+==27644== Locks held: none
+==27644==    at 0x4C349C3: memcpy@@GLIBC_2.14 (vg_replace_strmem.c:1018)
+==27644==    by 0x42AF14: ap_buffered_log_writer (mod_log_config.c:1359)
+==27644==    by 0x42A0D3: config_log_transaction (mod_log_config.c:930)
+==27644==    by 0x42A179: multi_log_transaction (mod_log_config.c:950)
+==27644==    by 0x462E4D: ap_run_log_transaction (protocol.c:1563)
+==27644==    by 0x433AEA: ap_process_request (http_request.c:312)
+==27644==    by 0x42CC46: ap_process_http_connection (http_core.c:293)
+==27644==    by 0x45BD33: ap_run_process_connection (connection.c:85)
+==27644==    by 0x45C1A6: ap_process_connection (connection.c:211)
+==27644==    by 0x448158: process_socket (worker.c:632)
+==27644==    by 0x448995: worker_thread (worker.c:946)
+==27644==    by 0x52A7610: dummy_worker (thread.c:127)
+==27644== 
+==27644== This conflicts with a previous write of size 2 by thread #3
+==27644== Locks held: none
+==27644==    at 0x4C349C3: memcpy@@GLIBC_2.14 (vg_replace_strmem.c:1018)
+==27644==    by 0x42AF14: ap_buffered_log_writer (mod_log_config.c:1359)
+==27644==    by 0x42A0D3: config_log_transaction (mod_log_config.c:930)
+==27644==    by 0x42A179: multi_log_transaction (mod_log_config.c:950)
+==27644==    by 0x462E4D: ap_run_log_transaction (protocol.c:1563)
+==27644==    by 0x433AEA: ap_process_request (http_request.c:312)
+==27644==    by 0x42CC46: ap_process_http_connection (http_core.c:293)
+==27644==    by 0x45BD33: ap_run_process_connection (connection.c:85)
+==27644==  Address 0x627e5b6 is 326 bytes inside a block of size 8,192 alloc'd
+==27644==    at 0x4C2C05D: malloc (vg_replace_malloc.c:299)
+==27644==    by 0x52AD3F8: allocator_alloc (apr_pools.c:331)
+==27644==    by 0x52AD85C: apr_palloc (apr_pools.c:645)
+==27644==    by 0x42982D: parse_log_misc_string (mod_log_config.c:668)
+==27644==    by 0x429986: parse_log_item (mod_log_config.c:719)
+==27644==    by 0x429CA0: parse_log_string (mod_log_config.c:813)
+==27644==    by 0x42A7C2: open_multi_logs (mod_log_config.c:1150)
+==27644==    by 0x42AA2E: init_config_log (mod_log_config.c:1221)
+==27644==    by 0x44BED2: ap_run_open_logs (config.c:185)
+==27644==    by 0x453658: main (main.c:601)
+==27644==  Block was alloc'd by thread #1
+==27644== 
+==27644== ----------------------------------------------------------------
+==27644== 
+==27644== Possible data race during write of size 1 at 0x627E60C by thread #4
+==27644== Locks held: none
+==27644==    at 0x4C34919: memcpy@@GLIBC_2.14 (vg_replace_strmem.c:1018)
+==27644==    by 0x42AF14: ap_buffered_log_writer (mod_log_config.c:1359)
+==27644==    by 0x42A0D3: config_log_transaction (mod_log_config.c:930)
+==27644==    by 0x42A179: multi_log_transaction (mod_log_config.c:950)
+==27644==    by 0x462E4D: ap_run_log_transaction (protocol.c:1563)
+==27644==    by 0x433AEA: ap_process_request (http_request.c:312)
+==27644==    by 0x42CC46: ap_process_http_connection (http_core.c:293)
+==27644==    by 0x45BD33: ap_run_process_connection (connection.c:85)
+==27644==    by 0x45C1A6: ap_process_connection (connection.c:211)
+==27644==    by 0x448158: process_socket (worker.c:632)
+==27644==    by 0x448995: worker_thread (worker.c:946)
+==27644==    by 0x52A7610: dummy_worker (thread.c:127)
+==27644== 
+==27644== This conflicts with a previous write of size 1 by thread #3
+==27644== Locks held: none
+==27644==    at 0x4C34919: memcpy@@GLIBC_2.14 (vg_replace_strmem.c:1018)
+==27644==    by 0x42AF14: ap_buffered_log_writer (mod_log_config.c:1359)
+==27644==    by 0x42A0D3: config_log_transaction (mod_log_config.c:930)
+==27644==    by 0x42A179: multi_log_transaction (mod_log_config.c:950)
+==27644==    by 0x462E4D: ap_run_log_transaction (protocol.c:1563)
+==27644==    by 0x433AEA: ap_process_request (http_request.c:312)
+==27644==    by 0x42CC46: ap_process_http_connection (http_core.c:293)
+==27644==    by 0x45BD33: ap_run_process_connection (connection.c:85)
+==27644==  Address 0x627e60c is 412 bytes inside a block of size 8,192 alloc'd
+==27644==    at 0x4C2C05D: malloc (vg_replace_malloc.c:299)
+==27644==    by 0x52AD3F8: allocator_alloc (apr_pools.c:331)
+==27644==    by 0x52AD85C: apr_palloc (apr_pools.c:645)
+==27644==    by 0x42982D: parse_log_misc_string (mod_log_config.c:668)
+==27644==    by 0x429986: parse_log_item (mod_log_config.c:719)
+==27644==    by 0x429CA0: parse_log_string (mod_log_config.c:813)
+==27644==    by 0x42A7C2: open_multi_logs (mod_log_config.c:1150)
+==27644==    by 0x42AA2E: init_config_log (mod_log_config.c:1221)
+==27644==    by 0x44BED2: ap_run_open_logs (config.c:185)
+==27644==    by 0x453658: main (main.c:601)
+==27644==  Block was alloc'd by thread #1
+==27644== 
+==27644== ---Thread-Announcement------------------------------------------
+==27644== 
+==27644== Thread #28 was created
+==27644==    at 0x5F1443E: clone (clone.S:74)
+==27644==    by 0x5C03199: do_clone.constprop.3 (createthread.c:75)
+==27644==    by 0x5C048BA: create_thread (createthread.c:245)
+==27644==    by 0x5C048BA: pthread_create@@GLIBC_2.2.5 (pthread_create.c:611)
+==27644==    by 0x4C3175A: pthread_create_WRK (hg_intercepts.c:427)
+==27644==    by 0x4C32838: pthread_create@* (hg_intercepts.c:460)
+==27644==    by 0x52A7753: apr_thread_create (thread.c:165)
+==27644==    by 0x448ABE: create_listener_thread (worker.c:981)
+==27644==    by 0x448E6A: start_threads (worker.c:1080)
+==27644==    by 0x52A7610: dummy_worker (thread.c:127)
+==27644==    by 0x4C3194E: mythread_wrapper (hg_intercepts.c:389)
+==27644==    by 0x5C04181: start_thread (pthread_create.c:312)
+==27644==    by 0x5F1447C: clone (clone.S:111)
+==27644== 
+==27644== ----------------------------------------------------------------
+==27644== 
+==27644== Possible data race during write of size 4 at 0x69A758 by thread #3
+==27644== Locks held: none
+==27644==    at 0x4489BA: worker_thread (worker.c:948)
+==27644==    by 0x52A7610: dummy_worker (thread.c:127)
+==27644==    by 0x4C3194E: mythread_wrapper (hg_intercepts.c:389)
+==27644==    by 0x5C04181: start_thread (pthread_create.c:312)
+==27644==    by 0x5F1447C: clone (clone.S:111)
+==27644== 
+==27644== This conflicts with a previous read of size 4 by thread #28
+==27644== Locks held: none
+==27644==    at 0x4482B5: listener_thread (worker.c:711)
+==27644==    by 0x52A7610: dummy_worker (thread.c:127)
+==27644==    by 0x4C3194E: mythread_wrapper (hg_intercepts.c:389)
+==27644==    by 0x5C04181: start_thread (pthread_create.c:312)
+==27644==    by 0x5F1447C: clone (clone.S:111)
+==27644==  Address 0x69a758 is 0 bytes inside data symbol "requests_this_child"
+==27644== 
+==27644== ----------------------------------------------------------------
+==27644== 
+==27644== Possible data race during read of size 4 at 0x69A758 by thread #4
+==27644== Locks held: none
+==27644==    at 0x4489B1: worker_thread (worker.c:948)
+==27644==    by 0x52A7610: dummy_worker (thread.c:127)
+==27644==    by 0x4C3194E: mythread_wrapper (hg_intercepts.c:389)
+==27644==    by 0x5C04181: start_thread (pthread_create.c:312)
+==27644==    by 0x5F1447C: clone (clone.S:111)
+==27644== 
+==27644== This conflicts with a previous write of size 4 by thread #3
+==27644== Locks held: none
+==27644==    at 0x4489BA: worker_thread (worker.c:948)
+==27644==    by 0x52A7610: dummy_worker (thread.c:127)
+==27644==    by 0x4C3194E: mythread_wrapper (hg_intercepts.c:389)
+==27644==    by 0x5C04181: start_thread (pthread_create.c:312)
+==27644==    by 0x5F1447C: clone (clone.S:111)
+==27644==  Address 0x69a758 is 0 bytes inside data symbol "requests_this_child"
+==27644== 
+==27644== ---Thread-Announcement------------------------------------------
+==27644== 
+==27644== Thread #23 was created
+==27644==    at 0x5F1443E: clone (clone.S:74)
+==27644==    by 0x5C03199: do_clone.constprop.3 (createthread.c:75)
+==27644==    by 0x5C048BA: create_thread (createthread.c:245)
+==27644==    by 0x5C048BA: pthread_create@@GLIBC_2.2.5 (pthread_create.c:611)
+==27644==    by 0x4C3175A: pthread_create_WRK (hg_intercepts.c:427)
+==27644==    by 0x4C32838: pthread_create@* (hg_intercepts.c:460)
+==27644==    by 0x52A7753: apr_thread_create (thread.c:165)
+==27644==    by 0x448DE7: start_threads (worker.c:1065)
+==27644==    by 0x52A7610: dummy_worker (thread.c:127)
+==27644==    by 0x4C3194E: mythread_wrapper (hg_intercepts.c:389)
+==27644==    by 0x5C04181: start_thread (pthread_create.c:312)
+==27644==    by 0x5F1447C: clone (clone.S:111)
+==27644== 
+==27644== ---Thread-Announcement------------------------------------------
+==27644== 
+==27644== Thread #22 was created
+==27644==    at 0x5F1443E: clone (clone.S:74)
+==27644==    by 0x5C03199: do_clone.constprop.3 (createthread.c:75)
+==27644==    by 0x5C048BA: create_thread (createthread.c:245)
+==27644==    by 0x5C048BA: pthread_create@@GLIBC_2.2.5 (pthread_create.c:611)
+==27644==    by 0x4C3175A: pthread_create_WRK (hg_intercepts.c:427)
+==27644==    by 0x4C32838: pthread_create@* (hg_intercepts.c:460)
+==27644==    by 0x52A7753: apr_thread_create (thread.c:165)
+==27644==    by 0x448DE7: start_threads (worker.c:1065)
+==27644==    by 0x52A7610: dummy_worker (thread.c:127)
+==27644==    by 0x4C3194E: mythread_wrapper (hg_intercepts.c:389)
+==27644==    by 0x5C04181: start_thread (pthread_create.c:312)
+==27644==    by 0x5F1447C: clone (clone.S:111)
+==27644== 
+==27644== ----------------------------------------------------------------
+==27644== 
+==27644== Possible data race during read of size 8 at 0x627E5A0 by thread #23
+==27644== Locks held: none
+==27644==    at 0x42AF41: ap_buffered_log_writer (mod_log_config.c:1362)
+==27644==    by 0x42A0D3: config_log_transaction (mod_log_config.c:930)
+==27644==    by 0x42A179: multi_log_transaction (mod_log_config.c:950)
+==27644==    by 0x462E4D: ap_run_log_transaction (protocol.c:1563)
+==27644==    by 0x433AEA: ap_process_request (http_request.c:312)
+==27644==    by 0x42CC46: ap_process_http_connection (http_core.c:293)
+==27644==    by 0x45BD33: ap_run_process_connection (connection.c:85)
+==27644==    by 0x45C1A6: ap_process_connection (connection.c:211)
+==27644==    by 0x448158: process_socket (worker.c:632)
+==27644==    by 0x448995: worker_thread (worker.c:946)
+==27644==    by 0x52A7610: dummy_worker (thread.c:127)
+==27644==    by 0x4C3194E: mythread_wrapper (hg_intercepts.c:389)
+==27644== 
+==27644== This conflicts with a previous write of size 8 by thread #22
+==27644== Locks held: none
+==27644==    at 0x52A141E: apr_file_write (readwrite.c:266)
+==27644==    by 0x429E49: flush_log (mod_log_config.c:863)
+==27644==    by 0x42ADE7: ap_buffered_log_writer (mod_log_config.c:1343)
+==27644==    by 0x42A0D3: config_log_transaction (mod_log_config.c:930)
+==27644==    by 0x42A179: multi_log_transaction (mod_log_config.c:950)
+==27644==    by 0x462E4D: ap_run_log_transaction (protocol.c:1563)
+==27644==    by 0x433AEA: ap_process_request (http_request.c:312)
+==27644==    by 0x42CC46: ap_process_http_connection (http_core.c:293)
+==27644==  Address 0x627e5a0 is 304 bytes inside a block of size 8,192 alloc'd
+==27644==    at 0x4C2C05D: malloc (vg_replace_malloc.c:299)
+==27644==    by 0x52AD3F8: allocator_alloc (apr_pools.c:331)
+==27644==    by 0x52AD85C: apr_palloc (apr_pools.c:645)
+==27644==    by 0x42982D: parse_log_misc_string (mod_log_config.c:668)
+==27644==    by 0x429986: parse_log_item (mod_log_config.c:719)
+==27644==    by 0x429CA0: parse_log_string (mod_log_config.c:813)
+==27644==    by 0x42A7C2: open_multi_logs (mod_log_config.c:1150)
+==27644==    by 0x42AA2E: init_config_log (mod_log_config.c:1221)
+==27644==    by 0x44BED2: ap_run_open_logs (config.c:185)
+==27644==    by 0x453658: main (main.c:601)
+==27644==  Block was alloc'd by thread #1
+==27644== 
+==27644== ----------------------------------------------------------------
+==27644== 
+==27644== Possible data race during write of size 8 at 0x627E5A0 by thread #23
+==27644== Locks held: none
+==27644==    at 0x42AF50: ap_buffered_log_writer (mod_log_config.c:1362)
+==27644==    by 0x42A0D3: config_log_transaction (mod_log_config.c:930)
+==27644==    by 0x42A179: multi_log_transaction (mod_log_config.c:950)
+==27644==    by 0x462E4D: ap_run_log_transaction (protocol.c:1563)
+==27644==    by 0x433AEA: ap_process_request (http_request.c:312)
+==27644==    by 0x42CC46: ap_process_http_connection (http_core.c:293)
+==27644==    by 0x45BD33: ap_run_process_connection (connection.c:85)
+==27644==    by 0x45C1A6: ap_process_connection (connection.c:211)
+==27644==    by 0x448158: process_socket (worker.c:632)
+==27644==    by 0x448995: worker_thread (worker.c:946)
+==27644==    by 0x52A7610: dummy_worker (thread.c:127)
+==27644==    by 0x4C3194E: mythread_wrapper (hg_intercepts.c:389)
+==27644== 
+==27644== This conflicts with a previous write of size 8 by thread #22
+==27644== Locks held: none
+==27644==    at 0x52A141E: apr_file_write (readwrite.c:266)
+==27644==    by 0x429E49: flush_log (mod_log_config.c:863)
+==27644==    by 0x42ADE7: ap_buffered_log_writer (mod_log_config.c:1343)
+==27644==    by 0x42A0D3: config_log_transaction (mod_log_config.c:930)
+==27644==    by 0x42A179: multi_log_transaction (mod_log_config.c:950)
+==27644==    by 0x462E4D: ap_run_log_transaction (protocol.c:1563)
+==27644==    by 0x433AEA: ap_process_request (http_request.c:312)
+==27644==    by 0x42CC46: ap_process_http_connection (http_core.c:293)
+==27644==  Address 0x627e5a0 is 304 bytes inside a block of size 8,192 alloc'd
+==27644==    at 0x4C2C05D: malloc (vg_replace_malloc.c:299)
+==27644==    by 0x52AD3F8: allocator_alloc (apr_pools.c:331)
+==27644==    by 0x52AD85C: apr_palloc (apr_pools.c:645)
+==27644==    by 0x42982D: parse_log_misc_string (mod_log_config.c:668)
+==27644==    by 0x429986: parse_log_item (mod_log_config.c:719)
+==27644==    by 0x429CA0: parse_log_string (mod_log_config.c:813)
+==27644==    by 0x42A7C2: open_multi_logs (mod_log_config.c:1150)
+==27644==    by 0x42AA2E: init_config_log (mod_log_config.c:1221)
+==27644==    by 0x44BED2: ap_run_open_logs (config.c:185)
+==27644==    by 0x453658: main (main.c:601)
+==27644==  Block was alloc'd by thread #1
+==27644== 
+==27644== ---Thread-Announcement------------------------------------------
+==27644== 
+==27644== Thread #16 was created
+==27644==    at 0x5F1443E: clone (clone.S:74)
+==27644==    by 0x5C03199: do_clone.constprop.3 (createthread.c:75)
+==27644==    by 0x5C048BA: create_thread (createthread.c:245)
+==27644==    by 0x5C048BA: pthread_create@@GLIBC_2.2.5 (pthread_create.c:611)
+==27644==    by 0x4C3175A: pthread_create_WRK (hg_intercepts.c:427)
+==27644==    by 0x4C32838: pthread_create@* (hg_intercepts.c:460)
+==27644==    by 0x52A7753: apr_thread_create (thread.c:165)
+==27644==    by 0x448DE7: start_threads (worker.c:1065)
+==27644==    by 0x52A7610: dummy_worker (thread.c:127)
+==27644==    by 0x4C3194E: mythread_wrapper (hg_intercepts.c:389)
+==27644==    by 0x5C04181: start_thread (pthread_create.c:312)
+==27644==    by 0x5F1447C: clone (clone.S:111)
+==27644== 
+==27644== ----------------------------------------------------------------
+==27644== 
+==27644== Possible data race during read of size 4 at 0x69A758 by thread #28
+==27644== Locks held: none
+==27644==    at 0x4482B5: listener_thread (worker.c:711)
+==27644==    by 0x52A7610: dummy_worker (thread.c:127)
+==27644==    by 0x4C3194E: mythread_wrapper (hg_intercepts.c:389)
+==27644==    by 0x5C04181: start_thread (pthread_create.c:312)
+==27644==    by 0x5F1447C: clone (clone.S:111)
+==27644== 
+==27644== This conflicts with a previous write of size 4 by thread #16
+==27644== Locks held: none
+==27644==    at 0x4489BA: worker_thread (worker.c:948)
+==27644==    by 0x52A7610: dummy_worker (thread.c:127)
+==27644==    by 0x4C3194E: mythread_wrapper (hg_intercepts.c:389)
+==27644==    by 0x5C04181: start_thread (pthread_create.c:312)
+==27644==    by 0x5F1447C: clone (clone.S:111)
+==27644==  Address 0x69a758 is 0 bytes inside data symbol "requests_this_child"
+==27644== 
+==27644== ----------------------------------------------------------------
+==27644== 
+==27644== Possible data race during read of size 2 at 0x69B850 by thread #16
+==27644== Locks held: none
+==27644==    at 0x4C3496C: memcpy@@GLIBC_2.14 (vg_replace_strmem.c:1018)
+==27644==    by 0x45B0CF: cached_explode (util_time.c:135)
+==27644==    by 0x45B244: ap_explode_recent_gmt (util_time.c:182)
+==27644==    by 0x45B653: ap_recent_rfc822_date (util_time.c:239)
+==27644==    by 0x42FC56: basic_http_header (http_protocol.c:1276)
+==27644==    by 0x4308E5: ap_http_header_filter (http_protocol.c:1670)
+==27644==    by 0x45EA5C: ap_pass_brigade (util_filter.c:550)
+==27644==    by 0x462056: ap_content_length_filter (protocol.c:1263)
+==27644==    by 0x45EA5C: ap_pass_brigade (util_filter.c:550)
+==27644==    by 0x4329D2: ap_byterange_filter (http_protocol.c:2902)
+==27644==    by 0x45EA5C: ap_pass_brigade (util_filter.c:550)
+==27644==    by 0x469AE7: default_handler (core.c:3558)
+==27644== 
+==27644== This conflicts with a previous write of size 2 by thread #22
+==27644== Locks held: none
+==27644==    at 0x4C349C3: memcpy@@GLIBC_2.14 (vg_replace_strmem.c:1018)
+==27644==    by 0x45B19D: cached_explode (util_time.c:165)
+==27644==    by 0x45B244: ap_explode_recent_gmt (util_time.c:182)
+==27644==    by 0x45B653: ap_recent_rfc822_date (util_time.c:239)
+==27644==    by 0x42FC56: basic_http_header (http_protocol.c:1276)
+==27644==    by 0x4308E5: ap_http_header_filter (http_protocol.c:1670)
+==27644==    by 0x45EA5C: ap_pass_brigade (util_filter.c:550)
+==27644==    by 0x462056: ap_content_length_filter (protocol.c:1263)
+==27644==  Address 0x69b850 is 944 bytes inside data symbol "exploded_cache_gmt"
+==27644== 
+==27644== 
+==27644== More than 10000000 total errors detected.  I'm not reporting any more.
+==27644== Final error counts will be inaccurate.  Go fix your program!
+==27644== Rerun with --error-limit=no to disable this cutoff.  Note
+==27644== that errors may occur in your program without prior warning from
+==27644== Valgrind, because errors are no longer being displayed.
+==27644== 

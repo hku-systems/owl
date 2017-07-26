@@ -1,0 +1,240 @@
+[Mon Jan 11 17:10:00 2016] [warn] pid file /home/ruigu/Workspace/concurrency-exploits/apache-21287/apache-install-clang/logs/httpd.pid overwritten -- Unclean shutdown of previous Apache run?
+[Mon Jan 11 17:10:00 2016] [notice] Apache/2.0.48 (Unix) PHP/4.4.1 configured -- resuming normal operations
+==================
+WARNING: ThreadSanitizer: data race (pid=10794)
+  Write of size 4 at 0x7f47431f4034 by thread T3:
+    #0 ap_update_child_status_from_indexes /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/scoreboard.c:422:9 (httpd+0x0000005c25c0)
+    #1 worker_thread /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:908:9 (httpd+0x000000576922)
+    #2 dummy_worker /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:127:12 (libapr-0.so.0+0x000000052c5e)
+
+  Previous write of size 4 at 0x7f47431f4034 by thread T2:
+    #0 ap_update_child_status_from_indexes /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/scoreboard.c:422:9 (httpd+0x0000005c25c0)
+    #1 worker_thread /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:908:9 (httpd+0x000000576922)
+    #2 dummy_worker /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:127:12 (libapr-0.so.0+0x000000052c5e)
+
+  Thread T3 (tid=10802, running) created by thread T1 at:
+    #0 pthread_create /home/ruigu/Workspace/llvm-3.6.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:896 (httpd+0x000000463183)
+    #1 apr_thread_create /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:165:17 (libapr-0.so.0+0x000000052afe)
+    #2 start_threads /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:1065:18 (httpd+0x00000057598a)
+    #3 dummy_worker /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:127:12 (libapr-0.so.0+0x000000052c5e)
+
+  Thread T2 (tid=10799, running) created by thread T1 at:
+    #0 pthread_create /home/ruigu/Workspace/llvm-3.6.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:896 (httpd+0x000000463183)
+    #1 apr_thread_create /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:165:17 (libapr-0.so.0+0x000000052afe)
+    #2 start_threads /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:1065:18 (httpd+0x00000057598a)
+    #3 dummy_worker /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:127:12 (libapr-0.so.0+0x000000052c5e)
+
+SUMMARY: ThreadSanitizer: data race /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/scoreboard.c:422 ap_update_child_status_from_indexes
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=10792)
+  Write of size 4 at 0x7f47431f4024 by thread T3:
+    #0 ap_update_child_status_from_indexes /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/scoreboard.c:422:9 (httpd+0x0000005c25c0)
+    #1 worker_thread /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:908:9 (httpd+0x000000576922)
+    #2 dummy_worker /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:127:12 (libapr-0.so.0+0x000000052c5e)
+
+  Previous write of size 4 at 0x7f47431f4024 by thread T2:
+    #0 ap_update_child_status_from_indexes /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/scoreboard.c:422:9 (httpd+0x0000005c25c0)
+    #1 worker_thread /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:908:9 (httpd+0x000000576922)
+    #2 dummy_worker /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:127:12 (libapr-0.so.0+0x000000052c5e)
+
+  Thread T3 (tid=10800, running) created by thread T1 at:
+    #0 pthread_create /home/ruigu/Workspace/llvm-3.6.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:896 (httpd+0x000000463183)
+    #1 apr_thread_create /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:165:17 (libapr-0.so.0+0x000000052afe)
+    #2 start_threads /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:1065:18 (httpd+0x00000057598a)
+    #3 dummy_worker /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:127:12 (libapr-0.so.0+0x000000052c5e)
+
+  Thread T2 (tid=10798, running) created by thread T1 at:
+    #0 pthread_create /home/ruigu/Workspace/llvm-3.6.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:896 (httpd+0x000000463183)
+    #1 apr_thread_create /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:165:17 (libapr-0.so.0+0x000000052afe)
+    #2 start_threads /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:1065:18 (httpd+0x00000057598a)
+    #3 dummy_worker /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:127:12 (libapr-0.so.0+0x000000052c5e)
+
+SUMMARY: ThreadSanitizer: data race /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/scoreboard.c:422 ap_update_child_status_from_indexes
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=10794)
+  Write of size 4 at 0x00000164cc90 by main thread:
+    #0 join_start_thread /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:1173:5 (httpd+0x000000575daa)
+    #1 child_main /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:1321:17 (httpd+0x000000574fb6)
+    #2 make_child /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:1388:9 (httpd+0x0000005738a9)
+    #3 startup_children /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:1407:13 (httpd+0x000000570fa4)
+    #4 ap_mpm_run /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:1718:9 (httpd+0x00000057012b)
+    #5 main /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/main.c:660:13 (httpd+0x0000005944d1)
+
+  Previous read of size 4 at 0x00000164cc90 by thread T1:
+    #0 start_threads /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:1083:13 (httpd+0x000000575add)
+    #1 dummy_worker /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:127:12 (libapr-0.so.0+0x000000052c5e)
+
+  Location is global 'start_thread_may_exit' of size 4 at 0x00000164cc90 (httpd+0x00000164cc90)
+
+  Thread T1 (tid=10797, finished) created by main thread at:
+    #0 pthread_create /home/ruigu/Workspace/llvm-3.6.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:896 (httpd+0x000000463183)
+    #1 apr_thread_create /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:165:17 (libapr-0.so.0+0x000000052afe)
+    #2 child_main /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:1258:10 (httpd+0x000000574d49)
+    #3 make_child /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:1388:9 (httpd+0x0000005738a9)
+    #4 startup_children /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:1407:13 (httpd+0x000000570fa4)
+    #5 ap_mpm_run /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:1718:9 (httpd+0x00000057012b)
+    #6 main /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/main.c:660:13 (httpd+0x0000005944d1)
+
+SUMMARY: ThreadSanitizer: data race /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:1173 join_start_thread
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=10794)
+  Write of size 4 at 0x00000164cbf0 by main thread:
+    #0 wakeup_listener /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:273:5 (httpd+0x00000057643c)
+    #1 signal_threads /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:310:5 (httpd+0x000000575eec)
+    #2 child_main /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:1322:17 (httpd+0x000000574fdd)
+    #3 make_child /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:1388:9 (httpd+0x0000005738a9)
+    #4 startup_children /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:1407:13 (httpd+0x000000570fa4)
+    #5 ap_mpm_run /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:1718:9 (httpd+0x00000057012b)
+    #6 main /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/main.c:660:13 (httpd+0x0000005944d1)
+
+  Previous read of size 4 at 0x00000164cbf0 by thread T12 (mutexes: write M14):
+    #0 listener_thread /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:794:14 (httpd+0x00000057799c)
+    #1 dummy_worker /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:127:12 (libapr-0.so.0+0x000000052c5e)
+
+  Location is global 'listener_may_exit' of size 4 at 0x00000164cbf0 (httpd+0x00000164cbf0)
+
+  Mutex M14 (0x7f474332a000) created at:
+    #0 pthread_mutex_init /home/ruigu/Workspace/llvm-3.6.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1082 (httpd+0x00000044ff65)
+    #1 proc_mutex_proc_pthread_create /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/locks/unix/proc_mutex.c:388:15 (libapr-0.so.0+0x00000005bacd)
+    #2 proc_mutex_create /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/locks/unix/proc_mutex.c:822:15 (libapr-0.so.0+0x00000005e0a2)
+    #3 apr_proc_mutex_create /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/locks/unix/proc_mutex.c:845:15 (libapr-0.so.0+0x00000005de16)
+    #4 ap_mpm_run /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:1667:10 (httpd+0x00000056fd37)
+    #5 main /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/main.c:660:13 (httpd+0x0000005944d1)
+
+  Thread T12 (tid=10814, running) created by thread T1 at:
+    #0 pthread_create /home/ruigu/Workspace/llvm-3.6.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:896 (httpd+0x000000463183)
+    #1 apr_thread_create /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:165:17 (libapr-0.so.0+0x000000052afe)
+    #2 create_listener_thread /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:981:10 (httpd+0x000000576f1d)
+    #3 start_threads /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:1080:13 (httpd+0x000000575abb)
+    #4 dummy_worker /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:127:12 (libapr-0.so.0+0x000000052c5e)
+
+SUMMARY: ThreadSanitizer: data race /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:273 wakeup_listener
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=10794)
+  Read of size 4 at 0x00000164cc94 by thread T2:
+    #0 worker_thread /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:954:10 (httpd+0x000000576cb8)
+    #1 dummy_worker /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:127:12 (libapr-0.so.0+0x000000052c5e)
+
+  Previous write of size 4 at 0x00000164cc94 by thread T12:
+    #0 listener_thread /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:861:5 (httpd+0x000000577f86)
+    #1 dummy_worker /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:127:12 (libapr-0.so.0+0x000000052c5e)
+
+  Location is global 'dying' of size 4 at 0x00000164cc94 (httpd+0x00000164cc94)
+
+  Thread T2 (tid=10799, running) created by thread T1 at:
+    #0 pthread_create /home/ruigu/Workspace/llvm-3.6.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:896 (httpd+0x000000463183)
+    #1 apr_thread_create /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:165:17 (libapr-0.so.0+0x000000052afe)
+    #2 start_threads /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:1065:18 (httpd+0x00000057598a)
+    #3 dummy_worker /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:127:12 (libapr-0.so.0+0x000000052c5e)
+
+  Thread T12 (tid=10814, running) created by thread T1 at:
+    #0 pthread_create /home/ruigu/Workspace/llvm-3.6.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:896 (httpd+0x000000463183)
+    #1 apr_thread_create /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:165:17 (libapr-0.so.0+0x000000052afe)
+    #2 create_listener_thread /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:981:10 (httpd+0x000000576f1d)
+    #3 start_threads /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:1080:13 (httpd+0x000000575abb)
+    #4 dummy_worker /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:127:12 (libapr-0.so.0+0x000000052c5e)
+
+SUMMARY: ThreadSanitizer: data race /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:954 worker_thread
+==================
+ThreadSanitizer: reported 4 warnings
+==================
+WARNING: ThreadSanitizer: data race (pid=10792)
+  Write of size 4 at 0x00000164cc58 by thread T2:
+    #0 worker_thread /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:948:9 (httpd+0x000000576c2b)
+    #1 dummy_worker /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:127:12 (libapr-0.so.0+0x000000052c5e)
+
+  Previous read of size 4 at 0x00000164cc58 by thread T12:
+    #0 listener_thread /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:711:13 (httpd+0x0000005772f7)
+    #1 dummy_worker /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:127:12 (libapr-0.so.0+0x000000052c5e)
+
+  Location is global 'requests_this_child' of size 4 at 0x00000164cc58 (httpd+0x00000164cc58)
+
+  Thread T2 (tid=10798, running) created by thread T1 at:
+    #0 pthread_create /home/ruigu/Workspace/llvm-3.6.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:896 (httpd+0x000000463183)
+    #1 apr_thread_create /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:165:17 (libapr-0.so.0+0x000000052afe)
+    #2 start_threads /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:1065:18 (httpd+0x00000057598a)
+    #3 dummy_worker /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:127:12 (libapr-0.so.0+0x000000052c5e)
+
+  Thread T12 (tid=10821, running) created by thread T1 at:
+    #0 pthread_create /home/ruigu/Workspace/llvm-3.6.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:896 (httpd+0x000000463183)
+    #1 apr_thread_create /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:165:17 (libapr-0.so.0+0x000000052afe)
+    #2 create_listener_thread /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:981:10 (httpd+0x000000576f1d)
+    #3 start_threads /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:1080:13 (httpd+0x000000575abb)
+    #4 dummy_worker /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:127:12 (libapr-0.so.0+0x000000052c5e)
+
+SUMMARY: ThreadSanitizer: data race /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:948 worker_thread
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=10792)
+  Write of size 8 at 0x7d300001ddb8 by thread T3 (mutexes: write M11):
+    #0 remove_entity /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/modules/experimental/mod_mem_cache.c:653:9 (httpd+0x0000004c98bc)
+    #1 cache_remove_entity /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/modules/experimental/cache_storage.c:153:5 (httpd+0x0000004bd753)
+    #2 cache_in_filter /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/modules/experimental/mod_cache.c:668:9 (httpd+0x0000004ba4c2)
+    #3 ap_pass_brigade /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/util_filter.c:550:16 (httpd+0x0000005be297)
+    #4 ap_old_write_filter /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/protocol.c:1332:12 (httpd+0x0000005ccf53)
+    #5 ap_pass_brigade /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/util_filter.c:550:16 (httpd+0x0000005be297)
+    #6 php_handler /home/ruigu/Workspace/concurrency-exploits/apache-21287/php-4.4.1/sapi/apache2handler/sapi_apache2.c:594 (libphp4.so+0x00000014d297)
+    #7 ap_invoke_handler /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/config.c:401:14 (httpd+0x00000057e9e9)
+    #8 ap_process_request /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/modules/http/http_request.c:288:29 (httpd+0x00000051c25c)
+    #9 ap_process_http_connection /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/modules/http/http_core.c:293:13 (httpd+0x000000502877)
+    #10 ap_run_process_connection /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/connection.c:85:1 (httpd+0x0000005b4b38)
+    #11 ap_process_connection /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/connection.c:211:9 (httpd+0x0000005b5a96)
+    #12 process_socket /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:632:9 (httpd+0x0000005783a9)
+    #13 worker_thread /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:946:9 (httpd+0x000000576baa)
+    #14 dummy_worker /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:127:12 (libapr-0.so.0+0x000000052c5e)
+
+  Previous read of size 8 at 0x7d300001ddb8 by thread T2:
+    #0 decrement_refcount /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/modules/experimental/mod_mem_cache.c:354:13 (httpd+0x0000004c67a3)
+    #1 run_cleanups /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/memory/unix/apr_pools.c:1994:11 (libapr-0.so.0+0x00000006cc57)
+    #2 apr_pool_destroy /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/memory/unix/apr_pools.c:763:5 (libapr-0.so.0+0x00000006b516)
+    #3 ap_process_http_connection /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/modules/http/http_core.c:302:9 (httpd+0x0000005029f2)
+    #4 ap_run_process_connection /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/connection.c:85:1 (httpd+0x0000005b4b38)
+    #5 ap_process_connection /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/connection.c:211:9 (httpd+0x0000005b5a96)
+    #6 process_socket /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:632:9 (httpd+0x0000005783a9)
+    #7 worker_thread /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:946:9 (httpd+0x000000576baa)
+    #8 dummy_worker /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:127:12 (libapr-0.so.0+0x000000052c5e)
+
+  Location is heap block of size 192 at 0x7d300001dd00 allocated by thread T2:
+    #0 calloc /home/ruigu/Workspace/llvm-3.6.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:512 (httpd+0x00000045aa02)
+    #1 create_entity /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/modules/experimental/mod_mem_cache.c:490:11 (httpd+0x0000004c472e)
+    #2 cache_run_create_entity /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/modules/experimental/cache_storage.c:306:1 (httpd+0x0000004bd5db)
+    #3 cache_create_entity /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/modules/experimental/cache_storage.c:128:22 (httpd+0x0000004bd242)
+    #4 cache_in_filter /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/modules/experimental/mod_cache.c:669:14 (httpd+0x0000004ba559)
+    #5 ap_pass_brigade /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/util_filter.c:550:16 (httpd+0x0000005be297)
+    #6 ap_old_write_filter /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/protocol.c:1332:12 (httpd+0x0000005ccf53)
+    #7 ap_pass_brigade /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/util_filter.c:550:16 (httpd+0x0000005be297)
+    #8 php_handler /home/ruigu/Workspace/concurrency-exploits/apache-21287/php-4.4.1/sapi/apache2handler/sapi_apache2.c:594 (libphp4.so+0x00000014d297)
+    #9 ap_invoke_handler /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/config.c:401:14 (httpd+0x00000057e9e9)
+    #10 ap_process_request /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/modules/http/http_request.c:288:29 (httpd+0x00000051c25c)
+    #11 ap_process_http_connection /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/modules/http/http_core.c:293:13 (httpd+0x000000502877)
+    #12 ap_run_process_connection /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/connection.c:85:1 (httpd+0x0000005b4b38)
+    #13 ap_process_connection /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/connection.c:211:9 (httpd+0x0000005b5a96)
+    #14 process_socket /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:632:9 (httpd+0x0000005783a9)
+    #15 worker_thread /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:946:9 (httpd+0x000000576baa)
+    #16 dummy_worker /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:127:12 (libapr-0.so.0+0x000000052c5e)
+
+  Mutex M11 (0x7d90000306a0) created at:
+    #0 pthread_mutex_init /home/ruigu/Workspace/llvm-3.6.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1082 (httpd+0x00000044ff65)
+    #1 apr_thread_mutex_create /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/locks/unix/thread_mutex.c:91:15 (libapr-0.so.0+0x00000005f508)
+    #2 mem_cache_post_config /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/modules/experimental/mod_mem_cache.c:1079:9 (httpd+0x0000004c4153)
+    #3 ap_run_post_config /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/config.c:128:1 (httpd+0x00000057bf99)
+    #4 main /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/main.c:649:13 (httpd+0x00000059441e)
+
+  Thread T3 (tid=10800, running) created by thread T1 at:
+    #0 pthread_create /home/ruigu/Workspace/llvm-3.6.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:896 (httpd+0x000000463183)
+    #1 apr_thread_create /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:165:17 (libapr-0.so.0+0x000000052afe)
+    #2 start_threads /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:1065:18 (httpd+0x00000057598a)
+    #3 dummy_worker /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:127:12 (libapr-0.so.0+0x000000052c5e)
+
+  Thread T2 (tid=10798, running) created by thread T1 at:
+    #0 pthread_create /home/ruigu/Workspace/llvm-3.6.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:896 (httpd+0x000000463183)
+    #1 apr_thread_create /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:165:17 (libapr-0.so.0+0x000000052afe)
+    #2 start_threads /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/server/mpm/worker/worker.c:1065:18 (httpd+0x00000057598a)
+    #3 dummy_worker /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/srclib/apr/threadproc/unix/thread.c:127:12 (libapr-0.so.0+0x000000052c5e)
+
+SUMMARY: ThreadSanitizer: data race /home/ruigu/Workspace/concurrency-exploits/apache-21287/httpd-2.0.48/modules/experimental/mod_mem_cache.c:653 remove_entity
+==================

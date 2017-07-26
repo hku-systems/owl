@@ -1,0 +1,2 @@
+serialize_table (mod_mem_cache.c:679)
+unserialize_table (mod_mem_cache.c:716)

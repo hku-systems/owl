@@ -1,0 +1,270 @@
+<HTML><HEAD><TITLE>Manpage of LIBSAFE</TITLE>
+</HEAD><BODY>
+<H1>LIBSAFE</H1>
+Section: LIBSAFE (8)<BR>Updated: 8-OCT-2001<BR><A HREF="#index">Index</A><HR>
+
+
+
+<P>
+<P>
+
+<A NAME="lbAB">&nbsp;</A>
+<H2>Name</H2>
+
+libsafe - detection and protection against stack smashing attacks
+<P>
+
+<A NAME="lbAC">&nbsp;</A>
+<H2>Introduction</H2>
+
+<P>
+
+The libsafe library protects a process against the exploitation of buffer
+overflow vulnerabilities in process stacks.  Libsafe works with any existing
+pre-compiled executable (but is incompatible with libc5-linked processes) and
+can be used transparently, even on a system-wide basis.  The method intercepts
+all calls to library functions that are known to be vulnerable.  A substitute
+version of the corresponding function implements the original functionality,
+but in a manner that ensures that any buffer overflows are contained within the
+current stack frame.  Libsafe has been shown to detect several known attacks
+and can potentially prevent yet unknown attacks.  Experiments indicate that the
+performance overhead of libsafe is negligible.
+<P>
+
+The following unsafe functions are currently monitored by libsafe:
+<DL>
+    <DT><DD>
+    <DL>
+    <DT>strcpy(char *dest, const char *src)
+    <DT>strcpy(char *dest, const char *src)
+    <DT>strpcpy(char *dest, const char *src)
+    <DT>wcscpy(wchar_t *dest, const wchar_t *src)
+    <DT>wcpcpy(wchar_t *dest, const wchar_t *src)
+	<DD> May overflow the dest buffer.
+    <DT>strcat(char *dest, const char *src)
+    <DT>wcscpy(wchar_t *dest, const wchar_t *src)
+	<DD> May overflow the dest buffer.
+    <DT>getwd(char *buf)
+	<DD> May overflow the buf buffer.
+    <DT>gets(char *s)
+	<DD> May overflow the s buffer.
+    <DT>[vf]scanf(const char *format, ...)
+	<DD> May overflow its arguments.
+    <DT>realpath(char *path, char resolved_path[])
+	<DD> May overflow the path buffer.
+    <DT>[v]sprintf(char *str, const char *format, ...)
+	<DD> May overflow the str buffer.
+	<DD> May exploit "%n".
+    </DL>
+</DL>
+
+<P>
+<A NAME="lbAD">&nbsp;</A>
+<H2>Where&nbsp;to&nbsp;get&nbsp;libsafe</H2>
+
+<P>
+
+The source code for libsafe can be found at
+<A
+HREF="http://www.research.avayalabs.com/project/libsafe/index.html">http://www.research.avayalabs.com/project/libsafe/index.html</A>.
+<P>
+<A NAME="lbAE">&nbsp;</A>
+<H2>Installing&nbsp;libsafe</H2>
+
+<OL>
+<LI> If you install libsafe on Linux, make sure that your shared loader
+     (ld-linux.so.1/ld.so) understands <TT>LD_PRELOAD</TT>.  (Best if
+     ld.so-1.8.5 or more recent)
+<LI> Change to the lib directory.
+<LI> Type <TT>make</TT> to compile and build libsafe.so.2.
+<LI> Type <TT>make install</TT> to install the libsafe library and associated
+     programs in their final destination locations.
+<LI> To use libsafe, set the environment variable <TT>LD_PRELOAD</TT> to
+     point to the libsafe library. Example (sh syntax):
+<PRE><B>
+    LD_PRELOAD=/lib/libsafe.so.2
+    export LD_PRELOAD
+</B></PRE>
+or (csh syntax):
+<PRE><B>
+    setenv LD_PRELOAD /lib/libsafe.so.2
+</B></PRE>
+You might want to put these lines in your <TT>.profile</TT> or
+<TT>.cshrc</TT> in order to activate libsafe for all processes that you
+initiate.
+<LI> Use your programs as you would normally.  Libsafe will transparently check
+     the parameters for supported unsafe functions.  If a violation is
+     detected, the following will occur:
+    <OL>
+    <LI> The entire process group will be sent a SIGKILL signal.
+    <LI> An entry will be added to /var/log/secure.  The following is an
+	 example of such an entry:
+	 <DL>
+	 <DD> Dec 21 13:57:40 denver libsafe[15704]: Detected an attempt to
+	      write across stack boundary.
+	 <DD> Dec 21 13:57:40 denver libsafe[15704]: Terminating
+	      /users/ttsai/work/security.D0_2/test/t91
+	 <DD> Dec 21 13:57:40 denver libsafe[15704]: scanf()
+	 </DL>
+    </OL>
+</OL>
+
+For security reasons, the dynamic loader disregards environmental
+variables such as <TT>LD_PRELOAD</TT> when executing set-uid programs.
+However, on Linux, you can use libsafe with set-uid programs too, by using
+one of the two methods described below:
+<OL>
+<LI> You may append the path to libsafe.so.2 into <TT>/etc/ld.so.preload</TT>
+     instead of using <TT>LD_PRELOAD</TT>.
+     <DT>
+     <DD> <B>WARNING</B>: If you use <TT>/etc/ld.so.preload</TT>, be sure to
+	  install <TT>libsafe.so.2</TT> on your root filesystem, for instance
+	  in <TT>/lib</TT>, as is done by the default installation.  Using a
+	  directory which is not available at boot time, such as /usr/local/lib
+	  will cause trouble at the next reboot!
+     <DD> You should also be careful to remove libsafe from
+	  <TT>/etc/ld.so.preload</TT> when installing a new version.  First
+	  test it out using <TT>LD_PRELOAD</TT>, and only if everything is ok,
+	  put it back into <TT>/etc/ld.so.preload</TT>.  
+     </DT>
+<LI> If you have a version of <TT>ld.so</TT> which is more recent than
+     <TT>1.9.0</TT>, you can set <TT>LD_PRELOAD</TT> to just contain the
+     basename of <TT>libsafe.so.2</TT> without the directory.  In that case,
+     the file is found as long as it is in the shared library path (which
+     usually contains <TT>/lib</TT> and <TT>/usr/lib</TT>)).  Because the
+     search is restricted to the library search path, this also works for
+     set-uid programs.  Example (sh syntax):
+     <DL>
+     <DD><B> LD_PRELOAD=libsafe.so.2 </B>
+     <DD><B> export LD_PRELOAD </B>
+     </DL>
+or (csh syntax):
+     <DL>
+     <DD><B> setenv LD_PRELOAD libsafe.so.2 </B>
+     </DL>
+The advantage of this approach over <TT>ld.so.preload</TT> is that libsafe can
+more easily be switched off in case something goes wrong.
+</OL>
+
+<A NAME="lbAF">&nbsp;</A>
+<H2>Using libsafe</H2>
+
+
+<P>
+
+Once libsafe is installed and either LD_PRELOAD or /etc/ld.so.preload has been
+appropriate configured, there is nothing else to do.  The processes to be
+monitored can be used with no changes.
+<P>
+If a process attempts to use one of the monitored functions to overflow a
+buffer on the stack, then a violation will be declared.  A message is output to
+the standard error stream, and an entry is made in /var/log/secure.  If the
+corresponding options are enabled during compilation (See the libsafe/INSTALL
+file.), a core dump and a stack dump are produced.
+<P>
+If  you  wish  to  use  libsafe with /etc/ld.so.preload to enable monitoring
+for all processes, but there are  a  few programs  that you don't want to use
+with libsafe, you can list  the  programs  you  wish  to  excluse  in
+/etc/libsafe.exclude.  List each program on a separate line, using the absolute
+pathname for each program.   Note  that  this absolute pathname must not
+contain any symbolic links.
+<P>
+There is a compile-time option for including code to automatically send email
+notification  of detected attacks.  See the source code for more information.
+<P>
+
+<A NAME="lbAG">&nbsp;</A>
+<H2>How&nbsp;it&nbsp;works</H2>
+
+Programs written in C have always been plagued with buffer overflows.  Two
+reasons contribute to this factor.  First, the C programming language does not
+automatically bounds-check array and pointer references.  Second, and more
+importantly, many of the functions provided by the standard C library, such as
+those listed in the introduction, are unsafe.  Therefore, it is up to the
+programmers to check explicitly that the use of these functions cannot overflow
+buffers.  However, programmers often omit these checks.  Consequently, many
+programs are plagued with buffer overflows, which makes them vulnerable to
+security attacks.
+<P>
+Libsafe uses a novel method for performing detection and handling of buffer
+overflow attacks.  Without requiring source code, it can transparently protect
+processes against stack smashing attacks, even on a system-wide basis.  The
+method intercepts all calls to library functions that are known to be
+vulnerable.  A substitute version of the corresponding function implements the
+original functionality, but in a manner that ensures that any buffer overflows
+are contained within the current stack frame.
+<P>
+The key idea is the ability to estimate a safe upper limit on the size of
+buffers automatically.  This estimation cannot be performed at compile time
+because the size of the buffer may not be known at that time.  Thus, the
+calculation of the buffer size must be made after the start of the function in
+which the buffer is accessed.  Our method is able to determine the maximum
+buffer size by realizing that such local buffers cannot extend beyond the end
+of the current stack frame.  This realization allows the substitute version of
+the function to limit buffer writes within the estimated buffer size.  Thus,
+the return address from that function, which is located on the stack, cannot be
+overwritten and control of the process cannot be commandeered.
+<P>
+<A NAME="lbAH">&nbsp;</A>
+<H2>REPORTING BUGS</H2>
+
+Report bugs to &lt;<A HREF="mailto:libsafe@research.avayalabs.com">
+libsafe@research.avayalabs.com </A>&gt;.
+<P>
+<A NAME="lbAI">&nbsp;</A>
+<H2>SEE ALSO</H2>
+
+The home web page for libsafe is
+<A
+HREF="http://www.research.avayalabs.com/project/libsafe/index.html">http://www.research.avayalabs.com/project/libsafe/index.html</A>.
+<P>
+<A NAME="lbAJ">&nbsp;</A>
+<H2>DISCLAIMER</H2>
+
+Copyright (C) 2002 Avaya Labs, Avaya Inc.
+<BR>
+Copyright (C) 1999 Bell Labs, Lucent Technologies.
+<BR>
+
+Copyright (C) Arash Baratloo, Timothy Tsai, and Navjot Singh.
+<P>
+This file is part of the Libsafe library.
+Libsafe version 2.x: protecting against stack smashing attacks.
+<P>
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2 of the License, or (at your option) any later version.
+<P>
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+<P>
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the
+Free Software Foundation, Inc., 59 Temple Place - Suite 330,
+Boston, MA  02111-1307, USA.
+<P>
+For more information, 
+<BR>&nbsp;&nbsp;visit&nbsp;<A
+HREF="http://www.research.avayalabs.com/project/libsafe/index.html">http://www.research.avayalabs.com/project/libsafe/index.html</A>
+<BR>&nbsp;&nbsp;or&nbsp;email&nbsp;<A HREF="mailto:libsafe@research.bell-labs.com">libsafe@research.bell-labs.com</A>
+<P>
+
+<HR>
+<A NAME="index">&nbsp;</A><H2>Index</H2>
+<DL>
+<DT><A HREF="#lbAB">Name</A><DD>
+<DT><A HREF="#lbAC">Introduction</A><DD>
+<DT><A HREF="#lbAD">Where&nbsp;to&nbsp;get&nbsp;libsafe</A><DD>
+<DT><A HREF="#lbAE">Installing&nbsp;libsafe</A><DD>
+<DT><A HREF="#lbAF">Using libsafe</A><DD>
+<DT><A HREF="#lbAG">How&nbsp;it&nbsp;works</A><DD>
+<DT><A HREF="#lbAH">REPORTING BUGS</A><DD>
+<DT><A HREF="#lbAI">SEE ALSO</A><DD>
+<DT><A HREF="#lbAJ">DISCLAIMER</A><DD>
+</DL>
+<HR>
+</BODY>
+</HTML>

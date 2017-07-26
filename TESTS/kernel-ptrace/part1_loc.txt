@@ -1,0 +1,2 @@
+devfs_fp_check (freebsd-58543.c:25)
+devfs_kqfilter_f (freebsd-58543.c:17)

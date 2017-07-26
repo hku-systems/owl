@@ -1,0 +1,16 @@
+#!/usr/bin/expect -f
+
+set timeout -1
+
+spawn lldb target
+
+expect "*\(lldb\) \u001b\[22m\u001b\[8Gco" {
+	send "command script import trigger.py\r"
+}
+
+expect "*@@@EXIT@@@*" {
+	send_user $expect_out(buffer)
+	close
+	exit
+}
+

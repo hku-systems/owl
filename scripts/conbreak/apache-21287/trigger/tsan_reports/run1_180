@@ -1,0 +1,2 @@
+serialize_table (mod_mem_cache.c:690)
+apr_table_addn (apr_tables.c:828)

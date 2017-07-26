@@ -1,0 +1,2 @@
+kill_server (mysqld.cc:964)
+signal_hand (mysqld.cc:2326)

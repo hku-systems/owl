@@ -1,0 +1,306 @@
+$Name: release2_0-16 $
+$Id: ChangeLog,v 1.19 2002/05/30 14:05:41 ttsai Exp $
+
+Version 2.0-16
+* Mon May 21 2002 Timothy Tsai <ttsai@avaya.com>
+- src/intercept.c:
+	- Added interception of strncpy(), strncat(), and *snprintf().
+- src/util.c:
+	- When a warning is printed, the call stack is now printed with an
+	  associated executable or library path where the caller is located.
+* Thu May 30 2002 Yoann Vandoorselaere  <yoann@mandrakesoft.com>
+- src/util.c (prelude_alert): src/util.c (prelude_alert):
+	- Fix for a last minute libprelude API change.
+	  (fill_assessment): fill the IDMEF action member.
+
+Version 2.0-15
+* Fri Apr 26 2002 Timothy Tsai <ttsai@avaya.com>
+- src/util.c:
+	- Added extra "\r\n" in sendmail().  This extra line is needed to
+	  separate the header and body of the email message.
+	  [Bug reported by Leonardo Pimenta Gonzalez.]
+- exploits:
+	- Removed the xlock example exploit.  This exploit was causing RPM
+	  packages to require an installation of X-Windows, which is not
+	  actually required by libsafe.
+
+Version 2.0-14
+* Fri Apr 12 2002 Timothy Tsai <ttsai@avaya.com>
+- src/util.c:
+	- In _libsafe_warn(), added checks when printing out the call stack to
+	  make sure that no infinite loops result. [Bug reported by Bernd
+	  Rothert and Leo.]
+
+Version 2.0-13
+* Tue Mar 26 2002 Timothy Tsai <ttsai@avaya.com>
+- src/Makefile
+	- Included extra code for "make install", which will now prompt the
+	  user with "Type y for installing libsafe system wide?[default n]".
+- src/intercept.c
+	- Used "#ifndef MISSING_WCSNLEN" to conditionally compile the following
+	  functions:  wcscpy(), wcpcpy(), and wcscat().  These functions may
+	  not be available on all systems.
+
+Version 2.0-12 ***** SIGNIFICANT BUG FIX *****
+* Mon Mar 18 2002 Timothy Tsai <ttsai@avaya.com>
+- src/intercept.c:
+	- In vfprintf() and _IO_vfprintf(), added the ' and I characters as
+	  valid flags in the format string. [Bug reported by Wojciech
+	  Purczynski.]
+	- In vfprintf() and _IO_vfprintf(), changed the way in which "%n"
+	  conversion specifiers are found in the format string.  Each "%n"
+	  conversion is now matched to its corresponding argument, and only
+	  that argument is verified not to point to a return address. [Bug
+	  reported by Wojciech Purczynski.]
+
+Version 2.0-11
+* Thu Feb 28 2002 Yoann Vandoorselaere  <yoann@mandrakesoft.com>
+- src/Makefile:
+	- Improved code in Makefile to automatically detect if Prelude
+	  integration code should be included, based on whether the Prelude
+	  libraries exist.
+
+Version 2.0-10
+* Mon Feb 18 2002 Yoann Vandoorselaere  <yoann@mandrakesoft.com>
+* 2.0-11]
+- src/util.c (prelude_alert): (fill_assessment): (set_user_infos): 
+	- Add support for Prelude notification.  Generate a Prelude IDMEF alert
+	  message.  (See http://www.prelude-ids.org)
+
+Version 2.0-9
+* Thu Nov 29 2001 Timothy Tsai <ttsai@avaya.com>
+- src/intercept.c:
+	- Corrected off-by-one bug in strcat().
+
+Version 2.0-8
+* Mon Nov 12 2001 Timothy Tsai <ttsai@avaya.com>
+- src/intercept.c:
+	- Changed method of detecting format string vulnerabilities (i.e.,
+	  "%n").  The previous method saved all return addresses before calling
+	  *printf and verified those return addresses after returning from
+	  *printf.  The new method does a simple scan of the format string for
+	  "%n", which if found will trigger a check of all arguments to see if
+	  they are pointers to any return addresses.  Put wrappers for
+	  *sprintf().  Note that *scanf() will still use the previous method of
+	  saving and verifying return addresses.
+	- Added support for the LIBSAFE_PROTECT_ROOT option in
+	  /etc/libsafe.exclude.  If /etc/libsafe.exclude includes
+	  LIBSAFE_PROTECT_ROOT, then only processes with an effective UID >=
+	  100 will be protected.
+* Wed Nov 7 2001 Timothy Tsai <ttsai@avaya.com>
+- src/util.c:
+	- If any function determines that there are no frame pointers on the
+	  stack, then _libsafe_exclude is set to 1, which will effectively
+	  bypass libsafe checking from that point onward.
+	- In _libsafe_save_ra_fp() and _libsafe_verify_ra_fp(), used pointers
+	  instead of [] notation to improve performance.
+
+Version 2.0-7 ***** SIGNIFICANT CODE CHANGE *****
+* Mon Oct 8 2001 Timothy Tsai <ttsai@avaya.com>
+- src/intercept.c
+	- Major change in interception method for *scanf() and *printf()
+	  functions so that a true wrapper is used.  The vfscanf.c, vfprintf.c,
+	  reg-printf.c, and printf-parse.h files are no longer needed.  All
+	  interception is performed completely in intercept.c.  The new method
+	  saves all return addresses before calling *scanf() and *printf() and
+	  verifies those return addresses after returning from *printf.  The
+	  *sprintf() wrappers are no longer needed.
+	- Added the _libsafe_exclude variable to allow disabling of libsafe
+	  checks under one of two conditions:
+	    - If util.c determines that frame pointers do not exist on the
+	      stack.  This is an optimization to minimize the overhead for
+	      programs that are compiled with -fomit-frame-pointer.
+	    - If the current program name is listed in /etc/libsafe.exclude.
+	      This allows libsafe to be linked system-wide (via ld.so.preload),
+	      while disabling libsafe for a small set of incompatible programs.
+- src/util.c:
+	- Changed find_stack_start().  Instead of following the chain of frame
+	  pointers back to the terminating 0x00000000, we determine the start
+	  of the stack by assuming that the main thread stack starts at
+	  0xbf800000 and extends for 0x00800000 bytes.  Other thread stacks
+	  occupy approximately 0x0020000 bytes and are allocated at addresses
+	  lower than the main thread stack.
+	- Added _libsafe_save_ra_fp(), _libsafe_verify_ra_fp() to support
+	  interception of *scanf() functions.
+- doc/libsafe.8
+- doc/libsafe.8.html
+	- Updated man page to include mention of support for stpcpy(),
+	  wcscpy(), wcpcpy(), and wcscat(), as well as /etc/libsafe.exclude.
+
+Version 2.0-6
+* Tue Jul 31 2001 Timothy Tsai <ttsai@avaya.com>
+- src/intercept.c
+	- Added wrapper functions for stpcpy(), wcscpy(), wcpcpy(), and
+	  wcscat().
+	- Corrected off-by-one bug in strcat().
+- src/vfprintf.c
+	- Miscellaneous changes to make vfprintf.c compile with more systems.
+- src/vfscanf.c
+	- Miscellaneous changes to make vfscanf.c compile with more systems.
+* Mon Jul 16 2001 Timothy Tsai <ttsai@avaya.com>
+- src/util.c
+	- Corrected bug in finding current_stack_start in
+	  _libsafe_dump_stack().
+
+Version 2.0-5
+* Fri Jul 6 2001 Timothy Tsai <ttsai@avaya.com>
+- [many files]
+	- Added #ident RCS keywords in source code files.
+- src/Makefile
+	- Added Makefile target "debug", which will build with the debug flags.
+	- Added version information to the name of the libsafe library.
+	- Turned off echoing of commands during installation of man pages.
+- src/util.c
+	- In _libsafe_dump_stack(), made sure that current_stack_start can
+	  always be found.  This is needed to prevent searching past the
+	  original stack frame, especially for threads.
+- src/vfprintf.c
+	- Corrected bug related to locales.
+
+Version 2.0-4
+* Tue Jun 19 2001 Timothy Tsai <ttsai@avaya.com>
+- [many files]
+	- Added RCS keywords to identify versions.
+- exploits/exploit-non-exec-stack.c
+	- Added some kludges to make sure that no zero-bytes show up in the
+	  input string for strcpy().  These kludges have to be manually
+	  uncommented to work.
+- src/util.c
+	- Replace the old method of looping to search for the first stack
+	  frame.  The new method works for multiple threads, but makes
+	  assumptions on the location and sizes of threads.
+	- Added ctime_nonewline() to sendmail() because some the extra newline
+	  returned by ctime() caused the mail header to be prematurely ended.
+	- Changed method of terminating processes.  Use SIGKILL instead of
+	  _exit().
+* Mon Jun 4 2001 Timothy Tsai <ttsai@avaya.com>
+- util.c:
+	- Fixed bug in sendmail() caused by ctime() and bare LF's.  [Reported
+	  by José Luis Domingo López.]
+
+Version 2.0-3
+* Wed Apr 25 2001 Timothy Tsai <ttsai@avaya.com>
+- src/intercept.c
+	- Defined _IO_JUMPS_OFFSET.  Some systems need this to compile.
+
+Version 2.0-2
+* Tue Apr 24 2001 Timothy Tsai <ttsai@avaya.com>
+- src/intercept.c
+	- Put back explicit wrapper functions for sprintf() and vsprintf().
+* Thu Apr 19 2001 Timothy Tsai <ttsai@avaya.com>
+- doc/whitepaper-2.0/whitepaper-2.0.tex
+	- Removed "DRAFT" label on white paper.
+* Tue Apr 10 2001 Timothy Tsai <ttsai@avaya.com>
+- doc/libsafe.8
+- doc/libsafe.8.html
+	- Updates man page to refer libsafe.so.2 instead of libsafe.so.1
+- src/vfprintf.c
+	- Added weak alias for __mbrtowc.  Some systems need this to compile.
+
+Version 2.0-1
+* Fri Mar 23 2001 Timothy Tsai <ttsai@avaya.com>
+- src/Makefile:
+	- Added code to make sure man page directories exist before copying the
+	  man page to those directories.
+
+***** SIGNIFICANT CHANGES *****
+The following includes changes that comprise version 2.0:
+* Wed Jan 20 2001 Timothy Tsai <ttsai@avaya.com>
+- vfprintf.c:
+	- Incorporated *printf() code from libc-2.1.3-91.src.rpm.  This code
+	  fixes a bug for sprintf(), when the same buffer occurs as the
+	  destination buffer and a source buffer (e.g., "sprintf(buf, "%s...",
+	  buf, ...)).
+	- Introduced code to check for printf format bugs.  The code detects
+	    - overwriting of return addresses via printf("%n", ...)
+	    - printf argument lists that span multiple stack frames
+* Wed Jan 17 2001 Timothy Tsai <ttsai@avaya.com>
+- vfscanf.c:
+	- Replaced iovfscanf.c with vfscanf.c from libc-2.1.3-91.src.rpm.  This
+	  updated version supports more field modifiers and conversions.
+* Mon Nov 15 2000 Timothy Tsai <ttsai@avaya.com>
+- util.c:_libsafe_stackVariableP():
+	- Added code to see if the stack contains stack frames with frame
+	  pointers.  If frame pointers are missing, then
+	  _libsafe_stackVariableP() always returns 0, which means that checking
+	  for buffer overflows is disabled.  This addition is needed to handle
+	  code compiled with -fomit-frame-pointer.  [-fomit-frame-pointer
+	  incompatability reported by Solar Designer, Michael Sweet, and
+	  others.]
+- util.c:_libsafe_die():
+	- Change the mail notification mechanism.  Instead of relying on an
+	  external mail program, email messages are now sent by directly
+	  communicating with the SMTP port.  [Security vulnerabilities of email
+	  raised by by Solar Designer and others.]
+	- Added code to print the UID and effective UID of the user.  Note that
+	  this is the user who started the process, who may not necessarily be
+	  the attacker.  [Suggested by Duane Dunston.]
+	- Added code to print the address of the code that called the unsafe
+	  function that was detected by lisafe.
+	- Added code to optionally generate a core dump upon exit.  [Suggested
+	  by Aaron Hopkins.]
+	- Added debugging code to turn off adding entries to syslog.  This is
+	  useful during testing when a large number of test violations are
+	  detected.  The code must be enabled with the -DDEBUG_TURN_OFF_SYSLOG
+	  option in the Makefile.
+	- Added dying flag to effectively disable _libsafe_stackVariableP()
+	  after _libsafe_die() has been called.
+- util.c:find_stack_start():
+	- find_stack_start() replaces _libsafe_initialize_start_stack().
+	  find_stack_start() works for multi-threaded processes and is less
+	  kludgy.
+- util.c:_libsafe_dump_stack():
+	- Added this function to print out the contents of the stack when a
+	  violation is detected.  This function is called from _libsafe_die()
+	  and must be enabled with the -DDUMP_STACK option in the Makefile.
+- intercept.c:gets():
+	- Added extra code to make sure that the libsafe gets() treats newlines
+	  the same way the libc gets() does.  [Suggested by Jutta Degener.]
+- intercept.c:getwd():
+	- Added code to make sure no more than PATH_MAX characters are
+	  returned.  [Suggested by Jutta Degener.]
+- intercept.c:
+	- Made "static memcpy_t real_memcpy" a global variable since four
+	  functions access it.  This increases the performance very slightly.
+	  [Suggested by Paul Boehm.]
+- iovfscanf.c:
+	- Corrected bug in code that improperly processed format specifiers
+	  with explicit field widths for char types.  [Bug reported by Bojan
+	  Pogacar.]
+- depend: removed from the package
+
+* Fri April 21 2000 Arash Baratloo <arash@research.bell-labs.com>
+- Corrected couple of bugs (in util.c) that kept libsafe from running on RH5.1
+- Added dependencies to the Makefile
+	
+* Thu Mar 30 2000 Vandoorselaere Yoann <yoann@mandrakesoft.com>
+* Thu Mar 30 2000 Arash Baratloo <arash@research.bell-labs.com>
+- Update to 1.3
+- Rename copying.lib to copying
+- Use _exit because an sigsegv can be caught.
+
+* Thu Mar 30 2000 Vandoorselaere Yoann <yoann@mandrakesoft.com>
+- Removed a dangerous debugging function.
+- Removed the mail_list file specified by variable feature ( could lead to
+  attack ).
+- Removed all c++ comment... reindent all code.
+- Removed dead code.
+- renamed int script to int.sh.
+- Removed unused check from _libsafe_stackVariableP() ( stack_start is
+  initialized in intercept.c ).
+
+* Thu Mar 09 2000 Vandoorselaere Yoann <yoann@mandrakesoft.com>
+	- int : use bash
+	- Makefile : make clean work now :)
+	- intercept.c : don't initialize static function pointer at .text init
+	  time.
+	- intercept.c : reindented + c++ to c comment :)
+	- intercept.c : getLibraryFunction -> use const
+	- added intercept.c , will be a c port of intercept.cpp
+	- util.c: added warning, for a problem i'm not sure of
+	- util.c: don't use non portable asm instruction to make the program
+	  exit, use a clean portable way to do it...
+	- util.c: never use system cause it can be a security problem.
+	- util.c: Use the first variable stack address as the sp address.
+	- util.c: Use unsigned long cause it is a word long on all architecture.
+	- Imported libsafe source, created module, created changelog.

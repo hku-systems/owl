@@ -1,0 +1,104 @@
+% This is the entry package, which is copied directly from the Dog Book (i.e.,
+% "The LaTeX Companion" by Goossens, Mittelbach, and Samarin.
+%
+% Four new environments are provided to improve upon the appearance of the
+% description environment:
+% 	entry
+% 	Ventry
+% 	Lentry
+% 	Mentry
+%
+% For the entry environment, the item text for all items is indented the same,
+% fixed length.  If the label is longer than this fixed length, then text is
+% shifted to accomodate the longer label:
+%       Description:  Returns from a function.  If
+%               issued at top-lvel, the interpreter
+%               simply terminates, just as if end of
+%               input had been reached.
+%       Errors: None.
+%       Return values: Any arguments in effect are
+%               passed back to the caller.
+%
+% For the Ventry environment, the item text for all items is indented the same
+% length, such that all text will be to the right of the longest label:
+%       Description:    Returns from a function.  If
+%                       issued at top-lvel, the interpreter
+%                       simply terminates, just as if end of
+%                       input had been reached.
+%       Errors:         None.
+%       Return values:  Any arguments in effect are
+%                       passed back to the caller.
+%
+% For the Lentry environment, the item text for all items is indented the same,
+% fixed length.  If the label is longer than this fixed length, then start the
+% item text on the next line:
+%       Description:
+%               Returns from a function.  If
+%               issued at top-lvel, the interpreter
+%               simply terminates, just as if end of
+%               input had been reached.
+%       Errors: None.
+%       Return values:
+%               Any arguments in effect are
+%               passed back to the caller.
+%
+% For the Mentry environment, the item text for all items is indented the same,
+% fixed length.  The label is set inside a parbox and will be hyphenated if
+% necessary:
+%       Descrip- Returns from a function.  If
+%       tion:    issued at top-lvel, the interpreter
+%                simply terminates, just as if end of
+%                input had been reached.
+%       Errors:  None.
+%       Return   Any arguments in effect are
+%       values:  passed back to the caller.
+%
+% Timothy K. Tsai
+% Lucent Technologies, Bell Labs
+
+\ProvidesPackage{entry}[1998/09/29 New description environments from Dog Book]
+
+\RequirePackage{calc}
+\RequirePackage{ifthen}
+
+\newcommand{\entrylabel}[1]{\mbox{\textsf{#1:}}\hfil}
+\newenvironment{entry}
+	{\begin{list}{}%
+		{\renewcommand{\makelabel}{\entrylabel}%
+			\setlength{\labelwidth}{35pt}%
+			\setlength{\leftmargin}{\labelwidth+\labelsep}%
+		}%
+	}%
+	{\end{list}}
+
+% Definition for Ventry
+% 	Similar to description environment, but shifts all descriptions parts
+% 	to the right
+\newenvironment{Ventry}[1]%
+	{\begin{list}{}%
+		{\renewcommand{\makelabel}[1]{\textsf{##1:}\hfill}%
+			\settowidth{\labelwidth}{\textsf{#1:}}%
+			\setlength{\leftmargin}{\labelwidth+\labelsep}
+		}%
+	}%
+	{\end{list}}
+
+\newlength{\Mylen}
+\newcommand{\Lentrylabel}[1]{%
+	\settowidth{\Mylen}{\textsf{#1:}}%
+	\ifthenelse{\lengthtest{\Mylen > \labelwidth}}%
+		{\parbox[b]{\labelwidth}%	term > labelwidth
+			{\makebox[0pt][l]{\textsf{#1:}}\\}}%
+		{\textsf{#1:}}%			term < labelwidth
+	\hfil\relax}
+\newenvironment{Lentry}%
+	{\renewcommand{\entrylabel}{\Lentrylabel}%
+		\begin{entry}}%
+	{\end{entry}}
+
+\newcommand{\Mentrylabel}[1]%
+	{\raisebox{0pt}[1ex][0pt]{\makebox[\labelwidth][1]%
+		{\parbox[t]{\labelwidth}{\hspace{0pt}\textsf{#1:}}}}}
+\newenvironment{Mentry}%
+	{\renewcommand{\entrylabel}{\Mentrylabel}\begin{entry}}%
+	{\end{entry}}

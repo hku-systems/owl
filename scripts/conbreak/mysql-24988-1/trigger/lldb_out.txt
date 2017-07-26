@@ -1,0 +1,6 @@
+Setting trigger...
+Setting breakpoints...
+Configuration done!
+>>>>>>>>> src=   3335	  grant_option = FALSE;
+>>>>>>>>> tokens=['3335', 'grant_option', '=', 'FALSE']
+####### ERROR: No variables found #######

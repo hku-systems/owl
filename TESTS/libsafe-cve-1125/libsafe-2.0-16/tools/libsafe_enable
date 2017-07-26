@@ -1,0 +1,73 @@
+#!/usr/bin/shellmod 
+#
+# Allow you to add or remove libsafe entries from /etc/ld.so.preload
+# Make sure you have shellmod installed. If shellmod is not under /usr/bin
+# then change the path for shellmod above. 
+# Also make sure shellmod-lib.sh is at the location below.
+#
+. /usr/lib/linuxconf/lib/shellmod-lib.sh 
+libsafe=/lib/libsafe.so.2
+preload=/etc/ld.so.preload
+tload=/etc/ld.so.preload.tmp
+
+
+addlib(){
+	       if [ -f $libsafe ]
+	       then
+	           echo notice \"Libsafe Added\"
+	           if [ -f $preload ]
+		   then
+		      cp -fp $preload $preload.bak
+		      grep -v libsafe $preload > $tload
+		      echo $libsafe >> $tload
+		      cp -fp  $tload $preload
+		      rm  -f $tload
+		   else 
+		      echo $libsafe >> $preload
+		   fi
+	 	   echo  notice \" The System will be protected by libsafe from now on.\"
+		else	
+		   echo notice \" No change made as libsafe is not installed on the system. \"
+		fi
+}
+
+
+removelib(){
+	       if [ -f $preload ]
+	       then
+	           cp -fp $preload $preload.bak
+		   grep -v libsafe $preload > $tload
+		   if [ -s $tload ]
+		   then
+		      cp -fp $tload $preload
+		   else
+		      rm -f $preload
+		   fi
+		   rm -f $tload
+                   echo notice \"Libsafe Removed\"
+		else
+		   echo notice \"No change made as /etc/ld.so.preload does not exist \"
+		fi
+
+}
+
+main(){
+	       if [ $UID -ne 0 ]
+	       then
+	           echo  notice \"You must be root to run the $0\"
+		   exit 0
+	       fi
+               echo DIALOG_MENU
+               echo new_menuitem  addlib \"\" \"Add Libsafe\"
+               echo new_menuitem removelib \"\" \"Remove Libsafe\"
+	       echo defval var1 Add Libsafe: adds an entry to /etc/ld.so.preload 
+	       echo defval var1 and will protect all processes on the system.
+	       echo defval var1 
+	       echo defval var1 Remove Libsafe: Removes all entries with the 
+	       echo defval var1 word libsafe from /etc/ld.so.preload and saves 
+	       echo defval var1 the original to /etc/ld.so.preload.bak
+               echo editmenu  \"Libsafe Configuration\"=var1
+               dispatch
+               echo end
+}
+dispatch

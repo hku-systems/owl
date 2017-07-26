@@ -1,0 +1,2 @@
+rw_lock_s_unlock_func (sync0rw.ic:366)
+rw_lock_get_reader_count (sync0rw.ic:88)

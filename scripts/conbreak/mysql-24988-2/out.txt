@@ -1,0 +1,54 @@
+buf_page_io_complete (buf0buf.c:1911)
+buf_get_n_pending_ios (buf0buf.c:2206)
+
+btr_search_info_update_hash (btr0sea.c:227)
+btr_search_info_update_hash (btr0sea.c:217)
+
+row_update_for_mysql (row0mysql.c:1417)
+btr_estimate_n_rows_in_range (btr0cur.c:2761)
+
+row_update_for_mysql (row0mysql.c:1417)
+ha_innobase::info (ha_innodb.cc:5335)
+
+mem_heap_create_block (mem0mem.c:177)
+btr_search_check_free_space_in_heap (btr0sea.c:111)
+
+btr_search_info_update_hash (btr0sea.c:250)
+btr_search_info_update_hash (btr0sea.c:217)
+
+btr_search_update_block_hash_info (btr0sea.c:356)
+btr_search_update_block_hash_info (btr0sea.c:339)
+
+log_write_up_to (log0log.c:1491)
+log_write_up_to (log0log.c:1355)
+
+os_aio_simulated_wake_handler_threads (os0file.c:3290)
+os_aio_simulated_handle (os0file.c:3787)
+
+os_file_pread (os0file.c:1904)
+os_aio_refresh_stats (os0file.c:4258)
+
+row_insert_for_mysql (row0mysql.c:1165)
+btr_estimate_n_rows_in_range (btr0cur.c:2761)
+
+row_insert_for_mysql (row0mysql.c:1165)
+ha_innobase::info (ha_innodb.cc:5335)
+
+btr_search_check_free_space_in_heap (btr0sea.c:117)
+btr_search_check_free_space_in_heap (btr0sea.c:111)
+
+log_group_write_buf (log0log.c:1285)
+srv_master_thread (srv0srv.c:2262)
+
+os_file_pwrite (os0file.c:1988)
+os_aio_refresh_stats (os0file.c:4259)
+
+row_update_for_mysql (row0mysql.c:1417)
+row_update_for_mysql (row0mysql.c:1416)
+
+btr_search_info_update_hash (btr0sea.c:271)
+btr_search_info_update_hash (btr0sea.c:235)
+
+srv_lock_timeout_and_monitor_thread (srv0srv.c:1888)
+srv_error_monitor_thread (srv0srv.c:2099)
+

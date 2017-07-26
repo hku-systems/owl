@@ -1,0 +1,195 @@
+row_update_for_mysql (row0mysql.c:1417)
+row_update_statistics_if_needed (row0mysql.c:876)
+
+row_update_statistics_if_needed (row0mysql.c:867)
+row_update_statistics_if_needed (row0mysql.c:865)
+
+safe_mutex_lock (thr_mutex.c:125)
+wait_if_global_read_lock (lock.cc:1218)
+
+safe_mutex_lock (thr_mutex.c:124)
+wait_if_global_read_lock (lock.cc:1218)
+
+buf_LRU_remove_block (buf0lru.c:609)
+buf_flush_try_neighbors (buf0flu.c:719)
+
+btr_cur_search_to_nth_level (btr0cur.c:453)
+buf_flush_buffered_writes (buf0flu.c:267)
+
+sync_array_reserve_cell (sync0arr.c:354)
+sync_array_print_long_waits (sync0arr.c:915)
+
+buf_LRU_block_remove_hashed_page (buf0lru.c:870)
+buf_block_peek_if_too_old (buf0buf.ic:30)
+
+btr_search_build_page_hash_index (btr0sea.c:1245)
+btr_search_update_block_hash_info (btr0sea.c:339)
+
+btr_search_update_block_hash_info (btr0sea.c:361)
+btr_search_update_block_hash_info (btr0sea.c:343)
+
+buf_LRU_add_block_low (buf0lru.c:740)
+buf_block_peek_if_too_old (buf0buf.ic:30)
+
+btr_search_update_block_hash_info (btr0sea.c:358)
+btr_search_update_block_hash_info (btr0sea.c:339)
+
+btr_search_update_block_hash_info (btr0sea.c:359)
+btr_search_update_block_hash_info (btr0sea.c:341)
+
+mem_area_set_size (mem0pool.c:147)
+mem_area_get_size (mem0pool.c:135)
+
+mach_write_to_2 (mach0data.ic:51)
+mach_read_from_2 (mach0data.ic:66)
+
+mem_area_set_free (mem0pool.c:176)
+mem_area_get_size (mem0pool.c:135)
+
+rw_lock_x_lock_low (sync0rw.c:341)
+sync_arr_cell_can_wake_up (sync0arr.c:770)
+
+btr_search_build_page_hash_index (btr0sea.c:1244)
+btr_search_update_block_hash_info (btr0sea.c:345)
+
+rw_lock_s_unlock_func (sync0rw.ic:366)
+rw_lock_get_reader_count (sync0rw.ic:88)
+
+btr_search_update_block_hash_info (btr0sea.c:360)
+btr_search_info_update_slow (btr0sea.c:507)
+
+btr_search_update_block_hash_info (btr0sea.c:359)
+btr_search_info_update_slow (btr0sea.c:506)
+
+safe_mutex_lock (thr_mutex.c:132)
+safe_mutex_lock (thr_mutex.c:98)
+
+btr_search_update_block_hash_info (btr0sea.c:361)
+btr_search_info_update_slow (btr0sea.c:508)
+
+buf_LRU_block_remove_hashed_page (buf0lru.c:903)
+btr_search_guess_on_hash (btr0sea.c:779)
+
+btr_search_update_block_hash_info (btr0sea.c:360)
+btr_search_update_block_hash_info (btr0sea.c:342)
+
+sync_array_reserve_cell (sync0arr.c:357)
+sync_array_print_long_waits (sync0arr.c:914)
+
+next_query_id (mysql_priv.h:64)
+THD::THD (sql_class.cc:272)
+
+kill_server (mysqld.cc:964)
+signal_hand (mysqld.cc:2326)
+
+logs_empty_and_mark_files_at_shutdown (log0log.c:3075)
+srv_lock_timeout_and_monitor_thread (srv0srv.c:2008)
+
+signal_hand (mysqld.cc:2315)
+wait_for_signal_thread_to_end (mysqld.cc:1200)
+
+buf_page_io_complete (buf0buf.c:1931)
+srv_master_thread (srv0srv.c:2263)
+
+buf_page_io_complete (buf0buf.c:1912)
+srv_master_thread (srv0srv.c:2262)
+
+buf_flush_write_complete (buf0flu.c:193)
+buf_get_n_pending_ios (buf0buf.c:2208)
+
+btr_cur_search_to_nth_level (btr0cur.c:335)
+srv_refresh_innodb_monitor_stats (srv0srv.c:1604)
+
+row_insert_for_mysql (row0mysql.c:1167)
+srv_refresh_innodb_monitor_stats (srv0srv.c:1611)
+
+btr_cur_search_to_nth_level (btr0cur.c:341)
+srv_refresh_innodb_monitor_stats (srv0srv.c:1605)
+
+buf_page_create (buf0buf.c:1774)
+buf_refresh_io_stats (buf0buf.c:2334)
+
+rw_lock_set_writer (sync0rw.ic:80)
+rw_lock_get_writer (sync0rw.ic:71)
+
+log_checkpoint_margin (log0log.c:2109)
+log_free_check (log0log.ic:398)
+
+trx_purge (trx0purge.c:1072)
+row_mysql_delay_if_needed (row0mysql.c:103)
+
+log_write_up_to (log0log.c:1420)
+srv_master_thread (srv0srv.c:2304)
+
+check_stack_overrun (sql_parse.cc:5583)
+check_stack_overrun (sql_parse.cc:5583)
+
+rw_lock_set_writer (sync0rw.ic:80)
+row_search_for_mysql (row0sel.c:3153)
+
+btr_search_update_block_hash_info (btr0sea.c:334)
+btr_cur_search_to_nth_level (btr0cur.c:317)
+
+buf_flush_write_complete (buf0flu.c:193)
+buf_get_n_pending_ios (buf0buf.c:2207)
+
+row_insert_for_mysql (row0mysql.c:1165)
+row_update_statistics_if_needed (row0mysql.c:876)
+
+safe_mutex_unlock (thr_mutex.c:158)
+wait_if_global_read_lock (lock.cc:1218)
+
+btr_pcur_move_to_next_page (btr0pcur.c:404)
+buf_flush_buffered_writes (buf0flu.c:267)
+
+safe_mutex_unlock (thr_mutex.c:157)
+wait_if_global_read_lock (lock.cc:1218)
+
+srv_active_wake_master_thread (srv0srv.c:2160)
+srv_master_thread (srv0srv.c:2333)
+
+signal_hand (mysqld.cc:2328)
+handle_connections_sockets (mysqld.cc:3978)
+
+sync_array_reserve_cell (sync0arr.c:354)
+sync_array_print_long_waits (sync0arr.c:923)
+
+os_file_flush (os0file.c:1839)
+os_aio_refresh_stats (os0file.c:4260)
+
+rw_lock_set_writer (sync0rw.ic:80)
+btr_cur_search_to_nth_level (btr0cur.c:316)
+
+row_search_for_mysql (row0sel.c:4122)
+srv_refresh_innodb_monitor_stats (srv0srv.c:1614)
+
+row_update_for_mysql (row0mysql.c:1422)
+srv_refresh_innodb_monitor_stats (srv0srv.c:1612)
+
+btr_search_info_update_hash (btr0sea.c:268)
+btr_search_info_update_hash (btr0sea.c:225)
+
+btr_search_info_update_hash (btr0sea.c:269)
+btr_search_info_update_hash (btr0sea.c:232)
+
+log_close (log0log.c:423)
+log_free_check (log0log.ic:398)
+
+clean_up (mysqld.cc:1084)
+signal_hand (mysqld.cc:2311)
+
+btr_search_info_update_hash (btr0sea.c:286)
+btr_search_info_update_hash (btr0sea.c:225)
+
+btr_search_info_update_hash (btr0sea.c:287)
+btr_search_info_update_hash (btr0sea.c:232)
+
+btr_search_info_update_hash (btr0sea.c:290)
+btr_search_info_update_hash (btr0sea.c:235)
+
+log_write_up_to (log0log.c:1420)
+srv_master_thread (srv0srv.c:2354)
+
+buf_page_io_complete (buf0buf.c:1931)
+srv_master_thread (srv0srv.c:2243)
+

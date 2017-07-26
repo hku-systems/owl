@@ -1,0 +1,648 @@
+ssdb-server 1.9.2
+Copyright (c) 2012-2015 ssdb.io
+
+==================
+WARNING: ThreadSanitizer: data race (pid=2097)
+  Write of size 8 at 0x7d040000f780 by main thread:
+    #0 free /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:557 (ssdb-server+0x000000049306)
+    #1 tzset_internal /build/buildd/eglibc-2.19/time/tzset.c:443 (libc.so.6+0x0000000b2058)
+    #2 Logger::logv(int, char const*, __va_list_tag*) /home/bg2539/workspace/ssdb/ssdb/src/util/log.cpp:249 (ssdb-server+0x000000101faf)
+    #3 log_write(int, char const*, ...) /home/bg2539/workspace/ssdb/ssdb/src/util/log.cpp:50 (ssdb-server+0x000000101f0e)
+    #4 SSDBServer /home/bg2539/workspace/ssdb/ssdb/src/serv.cpp:328 (ssdb-server+0x0000000d82d7)
+    #5 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:82 (ssdb-server+0x0000000aa3a2)
+    #6 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #7 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Previous write of size 8 at 0x7d040000f780 by thread T2 (mutexes: write M654):
+    #0 malloc /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:514 (ssdb-server+0x000000044d8f)
+    #1 __GI___strdup /build/buildd/eglibc-2.19/string/strdup.c:42 (libc.so.6+0x000000088839)
+    #2 Logger::logv(int, char const*, __va_list_tag*) /home/bg2539/workspace/ssdb/ssdb/src/util/log.cpp:249 (ssdb-server+0x000000101faf)
+    #3 log_write(int, char const*, ...) /home/bg2539/workspace/ssdb/ssdb/src/util/log.cpp:50 (ssdb-server+0x000000101f0e)
+    #4 ExpirationHandler::load_expiration_keys_from_db(int) /home/bg2539/workspace/ssdb/ssdb/src/ssdb/ttl.cpp:112 (ssdb-server+0x00000010125c)
+    #5 ExpirationHandler::expire_loop() /home/bg2539/workspace/ssdb/ssdb/src/ssdb/ttl.cpp:122 (ssdb-server+0x0000001012e9)
+    #6 ExpirationHandler::thread_func(void*) /home/bg2539/workspace/ssdb/ssdb/src/ssdb/ttl.cpp:151 (ssdb-server+0x000000100927)
+
+  Mutex M654 (0x7d2c0000af50) created at:
+    #0 pthread_mutex_init /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1063 (ssdb-server+0x000000037a35)
+    #1 Mutex /home/bg2539/workspace/ssdb/ssdb/src/ssdb/./../util/thread.h:23 (ssdb-server+0x000000100397)
+    #2 SSDBServer /home/bg2539/workspace/ssdb/ssdb/src/serv.cpp:274 (ssdb-server+0x0000000d7c2a)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:82 (ssdb-server+0x0000000aa3a2)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Thread T2 (tid=2100, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (ssdb-server+0x00000004dae3)
+    #1 ExpirationHandler::start() /home/bg2539/workspace/ssdb/ssdb/src/ssdb/ttl.cpp:32 (ssdb-server+0x000000100485)
+    #2 SSDBServer /home/bg2539/workspace/ssdb/ssdb/src/serv.cpp:274 (ssdb-server+0x0000000d7c2a)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:82 (ssdb-server+0x0000000aa3a2)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+SUMMARY: ThreadSanitizer: data race /build/buildd/eglibc-2.19/time/tzset.c:443 in tzset_internal
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2097)
+  Write of size 8 at 0x7fcbc1a4dde0 by main thread:
+    #0 localtime /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/../sanitizer_common/sanitizer_common_interceptors.inc:706 (ssdb-server+0x000000039a20)
+    #1 Logger::logv(int, char const*, __va_list_tag*) /home/bg2539/workspace/ssdb/ssdb/src/util/log.cpp:249 (ssdb-server+0x000000101faf)
+    #2 log_write(int, char const*, ...) /home/bg2539/workspace/ssdb/ssdb/src/util/log.cpp:50 (ssdb-server+0x000000101f0e)
+    #3 SSDBServer /home/bg2539/workspace/ssdb/ssdb/src/serv.cpp:328 (ssdb-server+0x0000000d82d7)
+    #4 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:82 (ssdb-server+0x0000000aa3a2)
+    #5 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #6 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Previous write of size 8 at 0x7fcbc1a4dde0 by thread T2 (mutexes: write M654):
+    #0 localtime /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/../sanitizer_common/sanitizer_common_interceptors.inc:706 (ssdb-server+0x000000039a20)
+    #1 Logger::logv(int, char const*, __va_list_tag*) /home/bg2539/workspace/ssdb/ssdb/src/util/log.cpp:249 (ssdb-server+0x000000101faf)
+    #2 log_write(int, char const*, ...) /home/bg2539/workspace/ssdb/ssdb/src/util/log.cpp:50 (ssdb-server+0x000000101f0e)
+    #3 ExpirationHandler::load_expiration_keys_from_db(int) /home/bg2539/workspace/ssdb/ssdb/src/ssdb/ttl.cpp:112 (ssdb-server+0x00000010125c)
+    #4 ExpirationHandler::expire_loop() /home/bg2539/workspace/ssdb/ssdb/src/ssdb/ttl.cpp:122 (ssdb-server+0x0000001012e9)
+    #5 ExpirationHandler::thread_func(void*) /home/bg2539/workspace/ssdb/ssdb/src/ssdb/ttl.cpp:151 (ssdb-server+0x000000100927)
+
+  Location is global '<null>' of size 0 at 0x000000000000 (libc.so.6+0x0000003c3de0)
+
+  Mutex M654 (0x7d2c0000af50) created at:
+    #0 pthread_mutex_init /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1063 (ssdb-server+0x000000037a35)
+    #1 Mutex /home/bg2539/workspace/ssdb/ssdb/src/ssdb/./../util/thread.h:23 (ssdb-server+0x000000100397)
+    #2 SSDBServer /home/bg2539/workspace/ssdb/ssdb/src/serv.cpp:274 (ssdb-server+0x0000000d7c2a)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:82 (ssdb-server+0x0000000aa3a2)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Thread T2 (tid=2100, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (ssdb-server+0x00000004dae3)
+    #1 ExpirationHandler::start() /home/bg2539/workspace/ssdb/ssdb/src/ssdb/ttl.cpp:32 (ssdb-server+0x000000100485)
+    #2 SSDBServer /home/bg2539/workspace/ssdb/ssdb/src/serv.cpp:274 (ssdb-server+0x0000000d7c2a)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:82 (ssdb-server+0x0000000aa3a2)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/ssdb/ssdb/src/util/log.cpp:249 in Logger::logv(int, char const*, __va_list_tag*)
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2097)
+  Write of size 8 at 0x7d180000ef50 by thread T3 (mutexes: write M105):
+    #0 BinlogQueue::commit() /home/bg2539/workspace/ssdb/ssdb/src/ssdb/binlog.cpp:224 (ssdb-server+0x0000000fdf61)
+    #1 SSDBImpl::set(Bytes const&, Bytes const&, char) /home/bg2539/workspace/ssdb/ssdb/src/ssdb/t_kv.cpp:63 (ssdb-server+0x0000000e9a52)
+    #2 proc_set(NetworkServer*, Link*, std::vector<Bytes, std::allocator<Bytes> > const&, Response*) /home/bg2539/workspace/ssdb/ssdb/src/proc_kv.cpp:38 (ssdb-server+0x0000000ab6e1)
+    #3 ProcWorker::proc(ProcJob*) /home/bg2539/workspace/ssdb/ssdb/src/net/worker.cpp:26 (ssdb-server+0x000000112de1)
+    #4 WorkerPool<ProcWorker, ProcJob>::_run_worker(void*) /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:355 (ssdb-server+0x00000010ebeb)
+
+  Previous read of size 8 at 0x7d180000ef50 by thread T1:
+    #0 BinlogQueue::log_clean_thread_func(void*) /home/bg2539/workspace/ssdb/ssdb/src/ssdb/binlog.cpp:365 (ssdb-server+0x0000000fd278)
+
+  Location is heap block of size 96 at 0x7d180000ef40 allocated by main thread:
+    #0 operator new(unsigned long) /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_new_delete.cc:37 (ssdb-server+0x0000000a7be3)
+    #1 SSDB::open(Options const&, std::string const&) /home/bg2539/workspace/ssdb/ssdb/src/ssdb/ssdb_impl.cpp:60 (ssdb-server+0x0000000e3534)
+    #2 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:65 (ssdb-server+0x0000000aa312)
+    #3 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #4 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Mutex M105 (0x7d180000ef78) created at:
+    #0 pthread_mutex_init /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1063 (ssdb-server+0x000000037a35)
+    #1 Mutex /home/bg2539/workspace/ssdb/ssdb/src/ssdb/./../util/thread.h:23 (ssdb-server+0x0000000fc7ce)
+    #2 SSDB::open(Options const&, std::string const&) /home/bg2539/workspace/ssdb/ssdb/src/ssdb/ssdb_impl.cpp:60 (ssdb-server+0x0000000e355c)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:65 (ssdb-server+0x0000000aa312)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Thread T3 (tid=2103, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (ssdb-server+0x00000004dae3)
+    #1 WorkerPool<ProcWorker, ProcJob>::start(int) /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:379 (ssdb-server+0x00000010d9c9)
+    #2 NetworkServer::serve() /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:184 (ssdb-server+0x00000010a506)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:86 (ssdb-server+0x0000000aa407)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Thread T1 (tid=2099, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (ssdb-server+0x00000004dae3)
+    #1 BinlogQueue /home/bg2539/workspace/ssdb/ssdb/src/ssdb/binlog.cpp:182 (ssdb-server+0x0000000fc94b)
+    #2 SSDB::open(Options const&, std::string const&) /home/bg2539/workspace/ssdb/ssdb/src/ssdb/ssdb_impl.cpp:60 (ssdb-server+0x0000000e355c)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:65 (ssdb-server+0x0000000aa312)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/ssdb/ssdb/src/ssdb/binlog.cpp:224 in BinlogQueue::commit()
+==================
+==2097==WARNING: Can't read from symbolizer at fd 14
+==2097==WARNING: Can't read from symbolizer at fd 15
+==================
+WARNING: ThreadSanitizer: data race (pid=2097)
+  Read of size 1 at 0x7fcbc3cdeba8 by main thread:
+    #0 NetworkServer::serve() /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:199 (ssdb-server+0x00000010ac1e)
+    #1 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:86 (ssdb-server+0x0000000aa407)
+    #2 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #3 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Previous write of size 1 at 0x7fcbc3cdeba8 by thread T3:
+    #0 signal_handler(int) /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:31 (ssdb-server+0x000000108623)
+    #1 CallUserSignalHandler /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1882 (ssdb-server+0x000000025ea8)
+    #2 Queue<ProcJob>::pop(ProcJob*) /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:217 (ssdb-server+0x00000010ed76)
+    #3 WorkerPool<ProcWorker, ProcJob>::_run_worker(void*) /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:350 (ssdb-server+0x00000010ebd1)
+
+  Location is global '<null>' of size 0 at 0x000000000000 (ssdb-server+0x000001220ba8)
+
+  Thread T3 (tid=2103, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (ssdb-server+0x00000004dae3)
+    #1 WorkerPool<ProcWorker, ProcJob>::start(int) /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:379 (ssdb-server+0x00000010d9c9)
+    #2 NetworkServer::serve() /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:184 (ssdb-server+0x00000010a506)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:86 (ssdb-server+0x0000000aa407)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:199 in NetworkServer::serve()
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2097)
+  Write of size 4 at 0x7fcbc3cdebac by main thread:
+    #0 signal_handler(int) /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:35 (ssdb-server+0x00000010860b)
+    #1 CallUserSignalHandler /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1882 (ssdb-server+0x000000028188)
+    #2 __gnu_cxx::new_allocator<Link*>::deallocate(Link**, unsigned long) /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../include/c++/4.8/ext/new_allocator.h:110 (ssdb-server+0x00000010ac8d)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:86 (ssdb-server+0x0000000aa407)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Previous write of size 4 at 0x7fcbc3cdebac by thread T3:
+    #0 signal_handler(int) /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:35 (ssdb-server+0x00000010860b)
+    #1 CallUserSignalHandler /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1882 (ssdb-server+0x000000025ea8)
+    #2 Queue<ProcJob>::pop(ProcJob*) /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:217 (ssdb-server+0x00000010ed76)
+    #3 WorkerPool<ProcWorker, ProcJob>::_run_worker(void*) /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:350 (ssdb-server+0x00000010ebd1)
+
+  Location is global '<null>' of size 0 at 0x000000000000 (ssdb-server+0x000001220bac)
+
+  Thread T3 (tid=2103, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (ssdb-server+0x00000004dae3)
+    #1 WorkerPool<ProcWorker, ProcJob>::start(int) /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:379 (ssdb-server+0x00000010d9c9)
+    #2 NetworkServer::serve() /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:184 (ssdb-server+0x00000010a506)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:86 (ssdb-server+0x0000000aa407)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:35 in signal_handler(int)
+==================
+==================
+WARNING: ThreadSanitizer: signal handler spoils errno (pid=2097)
+    #0 signal_handler(int) /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:27 (ssdb-server+0x0000001085e0)
+    #1 __gnu_cxx::new_allocator<Link*>::deallocate(Link**, unsigned long) /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../include/c++/4.8/ext/new_allocator.h:110 (ssdb-server+0x00000010ac8d)
+    #2 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:86 (ssdb-server+0x0000000aa407)
+    #3 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #4 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+SUMMARY: ThreadSanitizer: signal handler spoils errno /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:27 in signal_handler(int)
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2097)
+  Write of size 8 at 0x7d480000bd08 by main thread:
+    #0 pthread_cond_destroy /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1051 (ssdb-server+0x00000004eaac)
+    #1 ~Queue /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:169 (ssdb-server+0x00000010cb6c)
+    #2 ~NetworkServer /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:83 (ssdb-server+0x000000109888)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:88 (ssdb-server+0x0000000aa414)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Previous read of size 8 at 0x7d480000bd08 by thread T3 (mutexes: write M762):
+    #0 pthread_cond_wait /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:994 (ssdb-server+0x00000004ec71)
+    #1 Queue<ProcJob>::pop(ProcJob*) /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:217 (ssdb-server+0x00000010ed76)
+    #2 WorkerPool<ProcWorker, ProcJob>::_run_worker(void*) /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:350 (ssdb-server+0x00000010ebd1)
+
+  Location is heap block of size 344 at 0x7d480000bd00 allocated by main thread:
+    #0 operator new(unsigned long) /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_new_delete.cc:37 (ssdb-server+0x0000000a7be3)
+    #1 NetworkServer::serve() /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:183 (ssdb-server+0x00000010a4cf)
+    #2 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:86 (ssdb-server+0x0000000aa407)
+    #3 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #4 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Mutex M762 (0x7d480000bd38) created at:
+    #0 pthread_mutex_init /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1063 (ssdb-server+0x000000037a35)
+    #1 Queue /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:164 (ssdb-server+0x00000010e5bd)
+    #2 WorkerPool /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:143 (ssdb-server+0x00000010d71d)
+    #3 NetworkServer::serve() /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:183 (ssdb-server+0x00000010a4e1)
+    #4 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:86 (ssdb-server+0x0000000aa407)
+    #5 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #6 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Thread T3 (tid=2103, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (ssdb-server+0x00000004dae3)
+    #1 WorkerPool<ProcWorker, ProcJob>::start(int) /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:379 (ssdb-server+0x00000010d9c9)
+    #2 NetworkServer::serve() /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:184 (ssdb-server+0x00000010a506)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:86 (ssdb-server+0x0000000aa407)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:169 in ~Queue
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2097)
+  Write of size 1 at 0x7d480000bd38 by main thread:
+    #0 pthread_mutex_destroy /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1079 (ssdb-server+0x00000002c0b3)
+    #1 ~Queue /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:170 (ssdb-server+0x00000010cb75)
+    #2 ~NetworkServer /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:83 (ssdb-server+0x000000109888)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:88 (ssdb-server+0x0000000aa414)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Previous atomic read of size 1 at 0x7d480000bd38 by thread T3:
+    #0 pthread_cond_wait /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:994 (ssdb-server+0x00000004ec71)
+    #1 Queue<ProcJob>::pop(ProcJob*) /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:217 (ssdb-server+0x00000010ed76)
+    #2 WorkerPool<ProcWorker, ProcJob>::_run_worker(void*) /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:350 (ssdb-server+0x00000010ebd1)
+
+  Location is heap block of size 344 at 0x7d480000bd00 allocated by main thread:
+    #0 operator new(unsigned long) /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_new_delete.cc:37 (ssdb-server+0x0000000a7be3)
+    #1 NetworkServer::serve() /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:183 (ssdb-server+0x00000010a4cf)
+    #2 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:86 (ssdb-server+0x0000000aa407)
+    #3 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #4 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Thread T3 (tid=2103, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (ssdb-server+0x00000004dae3)
+    #1 WorkerPool<ProcWorker, ProcJob>::start(int) /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:379 (ssdb-server+0x00000010d9c9)
+    #2 NetworkServer::serve() /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:184 (ssdb-server+0x00000010a506)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:86 (ssdb-server+0x0000000aa407)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:170 in ~Queue
+==================
+==================
+WARNING: ThreadSanitizer: destroy of a locked mutex (pid=2097)
+    #0 pthread_mutex_destroy /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1079 (ssdb-server+0x00000002c0b3)
+    #1 ~Queue /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:170 (ssdb-server+0x00000010cb75)
+    #2 ~NetworkServer /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:83 (ssdb-server+0x000000109888)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:88 (ssdb-server+0x0000000aa414)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  and:
+    #0 pthread_mutex_destroy /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1079 (ssdb-server+0x00000002c0b3)
+    #1 ~Queue /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:170 (ssdb-server+0x00000010cb75)
+    #2 ~NetworkServer /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:83 (ssdb-server+0x000000109888)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:88 (ssdb-server+0x0000000aa414)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Location is heap block of size 344 at 0x7d480000bd00 allocated by main thread:
+    #0 operator new(unsigned long) /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_new_delete.cc:37 (ssdb-server+0x0000000a7be3)
+    #1 NetworkServer::serve() /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:183 (ssdb-server+0x00000010a4cf)
+    #2 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:86 (ssdb-server+0x0000000aa407)
+    #3 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #4 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Mutex M762 (0x7d480000bd38) created at:
+    #0 pthread_mutex_init /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1063 (ssdb-server+0x000000037a35)
+    #1 Queue /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:164 (ssdb-server+0x00000010e5bd)
+    #2 WorkerPool /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:143 (ssdb-server+0x00000010d71d)
+    #3 NetworkServer::serve() /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:183 (ssdb-server+0x00000010a4e1)
+    #4 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:86 (ssdb-server+0x0000000aa407)
+    #5 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #6 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+SUMMARY: ThreadSanitizer: destroy of a locked mutex /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:170 in ~Queue
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2097)
+  Write of size 8 at 0x7d480000bb88 by main thread:
+    #0 pthread_cond_destroy /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1051 (ssdb-server+0x00000004eaac)
+    #1 ~Queue /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:169 (ssdb-server+0x00000010cb6c)
+    #2 ~NetworkServer /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:85 (ssdb-server+0x000000109938)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:88 (ssdb-server+0x0000000aa414)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Previous read of size 8 at 0x7d480000bb88 by thread T10 (mutexes: write M764):
+    #0 pthread_cond_wait /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:994 (ssdb-server+0x00000004ec71)
+    #1 Queue<ProcJob>::pop(ProcJob*) /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:217 (ssdb-server+0x00000010ed76)
+    #2 WorkerPool<ProcWorker, ProcJob>::_run_worker(void*) /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:350 (ssdb-server+0x00000010ebd1)
+
+  Location is heap block of size 344 at 0x7d480000bb80 allocated by main thread:
+    #0 operator new(unsigned long) /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_new_delete.cc:37 (ssdb-server+0x0000000a7be3)
+    #1 NetworkServer::serve() /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:185 (ssdb-server+0x00000010a510)
+    #2 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:86 (ssdb-server+0x0000000aa407)
+    #3 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #4 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Mutex M764 (0x7d480000bbb8) created at:
+    #0 pthread_mutex_init /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1063 (ssdb-server+0x000000037a35)
+    #1 Queue /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:164 (ssdb-server+0x00000010e5bd)
+    #2 WorkerPool /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:143 (ssdb-server+0x00000010d71d)
+    #3 NetworkServer::serve() /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:185 (ssdb-server+0x00000010a522)
+    #4 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:86 (ssdb-server+0x0000000aa407)
+    #5 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #6 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Thread T10 (tid=2111, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (ssdb-server+0x00000004dae3)
+    #1 WorkerPool<ProcWorker, ProcJob>::start(int) /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:379 (ssdb-server+0x00000010d9c9)
+    #2 NetworkServer::serve() /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:186 (ssdb-server+0x00000010a547)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:86 (ssdb-server+0x0000000aa407)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:169 in ~Queue
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2097)
+  Write of size 1 at 0x7d480000bbb8 by main thread:
+    #0 pthread_mutex_destroy /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1079 (ssdb-server+0x00000002c0b3)
+    #1 ~Queue /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:170 (ssdb-server+0x00000010cb75)
+    #2 ~NetworkServer /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:85 (ssdb-server+0x000000109938)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:88 (ssdb-server+0x0000000aa414)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Previous atomic read of size 1 at 0x7d480000bbb8 by thread T10:
+    #0 pthread_mutex_lock /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/../sanitizer_common/sanitizer_common_interceptors.inc:3194 (ssdb-server+0x000000035e33)
+    #1 Queue<ProcJob>::pop(ProcJob*) /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:210 (ssdb-server+0x00000010ed29)
+    #2 WorkerPool<ProcWorker, ProcJob>::_run_worker(void*) /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:350 (ssdb-server+0x00000010ebd1)
+
+  Location is heap block of size 344 at 0x7d480000bb80 allocated by main thread:
+    #0 operator new(unsigned long) /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_new_delete.cc:37 (ssdb-server+0x0000000a7be3)
+    #1 NetworkServer::serve() /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:185 (ssdb-server+0x00000010a510)
+    #2 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:86 (ssdb-server+0x0000000aa407)
+    #3 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #4 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Thread T10 (tid=2111, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (ssdb-server+0x00000004dae3)
+    #1 WorkerPool<ProcWorker, ProcJob>::start(int) /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:379 (ssdb-server+0x00000010d9c9)
+    #2 NetworkServer::serve() /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:186 (ssdb-server+0x00000010a547)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:86 (ssdb-server+0x0000000aa407)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:170 in ~Queue
+==================
+==================
+WARNING: ThreadSanitizer: destroy of a locked mutex (pid=2097)
+    #0 pthread_mutex_destroy /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1079 (ssdb-server+0x00000002c0b3)
+    #1 ~Queue /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:170 (ssdb-server+0x00000010cb75)
+    #2 ~NetworkServer /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:85 (ssdb-server+0x000000109938)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:88 (ssdb-server+0x0000000aa414)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  and:
+    #0 pthread_mutex_destroy /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1079 (ssdb-server+0x00000002c0b3)
+    #1 ~Queue /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:170 (ssdb-server+0x00000010cb75)
+    #2 ~NetworkServer /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:85 (ssdb-server+0x000000109938)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:88 (ssdb-server+0x0000000aa414)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Location is heap block of size 344 at 0x7d480000bb80 allocated by main thread:
+    #0 operator new(unsigned long) /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_new_delete.cc:37 (ssdb-server+0x0000000a7be3)
+    #1 NetworkServer::serve() /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:185 (ssdb-server+0x00000010a510)
+    #2 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:86 (ssdb-server+0x0000000aa407)
+    #3 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #4 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Mutex M764 (0x7d480000bbb8) created at:
+    #0 pthread_mutex_init /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1063 (ssdb-server+0x000000037a35)
+    #1 Queue /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:164 (ssdb-server+0x00000010e5bd)
+    #2 WorkerPool /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:143 (ssdb-server+0x00000010d71d)
+    #3 NetworkServer::serve() /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:185 (ssdb-server+0x00000010a522)
+    #4 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:86 (ssdb-server+0x0000000aa407)
+    #5 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #6 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+SUMMARY: ThreadSanitizer: destroy of a locked mutex /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:170 in ~Queue
+==================
+==================
+WARNING: ThreadSanitizer: heap-use-after-free (pid=2097)
+  Read of size 1 at 0x7d080000b778 by main thread:
+    #0 BytesHash::operator()(Bytes const&) const /home/bg2539/workspace/ssdb/ssdb/src/net/./proc.h:79 (ssdb-server+0x00000011168d)
+    #1 ~NetworkServer /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:86 (ssdb-server+0x00000010996b)
+    #2 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:88 (ssdb-server+0x0000000aa414)
+    #3 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #4 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Previous write of size 8 at 0x7d080000b778 by main thread:
+    #0 operator delete(void*) /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_new_delete.cc:69 (ssdb-server+0x0000000a7e79)
+    #1 std::string::_Rep::_M_dispose(std::allocator<char> const&) /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../include/c++/4.8/bits/basic_string.h:249 (ssdb-server+0x000000111579)
+    #2 ~NetworkServer /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:86 (ssdb-server+0x00000010996b)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:88 (ssdb-server+0x0000000aa414)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+SUMMARY: ThreadSanitizer: heap-use-after-free /home/bg2539/workspace/ssdb/ssdb/src/net/./proc.h:79 in BytesHash::operator()(Bytes const&) const
+==================
+==================
+WARNING: ThreadSanitizer: heap-use-after-free (pid=2097)
+  Read of size 1 at 0x7d0c0000d278 by main thread:
+    #0 BytesHash::operator()(Bytes const&) const /home/bg2539/workspace/ssdb/ssdb/src/net/./proc.h:79 (ssdb-server+0x00000011165d)
+    #1 ~NetworkServer /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:86 (ssdb-server+0x00000010996b)
+    #2 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:88 (ssdb-server+0x0000000aa414)
+    #3 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #4 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Previous write of size 8 at 0x7d0c0000d278 by main thread:
+    #0 operator delete(void*) /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_new_delete.cc:69 (ssdb-server+0x0000000a7e79)
+    #1 std::string::_Rep::_M_dispose(std::allocator<char> const&) /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../include/c++/4.8/bits/basic_string.h:249 (ssdb-server+0x000000111579)
+    #2 ~NetworkServer /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:86 (ssdb-server+0x00000010996b)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:88 (ssdb-server+0x0000000aa414)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+SUMMARY: ThreadSanitizer: heap-use-after-free /home/bg2539/workspace/ssdb/ssdb/src/net/./proc.h:79 in BytesHash::operator()(Bytes const&) const
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2097)
+  Write of size 1 at 0x7d2c0000af80 by main thread (mutexes: write M654):
+    #0 ExpirationHandler::stop() /home/bg2539/workspace/ssdb/ssdb/src/ssdb/ttl.cpp:40 (ssdb-server+0x00000010063f)
+    #1 ~SSDBServer /home/bg2539/workspace/ssdb/ssdb/src/serv.cpp:344 (ssdb-server+0x0000000d89cd)
+    #2 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:89 (ssdb-server+0x0000000aa424)
+    #3 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #4 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Previous read of size 1 at 0x7d2c0000af80 by thread T2:
+    [failed to restore the stack]
+
+  Location is heap block of size 168 at 0x7d2c0000af50 allocated by main thread:
+    #0 operator new(unsigned long) /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_new_delete.cc:37 (ssdb-server+0x0000000a7be3)
+    #1 SSDBServer /home/bg2539/workspace/ssdb/ssdb/src/serv.cpp:274 (ssdb-server+0x0000000d7c13)
+    #2 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:82 (ssdb-server+0x0000000aa3a2)
+    #3 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #4 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Mutex M654 (0x7d2c0000af50) created at:
+    #0 pthread_mutex_init /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1063 (ssdb-server+0x000000037a35)
+    #1 Mutex /home/bg2539/workspace/ssdb/ssdb/src/ssdb/./../util/thread.h:23 (ssdb-server+0x000000100397)
+    #2 SSDBServer /home/bg2539/workspace/ssdb/ssdb/src/serv.cpp:274 (ssdb-server+0x0000000d7c2a)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:82 (ssdb-server+0x0000000aa3a2)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Thread T2 (tid=2100, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (ssdb-server+0x00000004dae3)
+    #1 ExpirationHandler::start() /home/bg2539/workspace/ssdb/ssdb/src/ssdb/ttl.cpp:32 (ssdb-server+0x000000100485)
+    #2 SSDBServer /home/bg2539/workspace/ssdb/ssdb/src/serv.cpp:274 (ssdb-server+0x0000000d7c2a)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:82 (ssdb-server+0x0000000aa3a2)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/ssdb/ssdb/src/ssdb/ttl.cpp:40 in ExpirationHandler::stop()
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2097)
+  Write of size 1 at 0x7d180000ef70 by main thread:
+    #0 ~BinlogQueue /home/bg2539/workspace/ssdb/ssdb/src/ssdb/binlog.cpp:192 (ssdb-server+0x0000000fd3dc)
+    #1 ~SSDBImpl /home/bg2539/workspace/ssdb/ssdb/src/ssdb/ssdb_impl.cpp:25 (ssdb-server+0x0000000e3224)
+    #2 ~SSDBImpl /home/bg2539/workspace/ssdb/ssdb/src/ssdb/ssdb_impl.cpp:23 (ssdb-server+0x0000000e32e8)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:91 (ssdb-server+0x0000000aa456)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Previous read of size 1 at 0x7d180000ef70 by thread T1:
+    [failed to restore the stack]
+
+  As if synchronized via sleep:
+    #0 usleep /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:300 (ssdb-server+0x00000004bbc3)
+    #1 ExpirationHandler::stop() /home/bg2539/workspace/ssdb/ssdb/src/ssdb/ttl.cpp:45 (ssdb-server+0x000000100666)
+    #2 ~SSDBServer /home/bg2539/workspace/ssdb/ssdb/src/serv.cpp:344 (ssdb-server+0x0000000d89cd)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:89 (ssdb-server+0x0000000aa424)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Location is heap block of size 96 at 0x7d180000ef40 allocated by main thread:
+    #0 operator new(unsigned long) /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_new_delete.cc:37 (ssdb-server+0x0000000a7be3)
+    #1 SSDB::open(Options const&, std::string const&) /home/bg2539/workspace/ssdb/ssdb/src/ssdb/ssdb_impl.cpp:60 (ssdb-server+0x0000000e3534)
+    #2 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:65 (ssdb-server+0x0000000aa312)
+    #3 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #4 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Thread T1 (tid=2099, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (ssdb-server+0x00000004dae3)
+    #1 BinlogQueue /home/bg2539/workspace/ssdb/ssdb/src/ssdb/binlog.cpp:182 (ssdb-server+0x0000000fc94b)
+    #2 SSDB::open(Options const&, std::string const&) /home/bg2539/workspace/ssdb/ssdb/src/ssdb/ssdb_impl.cpp:60 (ssdb-server+0x0000000e355c)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:65 (ssdb-server+0x0000000aa312)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/ssdb/ssdb/src/ssdb/binlog.cpp:192 in ~BinlogQueue
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2097)
+  Write of size 8 at 0x7d180000ef40 by main thread:
+    #0 ~BinlogQueue /home/bg2539/workspace/ssdb/ssdb/src/ssdb/binlog.cpp:200 (ssdb-server+0x0000000fd415)
+    #1 ~SSDBImpl /home/bg2539/workspace/ssdb/ssdb/src/ssdb/ssdb_impl.cpp:25 (ssdb-server+0x0000000e3224)
+    #2 ~SSDBImpl /home/bg2539/workspace/ssdb/ssdb/src/ssdb/ssdb_impl.cpp:23 (ssdb-server+0x0000000e32e8)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:91 (ssdb-server+0x0000000aa456)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Previous read of size 8 at 0x7d180000ef40 by thread T1:
+    [failed to restore the stack]
+
+  As if synchronized via sleep:
+    #0 usleep /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:300 (ssdb-server+0x00000004bbc3)
+    #1 ~BinlogQueue /home/bg2539/workspace/ssdb/ssdb/src/ssdb/binlog.cpp:197 (ssdb-server+0x0000000fd406)
+    #2 ~SSDBImpl /home/bg2539/workspace/ssdb/ssdb/src/ssdb/ssdb_impl.cpp:25 (ssdb-server+0x0000000e3224)
+    #3 ~SSDBImpl /home/bg2539/workspace/ssdb/ssdb/src/ssdb/ssdb_impl.cpp:23 (ssdb-server+0x0000000e32e8)
+    #4 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:91 (ssdb-server+0x0000000aa456)
+    #5 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #6 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Location is heap block of size 96 at 0x7d180000ef40 allocated by main thread:
+    #0 operator new(unsigned long) /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_new_delete.cc:37 (ssdb-server+0x0000000a7be3)
+    #1 SSDB::open(Options const&, std::string const&) /home/bg2539/workspace/ssdb/ssdb/src/ssdb/ssdb_impl.cpp:60 (ssdb-server+0x0000000e3534)
+    #2 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:65 (ssdb-server+0x0000000aa312)
+    #3 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #4 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+  Thread T1 (tid=2099, finished) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (ssdb-server+0x00000004dae3)
+    #1 BinlogQueue /home/bg2539/workspace/ssdb/ssdb/src/ssdb/binlog.cpp:182 (ssdb-server+0x0000000fc94b)
+    #2 SSDB::open(Options const&, std::string const&) /home/bg2539/workspace/ssdb/ssdb/src/ssdb/ssdb_impl.cpp:60 (ssdb-server+0x0000000e355c)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:65 (ssdb-server+0x0000000aa312)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/ssdb/ssdb/src/ssdb/binlog.cpp:200 in ~BinlogQueue
+==================
+==================                                                              
+WARNING: ThreadSanitizer: data race (pid=26435)                                 
+  Write of size 8 at 0x7d180000ef40 by main thread:                             
+    #0 BinlogQueue::~BinlogQueue() /home/ruigu/Workspace/concurrency-exploits/ssdb-1.9.2/ssdb-tsan/src/ssdb/binlog.cpp:200:2 (ssdb-server+0x0000004f0e45)
+    #1 SSDBImpl::~SSDBImpl() /home/ruigu/Workspace/concurrency-exploits/ssdb-1.9.2/ssdb-tsan/src/ssdb/ssdb_impl.cpp:25:3 (ssdb-server+0x0000004d43bf)
+    #2 SSDBImpl::~SSDBImpl() /home/ruigu/Workspace/concurrency-exploits/ssdb-1.9.2/ssdb-tsan/src/ssdb/ssdb_impl.cpp:23:22 (ssdb-server+0x0000004d4488)
+    #3 MyApplication::run() /home/ruigu/Workspace/concurrency-exploits/ssdb-1.9.2/ssdb-tsan/src/ssdb-server.cpp:91:2 (ssdb-server+0x00000049667d)
+    #4 Application::main(int, char**) /home/ruigu/Workspace/concurrency-exploits/ssdb-1.9.2/ssdb-tsan/src/util/app.cpp:17:2 (ssdb-server+0x0000004fabfb)
+    #5 main /home/ruigu/Workspace/concurrency-exploits/ssdb-1.9.2/ssdb-tsan/src/ssdb-server.cpp:98:9 (ssdb-server+0x000000496dc0)
+                                                                                
+  Previous read of size 8 at 0x7d180000ef40 by thread T1:                       
+    #0 BinlogQueue::log_clean_thread_func(void*) /home/ruigu/Workspace/concurrency-exploits/ssdb-1.9.2/ssdb-tsan/src/ssdb/binlog.cpp:359:7 (ssdb-server+0x0000004f0c97)
+                                                                                
+  As if synchronized via sleep:                                                 
+    #0 usleep /home/ruigu/Workspace/llvm-3.6.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:281 (ssdb-server+0x0000004445a2)
+    #1 BinlogQueue::~BinlogQueue() /home/ruigu/Workspace/concurrency-exploits/ssdb-1.9.2/ssdb-tsan/src/ssdb/binlog.cpp:197:4 (ssdb-server+0x0000004f0e36)
+    #2 SSDBImpl::~SSDBImpl() /home/ruigu/Workspace/concurrency-exploits/ssdb-1.9.2/ssdb-tsan/src/ssdb/ssdb_impl.cpp:25:3 (ssdb-server+0x0000004d43bf)
+    #3 SSDBImpl::~SSDBImpl() /home/ruigu/Workspace/concurrency-exploits/ssdb-1.9.2/ssdb-tsan/src/ssdb/ssdb_impl.cpp:23:22 (ssdb-server+0x0000004d4488)
+    #4 MyApplication::run() /home/ruigu/Workspace/concurrency-exploits/ssdb-1.9.2/ssdb-tsan/src/ssdb-server.cpp:91:2 (ssdb-server+0x00000049667d)
+    #5 Application::main(int, char**) /home/ruigu/Workspace/concurrency-exploits/ssdb-1.9.2/ssdb-tsan/src/util/app.cpp:17:2 (ssdb-server+0x0000004fabfb)
+    #6 main /home/ruigu/Workspace/concurrency-exploits/ssdb-1.9.2/ssdb-tsan/src/ssdb-server.cpp:98:9 (ssdb-server+0x000000496dc0)
+                                                                                
+  Location is heap block of size 96 at 0x7d180000ef40 allocated by main thread: 
+    #0 operator new(unsigned long) /home/ruigu/Workspace/llvm-3.6.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:571 (ssdb-server+0x00000043e34f)
+    #1 SSDB::open(Options const&, std::string const&) /home/ruigu/Workspace/concurrency-exploits/ssdb-1.9.2/ssdb-tsan/src/ssdb/ssdb_impl.cpp:60:18 (ssdb-server+0x0000004d4716)
+    #2 MyApplication::run() /home/ruigu/Workspace/concurrency-exploits/ssdb-1.9.2/ssdb-tsan/src/ssdb-server.cpp:65:12 (ssdb-server+0x000000496536)
+    #3 Application::main(int, char**) /home/ruigu/Workspace/concurrency-exploits/ssdb-1.9.2/ssdb-tsan/src/util/app.cpp:17:2 (ssdb-server+0x0000004fabfb)
+    #4 main /home/ruigu/Workspace/concurrency-exploits/ssdb-1.9.2/ssdb-tsan/src/ssdb-server.cpp:98:9 (ssdb-server+0x000000496dc0)
+                                                                                
+  Thread T1 (tid=26437, finished) created by main thread at:                    
+    #0 pthread_create /home/ruigu/Workspace/llvm-3.6.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:896 (ssdb-server+0x000000446343)
+    #1 BinlogQueue::BinlogQueue(leveldb::DB*, bool) /home/ruigu/Workspace/concurrency-exploits/ssdb-1.9.2/ssdb-tsan/src/ssdb/binlog.cpp:182:13 (ssdb-server+0x0000004f027d)
+    #2 SSDB::open(Options const&, std::string const&) /home/ruigu/Workspace/concurrency-exploits/ssdb-1.9.2/ssdb-tsan/src/ssdb/ssdb_impl.cpp:60:18 (ssdb-server+0x0000004d473e)
+    #3 MyApplication::run() /home/ruigu/Workspace/concurrency-exploits/ssdb-1.9.2/ssdb-tsan/src/ssdb-server.cpp:65:12 (ssdb-server+0x000000496536)
+    #4 Application::main(int, char**) /home/ruigu/Workspace/concurrency-exploits/ssdb-1.9.2/ssdb-tsan/src/util/app.cpp:17:2 (ssdb-server+0x0000004fabfb)
+    #5 main /home/ruigu/Workspace/concurrency-exploits/ssdb-1.9.2/ssdb-tsan/src/ssdb-server.cpp:98:9 (ssdb-server+0x000000496dc0)
+                                                                                
+SUMMARY: ThreadSanitizer: data race /home/ruigu/Workspace/concurrency-exploits/ssdb-1.9.2/ssdb-tsan/src/ssdb/binlog.cpp:200 BinlogQueue::~BinlogQueue()
+==================                                                              
+==================
+WARNING: ThreadSanitizer: thread leak (pid=2097)
+  Thread T1 (tid=2099, finished) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (ssdb-server+0x00000004dae3)
+    #1 BinlogQueue /home/bg2539/workspace/ssdb/ssdb/src/ssdb/binlog.cpp:182 (ssdb-server+0x0000000fc94b)
+    #2 SSDB::open(Options const&, std::string const&) /home/bg2539/workspace/ssdb/ssdb/src/ssdb/ssdb_impl.cpp:60 (ssdb-server+0x0000000e355c)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:65 (ssdb-server+0x0000000aa312)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+SUMMARY: ThreadSanitizer: thread leak /home/bg2539/workspace/ssdb/ssdb/src/ssdb/binlog.cpp:182 in BinlogQueue
+==================
+==================
+WARNING: ThreadSanitizer: thread leak (pid=2097)
+  Thread T2 (tid=2100, finished) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (ssdb-server+0x00000004dae3)
+    #1 ExpirationHandler::start() /home/bg2539/workspace/ssdb/ssdb/src/ssdb/ttl.cpp:32 (ssdb-server+0x000000100485)
+    #2 SSDBServer /home/bg2539/workspace/ssdb/ssdb/src/serv.cpp:274 (ssdb-server+0x0000000d7c2a)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:82 (ssdb-server+0x0000000aa3a2)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+SUMMARY: ThreadSanitizer: thread leak /home/bg2539/workspace/ssdb/ssdb/src/ssdb/ttl.cpp:32 in ExpirationHandler::start()
+==================
+==================
+WARNING: ThreadSanitizer: thread leak (pid=2097)
+  Thread T3 (tid=2103, finished) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (ssdb-server+0x00000004dae3)
+    #1 WorkerPool<ProcWorker, ProcJob>::start(int) /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:379 (ssdb-server+0x00000010d9c9)
+    #2 NetworkServer::serve() /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:184 (ssdb-server+0x00000010a506)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:86 (ssdb-server+0x0000000aa407)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+SUMMARY: ThreadSanitizer: thread leak /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:379 in WorkerPool<ProcWorker, ProcJob>::start(int)
+==================
+==================
+WARNING: ThreadSanitizer: thread leak (pid=2097)
+  Thread T6 (tid=2106, finished) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (ssdb-server+0x00000004dae3)
+    #1 WorkerPool<ProcWorker, ProcJob>::start(int) /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:379 (ssdb-server+0x00000010d9c9)
+    #2 NetworkServer::serve() /home/bg2539/workspace/ssdb/ssdb/src/net/server.cpp:186 (ssdb-server+0x00000010a547)
+    #3 MyApplication::run() /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:86 (ssdb-server+0x0000000aa407)
+    #4 Application::main(int, char**) /home/bg2539/workspace/ssdb/ssdb/src/util/app.cpp:17 (ssdb-server+0x000000106feb)
+    #5 main /home/bg2539/workspace/ssdb/ssdb/src/ssdb-server.cpp:98 (ssdb-server+0x0000000aaa41)
+
+SUMMARY: ThreadSanitizer: thread leak /home/bg2539/workspace/ssdb/ssdb/src/net/./../util/thread.h:379 in WorkerPool<ProcWorker, ProcJob>::start(int)
+==================
+ThreadSanitizer: reported 21 warnings

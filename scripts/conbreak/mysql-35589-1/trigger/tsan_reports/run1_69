@@ -1,0 +1,2 @@
+LOGGER::init_error_log (log.cc:1075)
+LOGGER::error_log_print (log.cc:833)

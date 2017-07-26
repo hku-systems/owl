@@ -1,0 +1,2 @@
+row_update_for_mysql (row0mysql.c:1417)
+row_update_statistics_if_needed (row0mysql.c:876)

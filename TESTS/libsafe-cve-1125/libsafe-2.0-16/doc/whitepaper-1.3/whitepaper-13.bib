@@ -1,0 +1,492 @@
+%------------------------------------------------------------------------------
+% Binary instrumentation
+
+% Pixie
+@TechReport{Smith90,
+  author =       "Michael D. Smith",
+  title =        "Tracing with {Pixie}",
+  institution =  "Center for Integrated Systems, Stanford University",
+  year =         "November 1991",
+  number	= "CSL-TR-91-497",
+}
+
+@InProceedings{WAL:1991,
+  author =       "David Wall",
+  title =        "{\em``Systems for Late Code Modification''}",
+  booktitle =    "{``Code Generation --- Concepts, Tools, Techniques'',
+                 Proceedings of the International Workshop on Code
+                 Generation, Dagstuhl, Germany, 20-24 May 1991}",
+  editor =       "Robert Giegerich and Susan L. Graham",
+  series =       "Workshops in Computing",
+  year =         "1991",
+  pages =        "275--293",
+  publisher =    "Springer-Verlag",
+  note =         "ISBN 3-540-19757-5 and 3-387-19757-5",
+  abstract =     "Modification of code after it has been generated is
+                 useful for a variety of applications including some
+                 kinds of late optimization and many kinds of high-level
+                 and low-level instrumentation and simulation. Two
+                 systems that have been developed for doing this are the
+                 code modification part of my Mahler system and the
+                 {"}pixie{"} tool developed independently at Mips. The
+                 Mahler code modifier is part of the linker, and
+                 modifies object modules as they are being linked. This
+                 has several advantages. An object file contains a
+                 relocation dictionary and loader symbol table, so
+                 Mahler can recognize address references and can correct
+                 them to reflect the changes made. The symbol table also
+                 provides a channel for additional information that the
+                 compiler can include to explain tricky things in the
+                 compiled code. Mahler has the added advantage that the
+                 Mahler compiler produces all of the object modules: it
+                 serves both as the back end of all high-level compilers
+                 and also as the only available assembler. This means
+                 that any coding conventions followed by the Mahler
+                 compiler are guaranteed to hold throughout the entire
+                 program. Mahler has the disadvantage that the linker is
+                 nonstandard. Moreover, a user who requests a particular
+                 application must re-link the program, and so must know
+                 what object modules and libraries make up the program.
+                 The pixie system works differently. Pixie modifies an
+                 executable file that has already been fully linked. The
+                 relocation dictionaries are gone, and the loader symbol
+                 table may be gone as well. This means that a user can
+                 invoke pixie on an executable without knowing or caring
+                 how it was built. However, it also means that pixie
+                 must be conservative in many ways: for instance, each
+                 indirect jump in the original code is replaced by a
+                 sequence of instructions that jumps via a huge address
+                 translation table incorporated into the modified
+                 executable. This kind of overhead makes pixie an
+                 unsuitable medium for modifications that optimize,
+                 though it is still very convenient for modifications
+                 that instrument. I am exploring two intermediate points
+                 between Mahler and pixie. The first is {"}dixie{"},
+                 which acts on an executable as pixie does, but assumes
+                 that it was generated using the Mips compiler
+                 conventions. Most executables include some assembly
+                 code from libraries, which might not follow these
+                 conventions, so dixie looks for library routines that
+                 it knows violate the conventions but that it can
+                 understand anyway. In many cases this allows dixie to
+                 modify a program without needing the big jump table,
+                 though programs that contain unexpected indirect
+                 procedure calls must still include the table. The
+                 second is {"}epoxie{"}, which assumes that the program
+                 has been completely linked using an incremental linker
+                 that leaves the relocation dictionaries in place. (Unix
+                 linkers normally have an option that does this.) This
+                 gives waxie some of Mahler's advantages without
+                 requiring modifications to the standard linker. A jump
+                 table is never required, and the code modification
+                 process can (I hope) be unintrusive enough to use for
+                 optimization as well as for instrumentation.",
+}
+
+@Article{Wilson:1996:DBO,
+  author =       "Linda S. Wilson and Craig A. Neth and Michael J.
+                 Rickabaugh",
+  title =        "Delivering Binary Object Modification Tools for
+                 Program Analysis and Optimization",
+  journal =      "Digital Technical Journal of Digital Equipment
+                 Corporation",
+  volume =       "8",
+  number =       "1",
+  pages =        "19--31 (or 18--31??)",
+  month =        may,
+  year =         "1996",
+  coden =        "DTJOEL",
+  ISSN =         "0898-901X",
+  bibdate =      "Thu Mar 20 18:15:43 MST 1997",
+  url = "ftp://ftp.digital.com/pub/Digital/info/DTJ/v8n1/Delivering_Binary_Object_Modif_04jun1996DTJL02P8.ps;
+                 http://www.digital.com:80/info/DTJL02/DTJL02AH.HTM;
+                 http://www.digital.com:80/info/DTJL02/DTJL02.HTM;
+                 http://www.digital.com:80/info/DTJL02/DTJL02SC.TXT;
+                 http://www.digital.com:80/info/DTJL02/DTJL02P8.PS;
+                 http://www.digital.com:80/info/DTJL02/DTJL02PF.PDF",
+  abstract =     "Digital has developed two binary object modification
+                 tools for program analysis and optimization on the
+                 Digital UNIX version 4.0 operating system for the Alpha
+                 platform. The technology originated from research
+                 performed at Digital's Western Research Laboratory. The
+                 OM object modification tool is a transformation tool
+                 that focuses on postlink optimizations. OM can apply
+                 powerful intermodule and interlanguage optimizations,
+                 even to routines in system libraries. Atom, an analysis
+                 tool with object modification, provides a flexible
+                 framework for customizing the transformation process to
+                 analyze a program. With Atom, compilation system
+                 changes are not needed to create both simple and
+                 sophisticated tools to directly diagnose or debug
+                 application-specific performance problems. The linker
+                 and loader are enhanced to support Atom. The
+                 optimizations OM performs can be driven from
+                 performance data generated with the Atom-based pixie
+                 tool. Applying OM and Atom to commercial applications
+                 provided performance improvements of up to 15
+                 percent.",
+  acknowledgement = ack-nhfb,
+  classcodes =   "C6150G (Diagnostic, testing, debugging and evaluating
+                 systems); C6150J (Operating systems); C6150C
+                 (Compilers, interpreters and other processors); C6115
+                 (Programming support)",
+  corpsource =   "Nebraska Univ., Lincoln, NE, USA",
+  keywords =     "Alpha platform; application-specific performance;
+                 Atom; binary object modification tools; compilation
+                 system; Digital UNIX version 4.0 operating system;
+                 optimization; postlink optimizations; problems;
+                 program; program analysis; program compilers; program
+                 debugging; transformation tool; Unix",
+  treatment =    "A Application; P Practical",
+}
+
+@TechReport{CMU//CS-94-137,
+  type =         "Technical Report",
+  number =       "CS-94-137",
+  title =        "Adaptable Binary Programs",
+  month =        apr,
+  notes =        "Compilation, late code modification, program
+                 instrumentation",
+  pages =        "18",
+  year =         "1994",
+  bibdate =      "September 13, 1995",
+  author =       "Robert Wahbe and Steven Lucco and Susan L. Graham",
+  abstract =     "To accurately and comprehensively monitor a program's
+                 behavior, many performance measurement tools must
+                 transform the program's executable representation or
+                 binary. By instrumenting binary programs to monitor
+                 program events, tools can precisely analyze compiler
+                 optimization effectiveness, memory system performance,
+                 pipeline interlocking, and other dynamic program
+                 characteristics that are fully exposed only at this
+                 level. Binary transformation has also been used to
+                 support software-enforced fault isolation, debugging,
+                 machine re-targeting and machine-dependent
+                 optimization. At present, binary transformation
+                 applications face a difficult trade-off. Previous
+                 approaches to implementing robust transformations incur
+                 significant disk space and run-time overhead. To
+                 improve efficiency, some current systems sacrifice
+                 robustness, relying on heuristic assumptions about the
+                 program and recognition of complex, compiler-dependent
+                 code generation idioms. In this paper we present
+                 adaptable binaries, a technique for implementing
+                 robust, efficient, and compiler-independent binary
+                 transformations. We evaluated a prototype
+                 implementation of adaptable binaries under the Ultrix
+                 4.2 operating system and the MIPS processor
+                 architecture. Using the C SPEC92 benchmarks, we
+                 assessed adaptable binaries in three ways. First, we
+                 demonstrated that the information necessary to build
+                 adaptable binaries can be compactly recorded,
+                 increasing space overhead by only 9\% for the SPEC92
+                 benchmarks. Second, we measured the run-time overhead
+                 of previous approaches to implementing robust binary
+                 transformations, and showed that adaptable binaries
+                 significantly reduce this overhead. Finally, we
+                 measured the run-time transformation overhead of two
+                 user applications, pixie and MemSpy. For our benchmark
+                 programs, using adaptable binaries eliminates pixie's
+                 110\% average transformation overhead and reduces
+                 MemSpy's average overhead from 1296\% to 33\%.",
+  institution =  "Carnegie Mellon University, School of Computer
+                 Science",
+}
+
+% Ufo Global File System
+@InProceedings{Alexandrov:1997:EOS,
+  author =       "Albert D. Alexandrov and Maximilian Ibel and Klaus E.
+                 Schauser and Chris J. Scheiman",
+  title =        "Extending the Operating System at the User-Level: the
+                 {Ufo} Global File System",
+  booktitle =    "Proceedings of the 7th USENIX Annual Technical Conference",
+  year =         "1997",
+}
+
+% Janus
+@InProceedings{goldberg96:secure,
+  author =       "Ian Goldberg and David Wagner and Randi Thomas and
+                 Eric A. Brewer",
+  title =        "A Secure Environment for Untrusted Helper
+                 Applications",
+  url =          "http://www.cs.berkeley.edu:80/~daw/papers/janus-usenix96.ps",
+  booktitle =    "Proceedings of the 6th USENIX Security Symposium",
+  year =         "1996",
+  abstract =     "Many popular programs, such as Netscape, use untrusted
+                 helper applications to process data from the network.
+                 Unfortunately, the unauthenticated network data they
+                 interpret could well have been created by an adversary,
+                 and the helper applications are usually too complex to
+                 be bug-free. This raises significant security concerns.
+                 Therefore, it is desirable to create a secure
+                 environment to contain untrusted helper applications.
+                 We propose to reduce the risk of a security breach by
+                 restricting the program's access to the operating
+                 system. In particular, we intercept and filter
+                 dangerous system calls via the Solaris process tracing
+                 facility. This enabled us to build a simple, clean,
+                 user-mode implementation of a secure environment for
+                 untrusted helper applications. Our implementation has
+                 negligible performance impact, and can protect
+                 pre-existing applications.",
+}
+
+% Ballista
+@conference{koopman99,
+	author	= "Philip Koopman and John DeVale",
+	title	= "Comparing the Robustness of POSIX Operating Systems",
+	booktitle
+		= "Proceedings 29th International Symposium on Fault-Tolerant
+			Computing (FTCS-29)",
+	year	= 1999,
+	month	= jun,
+	address	= "Madison, Wisconsin, USA",
+	pages	= "30-37"
+}
+
+
+% n-DFS
+@incollection{fowler95,
+	author	= "Glenn Fowler and David Korn and Stephen North and Herman Rao
+		and Kiem-Phong Vo",
+	title	= "Libraries and File System Architecture -- n-DFS: The
+		Multiple Deimensional File System",
+	booktitle
+		= "Practical Reusable UNIX Software",
+	publisher
+		= "John Wiley \& Sons, Inc.",
+	year	= 1995,
+	editor	= "Balachander Krishnamurthy",
+	chapter	= "2.5",
+	pages	= "82-90",
+	address	= "New York, New York, USA"
+}
+
+
+@conference{wagner00,
+	author	= "David Wagner and Jeffrey S. Foster and Eric A. Brewer and
+		Alexander Aiken",
+	title	= "A First Step Towards Automated Detection of Buffer Overrun
+		Vulnerabilities",
+	booktitle
+		= "Proceedings 7th Network and Distributed System
+			Security Symposium (to appear)",
+	year	= 2000,
+	month	= feb,
+}
+
+@InProceedings{stackguard98,
+  author	= "Crispin Cowan and Calton Pu and Dave Maier and Heather
+			Hinton and Peat Bakke and Steve Beattie and Aaron Grier
+			and Perry Wagle and Qian Zhang",
+  title = {{StackGuard:} Automatic Adaptive Detection and Prevention
+  of Buffer-Overflow Attacks},
+  booktitle = 	 {Proceedings of the 7th USENIX Security Conference},
+  year =	 1998
+}
+
+%% -----------------------------------
+
+@Misc{cert,
+  key = 	 {CERT},
+  title =	 {{CERT} coordination center},
+  howpublished = {\url{http://www.cert.org}}
+}
+
+
+@Misc{dildog,
+  author =	 {dark spyrit aka Barnaby Jack},
+  title =	 {Win32 Buffer Overflows (Location, Exploitation
+                  and Prevention)},
+  howpublished = {\url{http://www.insecure.org}}
+}
+
+
+@Misc{linux98a,
+  author =	 {Linus Torvalds},
+  title =	 {Posting to Linux Kernel Mailing List},
+  howpublished = {\url{http://www.lwn.net/980806/a/linus-noexec.html}},
+  year =	 1998,
+}
+
+@Misc{Mudge95,
+  author =	 {Mudge},
+  title =	 {How to write Buffer Overflows},
+  howpublished = {\url{http://www.insecure.org/stf/mudge_buffer_overflow_tutorial.html}},
+  year =	 1995
+}
+
+@Article{Instenes:1997:SSW,
+  author =       "Shawn Instenes",
+  title =        "Stack Smashing: What To Do?",
+  journal =      ";login: the USENIX Association newsletter",
+  month =        apr,
+  year =         "1997",
+}
+
+@Misc{smith97,
+  author =	 {Nathan Smith},
+  title =	 {Stack Smashing vulnerabilities in the {UNIX}
+                  operating system},
+  howpublished = {\url{http://millcomm.com/~nate/machines/security/stack-smashing/nate-buffer.ps}},
+  year =	 1997
+}
+
+@Article{aleph198,
+  author = 	 {{Aleph} One},
+  title = 	 {Smashing The Stack For Fun And Profit},
+  journal = 	 {Phrack Magazine},
+  year = 	 1998,
+  volume =	 49,
+  number =	 14
+}
+
+@Article{thomas99,
+  author = 	 {Evan Thomas},
+  title = 	 {Attack Class: Buffer Overflows},
+  journal = 	 {Hello World!},
+  year = 	 1999
+}
+
+
+@Misc{gcc-extensions,
+  author =	 {Richard Jones},
+  title =	 {Bounds Checking Patches for GCC},
+  howpublished = {\url{http://web.inter.NL.net/hcc/Haj.Ten.Brugge}}
+}
+
+@Misc{snarskii97,
+  author =	 {Alexandre Snarskii},
+  title =	 {Increasing overall security....},
+  howpublished = {\url{ftp://ftp.lucky.net/pub/unix/local/libc-letter} and \url{http://www.lexa.ru:8100/snar/libparanoia}},
+  year =	 1997
+}
+
+@Misc{snarskii,
+  key =		 {Alexandre Snarskii},
+  author =	 {A. Snarskii},
+  title =	 {libparanoia library},
+  howpublished = {\url{http://www.lexa.ru:8100/snar/libparanoia}}
+}
+
+@Article{Evans96,
+  key =          "Evans",
+  author =       "David Evans",
+  title =        "Static Detection of Dynamic Memory Errors",
+  journal =      "ACM SIGPLAN Notices",
+  year =         "1996",
+  volume =       "31",
+  number =       "5",
+  month =        may,
+  pages =        "44--53",
+  note =         "Proceedings of the 1996 ACM SIGPLAN Conference on
+                 Programming Language Design and Implementation
+                 (PLDI).",
+  url =          "ftp://larch.lcs.mit.edu/pub/Larch/lclint/pldi96.ps.gz",
+  annote =       "11 references.",
+}
+
+@Manual{lint78,
+  title = 	 {Lint, a C program checker},
+  key =		 {Technical report 65},
+  author =	 {Stephen C. Johnson},
+  note = 	 "Computer Science Technical Report 65",
+  organization = {Bell Laboratories},
+  month	=	 dec,
+  address =	 "Murray Hill, New Jersey, USA",
+  year =	 1977,
+}
+
+@Misc{openwall,
+  author =	 {Openwall Project},
+  title =	 {Linux kernel patch from the Openwall Project},
+  howpublished = {\url{http://www.openwall.com/linux}}
+}
+
+@Misc{nonexecutable99,
+  author =	 {Solar Designer},
+  title =	 {Linux kernel patch from the Openwall Project},
+  howpublished = {/url{http://www.openwall.com/linux/README}},
+  year =	 1999
+}
+
+
+@Misc{woj98,
+  author =	 {Rafel Wojtczuk},
+  title =	 {Defeating Solar Designer Non-Executable Stack Path},
+  howpublished = {\url{http://geek-girl.com/bugtraq}},
+  month =	 {January},
+  year =	 1998
+}
+
+@Misc{cowan99,
+  author =	 {Crispin Cowan},
+  howpublished = {\url{http://geek-girl.com/bugtraq/1999_1/0481.html}},
+  note =	 {Posting to Bugtraq Mailing List},
+  year =	 1999
+}
+
+@InProceedings{SSP89*326,
+  author =       "Mark W. Eichin and Jon A. Rochlis",
+  title =        "With Microscope and Tweezers: An Analysis of the
+                 Internet Virus of November 1988",
+  booktitle =    "Proceedings of the 1989 {IEEE} Computer Society
+                 Symposium on Security and Privacy ({SSP} '89)",
+  ISBN =         "0-8186-1939-2",
+  year =         1989,
+}
+
+@Article{Rochlis89,
+  author =       "Jon A. Rochlis and Mark W. Eichin",
+  title =        "With Microscope and Tweezers: The Worm from {MIT}'s
+                 Perspective",
+  journal =      "Communications of the ACM",
+  month =        jun,
+  year =         1989,
+  keywords =     "Security",
+}
+
+@InProceedings{Seeley89,
+  author =       "Donn Seeley",
+  title =        "A Tour of the Worm",
+  booktitle =    "Proceedings 1989 Winter USENIX Technical Conference",
+  month =        jan # " 30 - " # feb # " 3",
+  year =         1989,
+  abstract =     "{\bf Abstract:} On the evening of November 2, 1988, a
+                 self-replicating program was released upon the
+                 Internet. This program (a {\it worm}) invaded VAX and
+                 Sun-3 computers running versions of Berkeley UNIX and
+                 used their resources to attack still more computers.
+                 Within the space of hours this program had spread
+                 across the U.S., infecting hundreds or thousands of
+                 computers and making many of them unusable due to the
+                 burden of its activity. This paper provides a
+                 chronology for the outbreak and presents a detailed
+                 description of the internals of the worm, based on a C
+                 version produced by decompiling.",
+}
+
+@Misc{zlibc,
+  author =	 {Alain Knaff},
+  title =	 {ZLIBC - Transparent access to compressed file},
+  howpublished = {\url{http://zlibc.linux.lu}}
+}
+
+@InProceedings{sosp93*80,
+	author =       "Michael B. Jones",
+	title =        "Interposition Agents: Transparently Interposing User
+		Code at the System Interface",
+	ISBN =         "0-89791-632-8",
+	booktitle =    "Proceedings of the 14th Symposium on Operating Systems
+		Principles (SOSP)",
+	month =        dec,
+	year =         "1993",
+}
+
+@InProceedings{mediating_connectors,
+	title		= "Mediating Connectors",
+	author		= "Robert Balzer and Neil Goldman",
+	booktitle	= "Proceedings the 19th IEEE International Conference
+				on Distributed Computing Systems Workshop",
+	year		= 1999,
+}

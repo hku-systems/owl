@@ -1,0 +1,7 @@
+setuid
+getuid
+seteuid
+setfsuid
+setreuid
+capabilities
+credentials

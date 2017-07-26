@@ -1,0 +1,24 @@
+==23835== Possible data race during read of size 4 at 0x8606BFC by thread #260
+==23835== Locks held: none
+==23835==    at 0x815C55D: wait_if_global_read_lock(THD*, bool, bool) (lock.cc:1218)
+==23835==    by 0x822236D: mysql_rm_table(THD*, st_table_list*, char, char) (sql_table.cc:108)
+==23835==    by 0x8177705: mysql_execute_command(THD*) (sql_parse.cc:3603)
+==23835==    by 0x817AB1B: mysql_parse(THD*, char*, unsigned int) (sql_parse.cc:5833)
+==23835==    by 0x817BA31: dispatch_command(enum_server_command, THD*, char*, unsigned int) (sql_parse.cc:1775)
+==23835==    by 0x817CA8B: do_command(THD*) (sql_parse.cc:1557)
+==23835==    by 0x817D402: handle_one_connection (sql_parse.cc:1188)
+==23835==    by 0x402CF3D: mythread_wrapper (hg_intercepts.c:234)
+==23835==    by 0x4082EFA: start_thread (in /lib/i386-linux-gnu/i686/cmov/libpthread-2.19.so)
+==23835==    by 0x432162D: clone (in /lib/i386-linux-gnu/i686/cmov/libc-2.19.so)
+==23835==
+==23835== This conflicts with a previous write of size 4 by thread #259
+==23835== Locks held: 2, at addresses 0x8606BC0 0x8606BD8
+==23835==    at 0x83B13B7: safe_mutex_lock (thr_mutex.c:124)
+==23835==    by 0x819BC38: open_table(THD*, st_table_list*, st_mem_root*, bool*, unsigned int) (sql_base.cc:1344)
+==23835==    by 0x819C4D8: open_tables(THD*, st_table_list**, unsigned int*, unsigned int) (sql_base.cc:2174)
+==23835==    by 0x819C9CF: open_normal_and_derived_tables(THD*, st_table_list*, unsigned int) (sql_base.cc:2505)
+==23835==    by 0x82387DB: get_all_tables(THD*, st_table_list*, Item*) (sql_show.cc:2309)
+==23835==    by 0x823A380: get_schema_tables_result(JOIN*) (sql_show.cc:3987)
+==23835==    by 0x81BEAB3: JOIN::exec() (sql_select.cc:1475)
+==23835==    by 0x81BC07C: mysql_select(THD*, Item***, st_table_list*, unsigned int, List<Item>&, Item*, unsigned     int, st_order*, st_order*, Item*, st_order*, unsigned long long, select_result*, st_select_lex_unit*, st_select_lex*) (sql_select.cc:2046)
+==23835==  Address 0x8606bfc is 60 bytes inside data symbol "LOCK_open"

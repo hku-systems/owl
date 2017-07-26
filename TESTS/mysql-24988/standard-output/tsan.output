@@ -1,0 +1,907 @@
+160111 17:02:32 [Warning] One can only use the --user switch if running as root
+
+InnoDB: The first specified data file ./ibdata1 did not exist:
+InnoDB: a new database to be created!
+160111 17:02:32  InnoDB: Setting file ./ibdata1 size to 10 MB
+InnoDB: Database physically writes the file full: wait...
+160111 17:02:32  InnoDB: Log file ./ib_logfile0 did not exist: new to be created
+InnoDB: Setting log file ./ib_logfile0 size to 5 MB
+InnoDB: Database physically writes the file full: wait...
+160111 17:02:33  InnoDB: Log file ./ib_logfile1 did not exist: new to be created
+InnoDB: Setting log file ./ib_logfile1 size to 5 MB
+InnoDB: Database physically writes the file full: wait...
+==================
+WARNING: ThreadSanitizer: data race (pid=17493)
+  Write of size 8 at 0x7f6a769e0b88 by thread T2 (mutexes: write M40848):
+    #0 mutex_enter_func /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/log/./../include/sync0sync.ic:254 (mysqld+0x000000856f3a)
+    #1 rw_lock_x_unlock_func /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/log/./../include/sync0rw.ic:437 (mysqld+0x000000862502)
+    #2 log_complete_checkpoint /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/log/log0log.c:1620 (mysqld+0x0000008624b4)
+    #3 log_io_complete_checkpoint /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/log/log0log.c:1637 (mysqld+0x00000085b1d0)
+    #4 log_io_complete /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/log/log0log.c:1079 (mysqld+0x00000085acd9)
+    #5 fil_aio_wait /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/fil/fil0fil.c:4158 (mysqld+0x0000008967b8)
+    #6 io_handler_thread /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:446 (mysqld+0x00000071200e)
+
+  Previous write of size 8 at 0x7f6a769e0b88 by main thread:
+    #0 mutex_enter_func /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/sync/./../include/sync0sync.ic:254 (mysqld+0x0000008d265a)
+    #1 rw_lock_s_lock_spin /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/sync/sync0rw.c:253 (mysqld+0x0000008d3acd)
+    #2 rw_lock_s_lock_func /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/log/./../include/sync0rw.ic:254 (mysqld+0x00000085eb6f)
+    #3 log_checkpoint /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/log/log0log.c:1986 (mysqld+0x00000085735c)
+    #4 log_fsp_current_free_limit_set_and_checkpoint /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/log/log0log.c:154 (mysqld+0x000000856ebd)
+    #5 fsp_fill_free_list /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/fsp/fsp0fsp.c:1236 (mysqld+0x000000873983)
+    #6 fsp_header_init /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/fsp/fsp0fsp.c:911 (mysqld+0x000000873424)
+    #7 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1412 (mysqld+0x000000711377)
+    #8 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #9 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #10 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #11 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+  Location is heap block of size 1048608 at 0x7f6a769dd000 allocated by main thread:
+    #0 malloc /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:514 (mysqld+0x00000021d57f)
+    #1 ut_malloc_low /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/ut/ut0mem.c:81 (mysqld+0x0000008ed415)
+    #2 mem_pool_create /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/mem/mem0pool.c:202 (mysqld+0x0000008e8c08)
+    #3 mem_init /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/mem/./mem0dbg.c:137 (mysqld+0x0000008e6008)
+    #4 srv_general_init /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0srv.c:977 (mysqld+0x000000706f51)
+    #5 srv_boot /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0srv.c:1303 (mysqld+0x000000708126)
+    #6 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1168 (mysqld+0x000000710504)
+    #7 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #8 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #9 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #10 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+  Mutex M40848 (0x7f6a769e0908) created at:
+    #0 pthread_mutex_init /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1063 (mysqld+0x000000210225)
+    #1 os_fast_mutex_init /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/os/os0sync.c:574 (mysqld+0x0000008f1e2f)
+    #2 mutex_create_func /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/sync/sync0sync.c:212 (mysqld+0x0000008d555e)
+    #3 log_init /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/log/log0log.c:744 (mysqld+0x000000858e34)
+    #4 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1259 (mysqld+0x000000710c32)
+    #5 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #6 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #7 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #8 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+  Thread T2 (tid=17496, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 os_thread_create /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/os/os0thread.c:167 (mysqld+0x0000008f2cd8)
+    #2 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1268 (mysqld+0x000000710d5a)
+    #3 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #4 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #5 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #6 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/log/./../include/sync0sync.ic:254 in mutex_enter_func
+==================
+InnoDB: Doublewrite buffer not found: creating new
+==================
+WARNING: ThreadSanitizer: data race (pid=17493)
+  Read of size 8 at 0x7f6a7bde3f50 by thread T6:
+    #0 srv_error_monitor_thread /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0srv.c:2077 (mysqld+0x00000070b8da)
+
+  Previous write of size 8 at 0x7f6a7bde3f50 by thread T5:
+    #0 srv_lock_timeout_and_monitor_thread /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0srv.c:1871 (mysqld+0x00000070aff6)
+
+  Location is global '<null>' of size 0 at 0x000000000000 (mysqld+0x000001c48f50)
+
+  Thread T6 (tid=17502, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 os_thread_create /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/os/os0thread.c:167 (mysqld+0x0000008f2cd8)
+    #2 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1555 (mysqld+0x000000711595)
+    #3 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #4 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #5 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #6 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+  Thread T5 (tid=17501, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 os_thread_create /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/os/os0thread.c:167 (mysqld+0x0000008f2cd8)
+    #2 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1551 (mysqld+0x00000071156b)
+    #3 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #4 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #5 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #6 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0srv.c:2077 in srv_error_monitor_thread
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=17493)
+  Write of size 8 at 0x7f6a769e0968 by main thread:
+    #0 mutex_enter_func /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/log/./../include/sync0sync.ic:254 (mysqld+0x000000856f3a)
+    #1 log_reserve_and_open /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/log/log0log.c:204 (mysqld+0x00000085752e)
+    #2 mtr_log_reserve_and_write /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/mtr/mtr0mtr.c:145 (mysqld+0x0000008ab649)
+    #3 mtr_commit /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/mtr/mtr0mtr.c:179 (mysqld+0x0000008ab424)
+    #4 trx_sys_create_doublewrite_buf /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/trx/trx0sys.c:318 (mysqld+0x000000815f51)
+    #5 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1574 (mysqld+0x000000711615)
+    #6 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #7 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #8 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #9 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+  Previous write of size 8 at 0x7f6a769e0968 by thread T6:
+    #0 mutex_enter_func /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/./../include/sync0sync.ic:254 (mysqld+0x00000070560a)
+    #1 log_get_lsn /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/./../include/log0log.ic:377 (mysqld+0x00000070bae1)
+    #2 srv_error_monitor_thread /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0srv.c:2061 (mysqld+0x00000070b7aa)
+
+  Location is heap block of size 1048608 at 0x7f6a769dd000 allocated by main thread:
+    #0 malloc /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:514 (mysqld+0x00000021d57f)
+    #1 ut_malloc_low /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/ut/ut0mem.c:81 (mysqld+0x0000008ed415)
+    #2 mem_pool_create /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/mem/mem0pool.c:202 (mysqld+0x0000008e8c08)
+    #3 mem_init /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/mem/./mem0dbg.c:137 (mysqld+0x0000008e6008)
+    #4 srv_general_init /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0srv.c:977 (mysqld+0x000000706f51)
+    #5 srv_boot /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0srv.c:1303 (mysqld+0x000000708126)
+    #6 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1168 (mysqld+0x000000710504)
+    #7 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #8 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #9 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #10 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+  Thread T6 (tid=17502, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 os_thread_create /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/os/os0thread.c:167 (mysqld+0x0000008f2cd8)
+    #2 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1555 (mysqld+0x000000711595)
+    #3 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #4 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #5 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #6 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/log/./../include/sync0sync.ic:254 in mutex_enter_func
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=17493)
+  Write of size 8 at 0x7f6a7bde3108 by main thread:
+    #0 os_aio_simulated_wake_handler_threads /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/os/os0file.c:3290 (mysqld+0x0000008f7d61)
+    #1 buf_flush_buffered_writes /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/buf/buf0flu.c:234 (mysqld+0x000000843615)
+    #2 buf_flush_batch /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/buf/buf0flu.c:911 (mysqld+0x000000842adb)
+    #3 log_preflush_pool_modified_pages /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/log/log0log.c:1589 (mysqld+0x00000085da4e)
+    #4 log_make_checkpoint_at /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/log/log0log.c:2016 (mysqld+0x00000085ee0a)
+    #5 trx_sys_create_doublewrite_buf /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/trx/trx0sys.c:321 (mysqld+0x000000815f9e)
+    #6 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1574 (mysqld+0x000000711615)
+    #7 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #8 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #9 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #10 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+  Previous read of size 8 at 0x7f6a7bde3108 by thread T3:
+    #0 os_aio_simulated_handle /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/os/os0file.c:3787 (mysqld+0x0000008f9621)
+    #1 fil_aio_wait /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/fil/fil0fil.c:4131 (mysqld+0x0000008965ed)
+    #2 io_handler_thread /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:446 (mysqld+0x00000071200e)
+
+  Location is global '<null>' of size 0 at 0x000000000000 (mysqld+0x000001c48108)
+
+  Thread T3 (tid=17497, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 os_thread_create /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/os/os0thread.c:167 (mysqld+0x0000008f2cd8)
+    #2 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1268 (mysqld+0x000000710d5a)
+    #3 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #4 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #5 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #6 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/os/os0file.c:3290 in os_aio_simulated_wake_handler_threads
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=17493)
+  Write of size 8 at 0x7f6a7a09f020 by main thread (mutexes: write M40851, write M278):
+    #0 sync_array_reserve_cell /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/sync/sync0arr.c:357 (mysqld+0x0000008cfe3d)
+    #1 rw_lock_s_lock_spin /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/sync/sync0rw.c:267 (mysqld+0x0000008d3b7a)
+    #2 rw_lock_s_lock_func /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/log/./../include/sync0rw.ic:254 (mysqld+0x00000085eb6f)
+    #3 log_checkpoint /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/log/log0log.c:1986 (mysqld+0x00000085735c)
+    #4 log_make_checkpoint_at /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/log/log0log.c:2022 (mysqld+0x00000085ee42)
+    #5 trx_sys_create_doublewrite_buf /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/trx/trx0sys.c:321 (mysqld+0x000000815f9e)
+    #6 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1574 (mysqld+0x000000711615)
+    #7 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #8 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #9 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #10 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+  Previous read of size 8 at 0x7f6a7a09f020 by thread T6:
+    #0 sync_array_print_long_waits /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/sync/sync0arr.c:914 (mysqld+0x0000008d0d14)
+    #1 srv_error_monitor_thread /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0srv.c:2084 (mysqld+0x00000070b90c)
+
+  Location is heap block of size 880032 at 0x7f6a7a09f000 allocated by main thread:
+    #0 malloc /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:514 (mysqld+0x00000021d57f)
+    #1 ut_malloc_low /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/ut/ut0mem.c:81 (mysqld+0x0000008ed415)
+    #2 ut_malloc /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/ut/ut0mem.c:177 (mysqld+0x0000008ed935)
+    #3 sync_array_create /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/sync/sync0arr.c:199 (mysqld+0x0000008cee17)
+    #4 sync_init /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/sync/sync0sync.c:1253 (mysqld+0x0000008dae99)
+    #5 srv_general_init /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0srv.c:976 (mysqld+0x000000706f36)
+    #6 srv_boot /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0srv.c:1303 (mysqld+0x000000708126)
+    #7 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1168 (mysqld+0x000000710504)
+    #8 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #9 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #10 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #11 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+  Mutex M40851 (0x7f6a769e0b28) created at:
+    #0 pthread_mutex_init /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1063 (mysqld+0x000000210225)
+    #1 os_fast_mutex_init /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/os/os0sync.c:574 (mysqld+0x0000008f1e2f)
+    #2 mutex_create_func /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/sync/sync0sync.c:212 (mysqld+0x0000008d555e)
+    #3 rw_lock_create_func /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/sync/sync0rw.c:100 (mysqld+0x0000008d1d76)
+    #4 log_init /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/log/log0log.c:801 (mysqld+0x0000008599cd)
+    #5 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1259 (mysqld+0x000000710c32)
+    #6 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #7 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #8 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #9 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+  Mutex M278 (0x7d140000eee0) created at:
+    #0 pthread_mutex_init /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1063 (mysqld+0x000000210225)
+    #1 os_fast_mutex_init /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/os/os0sync.c:574 (mysqld+0x0000008f1e2f)
+    #2 os_mutex_create /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/os/os0sync.c:453 (mysqld+0x0000008f0c73)
+    #3 sync_array_create /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/sync/sync0arr.c:210 (mysqld+0x0000008cef26)
+    #4 sync_init /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/sync/sync0sync.c:1253 (mysqld+0x0000008dae99)
+    #5 srv_general_init /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0srv.c:976 (mysqld+0x000000706f36)
+    #6 srv_boot /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0srv.c:1303 (mysqld+0x000000708126)
+    #7 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1168 (mysqld+0x000000710504)
+    #8 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #9 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #10 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #11 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+  Thread T6 (tid=17502, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 os_thread_create /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/os/os0thread.c:167 (mysqld+0x0000008f2cd8)
+    #2 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1555 (mysqld+0x000000711595)
+    #3 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #4 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #5 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #6 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/sync/sync0arr.c:357 in sync_array_reserve_cell
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=17493)
+  Write of size 8 at 0x7f6a7bde0bf0 by thread T2:
+    #0 mutex_enter_func /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/./../include/sync0sync.ic:254 (mysqld+0x000000714a3a)
+    #1 io_handler_thread /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:448 (mysqld+0x000000712028)
+
+  Previous write of size 8 at 0x7f6a7bde0bf0 by thread T4:
+    #0 mutex_enter_func /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/./../include/sync0sync.ic:254 (mysqld+0x000000714a3a)
+    #1 io_handler_thread /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:448 (mysqld+0x000000712028)
+
+  Location is global '<null>' of size 0 at 0x000000000000 (mysqld+0x000001c45bf0)
+
+  Thread T2 (tid=17496, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 os_thread_create /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/os/os0thread.c:167 (mysqld+0x0000008f2cd8)
+    #2 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1268 (mysqld+0x000000710d5a)
+    #3 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #4 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #5 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #6 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+  Thread T4 (tid=17498, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 os_thread_create /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/os/os0thread.c:167 (mysqld+0x0000008f2cd8)
+    #2 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1268 (mysqld+0x000000710d5a)
+    #3 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #4 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #5 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #6 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/./../include/sync0sync.ic:254 in mutex_enter_func
+==================
+InnoDB: Doublewrite buffer created
+InnoDB: Creating foreign key constraint system tables
+InnoDB: Foreign key constraint system tables created
+160111 17:02:34  InnoDB: Started; log sequence number 0 0
+==================
+WARNING: ThreadSanitizer: data race (pid=17493)
+  Write of size 8 at 0x7f6a7bde51c8 by main thread:
+    #0 mutex_enter_func /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/thr/./../include/sync0sync.ic:254 (mysqld+0x0000008cd3ba)
+    #1 thr_local_get_in_ibuf_field /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/thr/thr0loc.c:146 (mysqld+0x0000008cd67a)
+    #2 ibuf_enter /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/ibuf/ibuf0ibuf.c:229 (mysqld+0x00000074e095)
+    #3 ibuf_update_max_tablespace_id /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/ibuf/ibuf0ibuf.c:2450 (mysqld+0x0000007523a5)
+    #4 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1728 (mysqld+0x000000711d3a)
+    #5 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #6 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #7 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #8 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+  Previous write of size 8 at 0x7f6a7bde51c8 by thread T7:
+    #0 mutex_enter_func /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/thr/./../include/sync0sync.ic:254 (mysqld+0x0000008cd3ba)
+    #1 thr_local_set_slot_no /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/thr/thr0loc.c:126 (mysqld+0x0000008cd5f5)
+    #2 srv_table_reserve_slot /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0srv.c:723 (mysqld+0x00000070d847)
+    #3 srv_master_thread /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0srv.c:2202 (mysqld+0x00000070c0c6)
+
+  Location is global '<null>' of size 0 at 0x000000000000 (mysqld+0x000001c4a1c8)
+
+  Thread T7 (tid=17508, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 os_thread_create /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/os/os0thread.c:167 (mysqld+0x0000008f2cd8)
+    #2 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1586 (mysqld+0x000000711662)
+    #3 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #4 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #5 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #6 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/thr/./../include/sync0sync.ic:254 in mutex_enter_func
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=17493)
+  Write of size 8 at 0x7f6a769dd310 by main thread:
+    #0 mutex_enter_func /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/trx/./../include/sync0sync.ic:254 (mysqld+0x00000081b4da)
+    #1 trx_recover_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/trx/trx0trx.c:1961 (mysqld+0x000000825a81)
+    #2 innobase_xa_recover(xid_t*, unsigned int) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:7231 (mysqld+0x0000005fe257)
+    #3 ha_recover(st_hash*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:1011 (mysqld+0x0000005df1a1)
+    #4 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3134 (mysqld+0x0000003eb932)
+    #5 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+  Previous write of size 8 at 0x7f6a769dd310 by thread T7:
+    #0 mutex_enter_func /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/./../include/sync0sync.ic:254 (mysqld+0x00000070560a)
+    #1 srv_master_thread /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0srv.c:2220 (mysqld+0x00000070c2b2)
+
+  Location is heap block of size 1048608 at 0x7f6a769dd000 allocated by main thread:
+    #0 malloc /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:514 (mysqld+0x00000021d57f)
+    #1 ut_malloc_low /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/ut/ut0mem.c:81 (mysqld+0x0000008ed415)
+    #2 mem_pool_create /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/mem/mem0pool.c:202 (mysqld+0x0000008e8c08)
+    #3 mem_init /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/mem/./mem0dbg.c:137 (mysqld+0x0000008e6008)
+    #4 srv_general_init /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0srv.c:977 (mysqld+0x000000706f51)
+    #5 srv_boot /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0srv.c:1303 (mysqld+0x000000708126)
+    #6 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1168 (mysqld+0x000000710504)
+    #7 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #8 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #9 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #10 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+  Thread T7 (tid=17508, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 os_thread_create /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/os/os0thread.c:167 (mysqld+0x0000008f2cd8)
+    #2 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1586 (mysqld+0x000000711662)
+    #3 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #4 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #5 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #6 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/trx/./../include/sync0sync.ic:254 in mutex_enter_func
+==================
+160111 17:02:34 [Note] ./libexec/mysqld: ready for connections.
+Version: '5.0.27' ssocket: '/tmp/mysql.sock'  port: 3306  Source distribution
+==================
+WARNING: ThreadSanitizer: data race (pid=17493)
+  Write of size 8 at 0x7f6a769df910 by thread T7 (mutexes: write M40876):
+    #0 mutex_enter_func /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/fil/./../include/sync0sync.ic:254 (mysqld+0x00000088281a)
+    #1 fil_flush_file_spaces /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/fil/fil0fil.c:4289 (mysqld+0x000000896a53)
+    #2 buf_flush_buffered_writes /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/buf/buf0flu.c:382 (mysqld+0x00000084450b)
+    #3 buf_flush_batch /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/buf/buf0flu.c:911 (mysqld+0x000000842adb)
+    #4 srv_master_thread /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0srv.c:2501 (mysqld+0x00000070d068)
+
+  Previous write of size 8 at 0x7f6a769df910 by thread T4:
+    #0 mutex_enter_func /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/fil/./../include/sync0sync.ic:254 (mysqld+0x00000088281a)
+    #1 fil_aio_wait /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/fil/fil0fil.c:4139 (mysqld+0x0000008966ed)
+    #2 io_handler_thread /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:446 (mysqld+0x00000071200e)
+
+  Location is heap block of size 1048608 at 0x7f6a769dd000 allocated by main thread:
+    #0 malloc /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:514 (mysqld+0x00000021d57f)
+    #1 ut_malloc_low /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/ut/ut0mem.c:81 (mysqld+0x0000008ed415)
+    #2 mem_pool_create /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/mem/mem0pool.c:202 (mysqld+0x0000008e8c08)
+    #3 mem_init /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/mem/./mem0dbg.c:137 (mysqld+0x0000008e6008)
+    #4 srv_general_init /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0srv.c:977 (mysqld+0x000000706f51)
+    #5 srv_boot /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0srv.c:1303 (mysqld+0x000000708126)
+    #6 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1168 (mysqld+0x000000710504)
+    #7 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #8 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #9 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #10 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+  Mutex M40876 (0x7f6a769f72b0) created at:
+    #0 pthread_mutex_init /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1063 (mysqld+0x000000210225)
+    #1 os_fast_mutex_init /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/os/os0sync.c:574 (mysqld+0x0000008f1e2f)
+    #2 mutex_create_func /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/sync/sync0sync.c:212 (mysqld+0x0000008d555e)
+    #3 trx_doublewrite_init /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/trx/trx0sys.c:104 (mysqld+0x00000081616c)
+    #4 trx_sys_create_doublewrite_buf /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/trx/trx0sys.c:203 (mysqld+0x000000815b0b)
+    #5 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1574 (mysqld+0x000000711615)
+    #6 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #7 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #8 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #9 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+  Thread T7 (tid=17508, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 os_thread_create /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/os/os0thread.c:167 (mysqld+0x0000008f2cd8)
+    #2 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1586 (mysqld+0x000000711662)
+    #3 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #4 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #5 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #6 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+  Thread T4 (tid=17498, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 os_thread_create /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/os/os0thread.c:167 (mysqld+0x0000008f2cd8)
+    #2 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1268 (mysqld+0x000000710d5a)
+    #3 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #4 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #5 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #6 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/fil/./../include/sync0sync.ic:254 in mutex_enter_func
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=17493)
+  Write of size 8 at 0x7f6a7bde3ca8 by thread T12 (mutexes: write M40895):
+    #0 thr_lock /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/mysys/thr_lock.c:544 (mysqld+0x000000a38f14)
+    #1 thr_multi_lock /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/mysys/thr_lock.c:922 (mysqld+0x000000a3c4ac)
+    #2 mysql_lock_tables(THD*, st_table**, unsigned int, unsigned int, bool*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/lock.cc:169 (mysqld+0x0000003dc79f)
+    #3 lock_tables(THD*, st_table_list*, unsigned int, bool*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_base.cc:2597 (mysqld+0x00000049503b)
+    #4 simple_open_n_lock_tables(THD*, st_table_list*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_base.cc:2415 (mysqld+0x000000494c4b)
+    #5 acl_reload(THD*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_acl.cc:564 (mysqld+0x00000056ed8c)
+    #6 reload_acl_and_cache(THD*, unsigned long, st_table_list*, bool*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:6740 (mysqld+0x000000417e11)
+    #7 mysql_execute_command(THD*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:4037 (mysqld+0x00000042488c)
+    #8 mysql_parse(THD*, char*, unsigned int) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:5870 (mysqld+0x000000415435)
+    #9 dispatch_command(enum_server_command, THD*, char*, unsigned int) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:1766 (mysqld+0x00000040e268)
+    #10 do_command(THD*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:1550 (mysqld+0x0000004141fa)
+    #11 handle_one_connection /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:1181 (mysqld+0x0000004117f8)
+
+  Previous write of size 8 at 0x7f6a7bde3ca8 by thread T26 (mutexes: write M41098):
+    #0 thr_lock /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/mysys/thr_lock.c:544 (mysqld+0x000000a38f14)
+    #1 thr_multi_lock /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/mysys/thr_lock.c:922 (mysqld+0x000000a3c4ac)
+    #2 mysql_lock_tables(THD*, st_table**, unsigned int, unsigned int, bool*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/lock.cc:169 (mysqld+0x0000003dc79f)
+    #3 lock_tables(THD*, st_table_list*, unsigned int, bool*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_base.cc:2597 (mysqld+0x00000049503b)
+    #4 open_and_lock_tables(THD*, st_table_list*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_base.cc:2452 (mysqld+0x000000495a18)
+    #5 mysql_execute_command(THD*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:2554 (mysqld+0x000000419d07)
+    #6 mysql_parse(THD*, char*, unsigned int) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:5870 (mysqld+0x000000415435)
+    #7 dispatch_command(enum_server_command, THD*, char*, unsigned int) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:1766 (mysqld+0x00000040e268)
+    #8 do_command(THD*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:1550 (mysqld+0x0000004141fa)
+    #9 handle_one_connection /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:1181 (mysqld+0x0000004117f8)
+
+  Location is global '<null>' of size 0 at 0x000000000000 (mysqld+0x000001c48ca8)
+
+  Mutex M40895 (0x7d740001cf50) created at:
+    #0 pthread_mutex_init /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1063 (mysqld+0x000000210225)
+    #1 thr_lock_init /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/mysys/thr_lock.c:320 (mysqld+0x000000a3818f)
+    #2 mi_open /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/myisam/mi_open.c:481 (mysqld+0x0000009019ca)
+    #3 ha_myisam::open(char const*, int, unsigned int) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_myisam.cc:292 (mysqld+0x0000005edcba)
+    #4 handler::ha_open(char const*, int, int) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:1400 (mysqld+0x0000005e0e44)
+    #5 openfrm(THD*, char const*, char const*, unsigned int, unsigned int, unsigned int, st_table*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/table.cc:918 (mysqld+0x0000004a8c12)
+    #6 open_unireg_entry(THD*, st_table*, char const*, char const*, char const*, st_table_list*, st_mem_root*, unsigned int) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_base.cc:1890 (mysqld+0x00000048e460)
+    #7 open_table(THD*, st_table_list*, st_mem_root*, bool*, unsigned int) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_base.cc:1409 (mysqld+0x000000490c97)
+    #8 open_tables(THD*, st_table_list**, unsigned int*, unsigned int) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_base.cc:2160 (mysqld+0x000000493bc9)
+    #9 simple_open_n_lock_tables(THD*, st_table_list*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_base.cc:2413 (mysqld+0x000000494bfa)
+    #10 acl_reload(THD*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_acl.cc:564 (mysqld+0x00000056ed8c)
+    #11 acl_init(bool) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_acl.cc:171 (mysqld+0x00000056ea21)
+    #12 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3453 (mysqld+0x0000003e8f8b)
+
+  Mutex M41098 (0x7d680000f950) created at:
+    #0 pthread_mutex_init /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1063 (mysqld+0x000000210225)
+    #1 thr_lock_init /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/mysys/thr_lock.c:320 (mysqld+0x000000a3818f)
+    #2 mi_open /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/myisam/mi_open.c:481 (mysqld+0x0000009019ca)
+    #3 ha_myisam::open(char const*, int, unsigned int) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_myisam.cc:292 (mysqld+0x0000005edcba)
+    #4 handler::ha_open(char const*, int, int) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:1400 (mysqld+0x0000005e0e44)
+    #5 openfrm(THD*, char const*, char const*, unsigned int, unsigned int, unsigned int, st_table*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/table.cc:918 (mysqld+0x0000004a8c12)
+    #6 open_unireg_entry(THD*, st_table*, char const*, char const*, char const*, st_table_list*, st_mem_root*, unsigned int) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_base.cc:1890 (mysqld+0x00000048e460)
+    #7 open_table(THD*, st_table_list*, st_mem_root*, bool*, unsigned int) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_base.cc:1409 (mysqld+0x000000490c97)
+    #8 open_tables(THD*, st_table_list**, unsigned int*, unsigned int) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_base.cc:2160 (mysqld+0x000000493bc9)
+    #9 open_and_lock_tables(THD*, st_table_list*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_base.cc:2450 (mysqld+0x0000004959ca)
+    #10 mysql_execute_command(THD*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:2554 (mysqld+0x000000419d07)
+    #11 mysql_parse(THD*, char*, unsigned int) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:5870 (mysqld+0x000000415435)
+    #12 dispatch_command(enum_server_command, THD*, char*, unsigned int) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:1766 (mysqld+0x00000040e268)
+    #13 do_command(THD*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:1550 (mysqld+0x0000004141fa)
+    #14 handle_one_connection /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:1181 (mysqld+0x0000004117f8)
+
+  Thread T12 (tid=19325, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 create_new_thread(THD*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3894 (mysqld+0x0000003eda4e)
+    #2 handle_connections_sockets /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:4146 (mysqld+0x0000003ed5bc)
+    #3 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3525 (mysqld+0x0000003e935b)
+
+  Thread T26 (tid=19326, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 create_new_thread(THD*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3894 (mysqld+0x0000003eda4e)
+    #2 handle_connections_sockets /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:4146 (mysqld+0x0000003ed5bc)
+    #3 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3525 (mysqld+0x0000003e935b)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/mysys/thr_lock.c:544 in thr_lock
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=17493)
+  Write of size 4 at 0x7f6a7bddf5c0 by thread T12 (mutexes: write M40905):
+    #0 acl_load(THD*, st_table_list*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_acl.cc:204 (mysqld+0x00000056f1dc)
+    #1 acl_reload(THD*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_acl.cc:581 (mysqld+0x00000056eef2)
+    #2 reload_acl_and_cache(THD*, unsigned long, st_table_list*, bool*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:6740 (mysqld+0x000000417e11)
+    #3 mysql_execute_command(THD*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:4037 (mysqld+0x00000042488c)
+    #4 mysql_parse(THD*, char*, unsigned int) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:5870 (mysqld+0x000000415435)
+    #5 dispatch_command(enum_server_command, THD*, char*, unsigned int) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:1766 (mysqld+0x00000040e268)
+    #6 do_command(THD*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:1550 (mysqld+0x0000004141fa)
+    #7 handle_one_connection /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:1181 (mysqld+0x0000004117f8)
+
+  Previous read of size 4 at 0x7f6a7bddf5c0 by thread T26 (mutexes: read M245):
+    #0 check_grant(THD*, unsigned long, st_table_list*, unsigned int, unsigned int, bool) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_acl.cc:3634 (mysqld+0x0000005833fb)
+    #1 check_table_access(THD*, unsigned long, st_table_list*, bool) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:5399 (mysqld+0x00000042d456)
+    #2 mysql_execute_command(THD*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:2542 (mysqld+0x000000419bd8)
+    #3 mysql_parse(THD*, char*, unsigned int) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:5870 (mysqld+0x000000415435)
+    #4 dispatch_command(enum_server_command, THD*, char*, unsigned int) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:1766 (mysqld+0x00000040e268)
+    #5 do_command(THD*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:1550 (mysqld+0x0000004141fa)
+    #6 handle_one_connection /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:1181 (mysqld+0x0000004117f8)
+
+  Location is global '<null>' of size 0 at 0x000000000000 (mysqld+0x000001c445c0)
+
+  Mutex M40905 (0x7d2c0000acd0) created at:
+    #0 pthread_mutex_init /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1063 (mysqld+0x000000210225)
+    #1 hash_filo::clear(bool) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/./hash_filo.h:76 (mysqld+0x0000003f73d0)
+    #2 acl_load(THD*, st_table_list*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_acl.cc:207 (mysqld+0x00000056f21e)
+    #3 acl_reload(THD*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_acl.cc:581 (mysqld+0x00000056eef2)
+    #4 acl_init(bool) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_acl.cc:171 (mysqld+0x00000056ea21)
+    #5 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3453 (mysqld+0x0000003e8f8b)
+
+  Mutex M245 (0x7f6a7bdd81a8) created at:
+    #0 pthread_rwlock_init /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1150 (mysqld+0x000000203b13)
+    #1 init_thread_environment() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:2823 (mysqld+0x0000003ee8c5)
+    #2 init_common_variables(char const*, int, char**, char const**) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:2577 (mysqld+0x0000003e9559)
+    #3 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3329 (mysqld+0x0000003e8b0c)
+
+  Thread T12 (tid=19325, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 create_new_thread(THD*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3894 (mysqld+0x0000003eda4e)
+    #2 handle_connections_sockets /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:4146 (mysqld+0x0000003ed5bc)
+    #3 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3525 (mysqld+0x0000003e935b)
+
+  Thread T26 (tid=19326, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 create_new_thread(THD*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3894 (mysqld+0x0000003eda4e)
+    #2 handle_connections_sockets /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:4146 (mysqld+0x0000003ed5bc)
+    #3 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3525 (mysqld+0x0000003e935b)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_acl.cc:204 in acl_load(THD*, st_table_list*)
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=17493)
+  Read of size 1 at 0x7f6a7bdd6190 by thread T26:
+    #0 check_access(THD*, unsigned long, char const*, unsigned long*, bool, bool, bool) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:5262 (mysqld+0x00000041798c)
+    #1 check_table_access(THD*, unsigned long, st_table_list*, bool) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:5386 (mysqld+0x00000042d1ca)
+    #2 mysql_execute_command(THD*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:2542 (mysqld+0x000000419bd8)
+    #3 mysql_parse(THD*, char*, unsigned int) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:5870 (mysqld+0x000000415435)
+    #4 dispatch_command(enum_server_command, THD*, char*, unsigned int) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:1766 (mysqld+0x00000040e268)
+    #5 do_command(THD*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:1550 (mysqld+0x0000004141fa)
+    #6 handle_one_connection /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:1181 (mysqld+0x0000004117f8)
+
+  Previous write of size 1 at 0x7f6a7bdd6190 by thread T12 (mutexes: write M245):
+    #0 grant_load(st_table_list*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_acl.cc:3335 (mysqld+0x000000581ffd)
+    #1 grant_reload(THD*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_acl.cc:3512 (mysqld+0x000000581de6)
+    #2 reload_acl_and_cache(THD*, unsigned long, st_table_list*, bool*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:6741 (mysqld+0x000000417e29)
+    #3 mysql_execute_command(THD*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:4037 (mysqld+0x00000042488c)
+    #4 mysql_parse(THD*, char*, unsigned int) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:5870 (mysqld+0x000000415435)
+    #5 dispatch_command(enum_server_command, THD*, char*, unsigned int) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:1766 (mysqld+0x00000040e268)
+    #6 do_command(THD*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:1550 (mysqld+0x0000004141fa)
+    #7 handle_one_connection /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:1181 (mysqld+0x0000004117f8)
+
+  Location is global '<null>' of size 0 at 0x000000000000 (mysqld+0x000001c3b190)
+
+  Mutex M245 (0x7f6a7bdd81a8) created at:
+    #0 pthread_rwlock_init /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1150 (mysqld+0x000000203b13)
+    #1 init_thread_environment() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:2823 (mysqld+0x0000003ee8c5)
+    #2 init_common_variables(char const*, int, char**, char const**) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:2577 (mysqld+0x0000003e9559)
+    #3 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3329 (mysqld+0x0000003e8b0c)
+
+  Thread T26 (tid=19326, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 create_new_thread(THD*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3894 (mysqld+0x0000003eda4e)
+    #2 handle_connections_sockets /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:4146 (mysqld+0x0000003ed5bc)
+    #3 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3525 (mysqld+0x0000003e935b)
+
+  Thread T12 (tid=19325, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 create_new_thread(THD*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3894 (mysqld+0x0000003eda4e)
+    #2 handle_connections_sockets /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:4146 (mysqld+0x0000003ed5bc)
+    #3 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3525 (mysqld+0x0000003e935b)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:5262 in check_access(THD*, unsigned long, char const*, unsigned long*, bool, bool, bool)
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=17493)
+  Write of size 8 at 0x7f6a7bdd6290 by thread T26 (mutexes: write M226):
+    #0 next_query_id() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/./mysql_priv.h:64 (mysqld+0x000000436384)
+    #1 dispatch_command(enum_server_command, THD*, char*, unsigned int) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:1593 (mysqld+0x00000040d0a8)
+    #2 do_command(THD*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:1550 (mysqld+0x0000004141fa)
+    #3 handle_one_connection /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:1181 (mysqld+0x0000004117f8)
+
+  Previous read of size 8 at 0x7f6a7bdd6290 by main thread:
+    #0 THD /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_class.cc:272 (mysqld+0x0000003c14e7)
+    #1 handle_connections_sockets /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:4116 (mysqld+0x0000003ed375)
+    #2 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3525 (mysqld+0x0000003e935b)
+
+  Location is global '<null>' of size 0 at 0x000000000000 (mysqld+0x000001c3b290)
+
+  Mutex M226 (0x7f6a7bdd7f00) created at:
+    #0 pthread_mutex_init /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1063 (mysqld+0x000000210225)
+    #1 init_thread_environment() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:2790 (mysqld+0x0000003ee732)
+    #2 init_common_variables(char const*, int, char**, char const**) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:2577 (mysqld+0x0000003e9559)
+    #3 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3329 (mysqld+0x0000003e8b0c)
+
+  Thread T26 (tid=19326, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 create_new_thread(THD*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3894 (mysqld+0x0000003eda4e)
+    #2 handle_connections_sockets /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:4146 (mysqld+0x0000003ed5bc)
+    #3 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3525 (mysqld+0x0000003e935b)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/./mysql_priv.h:64 in next_query_id()
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=17493)
+  Write of size 1 at 0x7f6a7bdd618f by thread T25:
+    #0 kill_mysql() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:917 (mysqld+0x0000003e69e6)
+    #1 dispatch_command(enum_server_command, THD*, char*, unsigned int) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:1998 (mysqld+0x00000040ffe4)
+    #2 do_command(THD*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:1550 (mysqld+0x0000004141fa)
+    #3 handle_one_connection /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:1181 (mysqld+0x0000004117f8)
+
+  Previous read of size 1 at 0x7f6a7bdd618f by thread T8:
+    #0 signal_hand /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:2304 (mysqld+0x0000003e870a)
+
+  Location is global '<null>' of size 0 at 0x000000000000 (mysqld+0x000001c3b18f)
+
+  Thread T25 (tid=23380, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 create_new_thread(THD*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3894 (mysqld+0x0000003eda4e)
+    #2 handle_connections_sockets /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:4146 (mysqld+0x0000003ed5bc)
+    #3 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3525 (mysqld+0x0000003e935b)
+
+  Thread T8 (tid=17509, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 start_signal_handler() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:2224 (mysqld+0x0000003ec7ca)
+    #2 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3452 (mysqld+0x0000003e8f65)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:917 in kill_mysql()
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=17493)
+  Write of size 1 at 0x7f6a7bdd618e by thread T8:
+    #0 signal_hand /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:2328 (mysqld+0x0000003e888d)
+
+  Previous read of size 1 at 0x7f6a7bdd618e by main thread:
+    #0 handle_connections_sockets /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3978 (mysqld+0x0000003ece9e)
+    #1 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3525 (mysqld+0x0000003e935b)
+
+  Location is global '<null>' of size 0 at 0x000000000000 (mysqld+0x000001c3b18e)
+
+  Thread T8 (tid=17509, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 start_signal_handler() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:2224 (mysqld+0x0000003ec7ca)
+    #2 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3452 (mysqld+0x0000003e8f65)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:2328 in signal_hand
+==================
+160111 17:04:13 [Note] ./libexec/mysqld: Normal shutdown
+
+==================
+WARNING: ThreadSanitizer: data race (pid=17493)
+  Write of size 8 at 0x7f6a7bde0348 by thread T9:
+    #0 innobase_end() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1474 (mysqld+0x0000005ffdaf)
+    #1 ha_panic(ha_panic_function) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:527 (mysqld+0x0000005dd7b6)
+    #2 clean_up(bool) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:1112 (mysqld+0x0000003e6efc)
+    #3 unireg_end() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:1057 (mysqld+0x0000003e6dd6)
+    #4 kill_server(void*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:995 (mysqld+0x0000003e6c88)
+    #5 kill_server_thread /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:1017 (mysqld+0x0000003e6a30)
+
+  Previous read of size 8 at 0x7f6a7bde0348 by thread T7:
+    #0 srv_master_thread /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0srv.c:2554 (mysqld+0x00000070d2ab)
+
+  Location is global '<null>' of size 0 at 0x000000000000 (mysqld+0x000001c45348)
+
+  Thread T9 (tid=23381, running) created by thread T8 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 signal_hand /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:2333 (mysqld+0x0000003e88ef)
+
+  Thread T7 (tid=17508, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 os_thread_create /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/os/os0thread.c:167 (mysqld+0x0000008f2cd8)
+    #2 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1586 (mysqld+0x000000711662)
+    #3 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #4 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #5 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #6 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1474 in innobase_end()
+==================
+160111 17:04:13  InnoDB: Starting shutdown...
+==================
+WARNING: ThreadSanitizer: data race (pid=17493)
+  Write of size 8 at 0x7f6a7bde0498 by thread T9:
+    #0 logs_empty_and_mark_files_at_shutdown /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/log/log0log.c:3058 (mysqld+0x00000085fa27)
+    #1 innobase_shutdown_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1776 (mysqld+0x000000714d9e)
+    #2 innobase_end() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1476 (mysqld+0x0000005ffdd8)
+    #3 ha_panic(ha_panic_function) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:527 (mysqld+0x0000005dd7b6)
+    #4 clean_up(bool) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:1112 (mysqld+0x0000003e6efc)
+    #5 unireg_end() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:1057 (mysqld+0x0000003e6dd6)
+    #6 kill_server(void*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:995 (mysqld+0x0000003e6c88)
+    #7 kill_server_thread /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:1017 (mysqld+0x0000003e6a30)
+
+  Previous read of size 8 at 0x7f6a7bde0498 by thread T5:
+    #0 srv_lock_timeout_and_monitor_thread /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0srv.c:1991 (mysqld+0x00000070b63d)
+
+  Location is global '<null>' of size 0 at 0x000000000000 (mysqld+0x000001c45498)
+
+  Thread T9 (tid=23381, running) created by thread T8 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 signal_hand /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:2333 (mysqld+0x0000003e88ef)
+
+  Thread T5 (tid=17501, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 os_thread_create /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/os/os0thread.c:167 (mysqld+0x0000008f2cd8)
+    #2 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1551 (mysqld+0x00000071156b)
+    #3 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #4 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #5 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #6 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/log/log0log.c:3058 in logs_empty_and_mark_files_at_shutdown
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=17493)
+  Read of size 8 at 0x7f6a7bde0228 by thread T9:
+    #0 logs_empty_and_mark_files_at_shutdown /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/log/log0log.c:3189 (mysqld+0x00000085ff0d)
+    #1 innobase_shutdown_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1776 (mysqld+0x000000714d9e)
+    #2 innobase_end() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1476 (mysqld+0x0000005ffdd8)
+    #3 ha_panic(ha_panic_function) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:527 (mysqld+0x0000005dd7b6)
+    #4 clean_up(bool) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:1112 (mysqld+0x0000003e6efc)
+    #5 unireg_end() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:1057 (mysqld+0x0000003e6dd6)
+    #6 kill_server(void*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:995 (mysqld+0x0000003e6c88)
+    #7 kill_server_thread /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:1017 (mysqld+0x0000003e6a30)
+
+  Previous write of size 8 at 0x7f6a7bde0228 by thread T5:
+    #0 srv_lock_timeout_and_monitor_thread /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0srv.c:2005 (mysqld+0x00000070b6f2)
+
+  Location is global '<null>' of size 0 at 0x000000000000 (mysqld+0x000001c45228)
+
+  Thread T9 (tid=23381, running) created by thread T8 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 signal_hand /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:2333 (mysqld+0x0000003e88ef)
+
+  Thread T5 (tid=17501, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 os_thread_create /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/os/os0thread.c:167 (mysqld+0x0000008f2cd8)
+    #2 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1551 (mysqld+0x00000071156b)
+    #3 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #4 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #5 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #6 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/log/log0log.c:3189 in logs_empty_and_mark_files_at_shutdown
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=17493)
+  Write of size 8 at 0x7f6a7bde0230 by thread T6:
+    #0 srv_error_monitor_thread /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0srv.c:2111 (mysqld+0x00000070ba69)
+
+  Previous read of size 8 at 0x7f6a7bde0230 by thread T9:
+    #0 logs_empty_and_mark_files_at_shutdown /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/log/log0log.c:3198 (mysqld+0x00000085ff4f)
+    #1 innobase_shutdown_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1776 (mysqld+0x000000714d9e)
+    #2 innobase_end() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1476 (mysqld+0x0000005ffdd8)
+    #3 ha_panic(ha_panic_function) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:527 (mysqld+0x0000005dd7b6)
+    #4 clean_up(bool) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:1112 (mysqld+0x0000003e6efc)
+    #5 unireg_end() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:1057 (mysqld+0x0000003e6dd6)
+    #6 kill_server(void*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:995 (mysqld+0x0000003e6c88)
+    #7 kill_server_thread /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:1017 (mysqld+0x0000003e6a30)
+
+  Location is global '<null>' of size 0 at 0x000000000000 (mysqld+0x000001c45230)
+
+  Thread T6 (tid=17502, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 os_thread_create /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/os/os0thread.c:167 (mysqld+0x0000008f2cd8)
+    #2 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1555 (mysqld+0x000000711595)
+    #3 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #4 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #5 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #6 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+  Thread T9 (tid=23381, running) created by thread T8 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 signal_hand /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:2333 (mysqld+0x0000003e88ef)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0srv.c:2111 in srv_error_monitor_thread
+==================
+160111 17:04:16  InnoDB: Shutdown completed; log sequence number 0 43655
+160111 17:04:16 [Note] ./libexec/mysqld: Shutdown complete
+
+==================
+WARNING: ThreadSanitizer: data race (pid=17493)
+  Read of size 4 at 0x7f6a7bdd8624 by thread T8:
+    #0 signal_hand /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:2311 (mysqld+0x0000003e87a0)
+
+  Previous write of size 4 at 0x7f6a7bdd8624 by thread T9:
+    [failed to restore the stack]
+
+  Location is global '<null>' of size 0 at 0x000000000000 (mysqld+0x000001c3d624)
+
+  Thread T8 (tid=17509, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 start_signal_handler() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:2224 (mysqld+0x0000003ec7ca)
+    #2 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3452 (mysqld+0x0000003e8f65)
+
+  Thread T9 (tid=23381, running) created by thread T8 at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 signal_hand /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:2333 (mysqld+0x0000003e88ef)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:2311 in signal_hand
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=17493)
+  Write of size 1 at 0x7f6a7bdd8621 by thread T8:
+    #0 signal_hand /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:2315 (mysqld+0x0000003e87be)
+
+  Previous read of size 1 at 0x7f6a7bdd8621 by main thread:
+    #0 wait_for_signal_thread_to_end() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:1200 (mysqld+0x0000003e7354)
+    #1 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3562 (mysqld+0x0000003e9413)
+
+  Location is global '<null>' of size 0 at 0x000000000000 (mysqld+0x000001c3d621)
+
+  Thread T8 (tid=17509, running) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 start_signal_handler() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:2224 (mysqld+0x0000003ec7ca)
+    #2 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3452 (mysqld+0x0000003e8f65)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:2315 in signal_hand
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=17493)
+  Write of size 8 at 0x7f6a7bdd8280 by main thread:
+    #0 pthread_cond_destroy /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1051 (mysqld+0x00000022729c)
+    #1 clean_up_mutexes() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:1247 (mysqld+0x0000003e7566)
+    #2 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3563 (mysqld+0x0000003e9418)
+
+  Previous read of size 8 at 0x7f6a7bdd8280 by thread T24:
+    #0 pthread_cond_broadcast /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1044 (mysqld+0x000000227160)
+    #1 end_thread(THD*, bool) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:1676 (mysqld+0x0000003e7da4)
+    #2 handle_one_connection /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/sql_parse.cc:1205 (mysqld+0x000000411dd7)
+
+  Location is global '<null>' of size 0 at 0x000000000000 (mysqld+0x000001c3d280)
+
+  Thread T24 (tid=22607, finished) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 create_new_thread(THD*) /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3894 (mysqld+0x0000003eda4e)
+    #2 handle_connections_sockets /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:4146 (mysqld+0x0000003ed5bc)
+    #3 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3525 (mysqld+0x0000003e935b)
+
+SUMMARY: ThreadSanitizer: data race /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:1247 in clean_up_mutexes()
+==================
+==================
+WARNING: ThreadSanitizer: thread leak (pid=17493)
+  Thread T1 (tid=17495, finished) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 os_thread_create /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/os/os0thread.c:167 (mysqld+0x0000008f2cd8)
+    #2 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1268 (mysqld+0x000000710d5a)
+    #3 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #4 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #5 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #6 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+  And 3 more similar thread leaks.
+
+SUMMARY: ThreadSanitizer: thread leak /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/os/os0thread.c:167 in os_thread_create
+==================
+==================
+WARNING: ThreadSanitizer: thread leak (pid=17493)
+  Thread T5 (tid=17501, finished) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 os_thread_create /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/os/os0thread.c:167 (mysqld+0x0000008f2cd8)
+    #2 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1551 (mysqld+0x00000071156b)
+    #3 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #4 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #5 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #6 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+SUMMARY: ThreadSanitizer: thread leak /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/os/os0thread.c:167 in os_thread_create
+==================
+==================
+WARNING: ThreadSanitizer: thread leak (pid=17493)
+  Thread T6 (tid=17502, finished) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 os_thread_create /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/os/os0thread.c:167 (mysqld+0x0000008f2cd8)
+    #2 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1555 (mysqld+0x000000711595)
+    #3 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #4 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #5 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #6 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+SUMMARY: ThreadSanitizer: thread leak /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/os/os0thread.c:167 in os_thread_create
+==================
+==================
+WARNING: ThreadSanitizer: thread leak (pid=17493)
+  Thread T7 (tid=17508, finished) created by main thread at:
+    #0 pthread_create /home/bg2539/workspace/llvm/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (mysqld+0x0000002262d3)
+    #1 os_thread_create /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/os/os0thread.c:167 (mysqld+0x0000008f2cd8)
+    #2 innobase_start_or_create_for_mysql /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/srv/srv0start.c:1586 (mysqld+0x000000711662)
+    #3 innobase_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/ha_innodb.cc:1417 (mysqld+0x0000005fd3a7)
+    #4 ha_init() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/handler.cc:488 (mysqld+0x0000005dc42b)
+    #5 init_server_components() /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3101 (mysqld+0x0000003eb733)
+    #6 main /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/sql/mysqld.cc:3427 (mysqld+0x0000003e8ee8)
+
+SUMMARY: ThreadSanitizer: thread leak /home/bg2539/workspace/ConAnalysis/concurrency-exploits/mysql-24988/mysql-5.0.27/innobase/os/os0thread.c:167 in os_thread_create
+==================
+ThreadSanitizer: reported 26 warnings

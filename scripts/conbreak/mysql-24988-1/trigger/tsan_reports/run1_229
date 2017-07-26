@@ -1,0 +1,2 @@
+buf_LRU_add_block_low (buf0lru.c:740)
+buf_block_peek_if_too_old (buf0buf.ic:30)

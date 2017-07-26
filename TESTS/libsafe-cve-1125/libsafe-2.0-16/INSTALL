@@ -1,0 +1,30 @@
+$Name: release2_0-16 $
+$Id: INSTALL,v 1.10 2001/11/12 21:56:24 ttsai Exp $
+
+To build the library:
+	make		(This will make both libsafe.so as well as some sample
+			 exploits)
+	make install	(make install must be done as root)
+
+The makefile will only copy the library and man page to the appropriate
+directories.  To activate libsafe, either on a per-process basis or on a
+system-wide basis, see the man page (doc/libsafe.8, Section "Installing
+libsafe").
+
+See http://www.research.avayalabs.com/project/libsafe/index.html for more info.
+Send comments and bug reports to libsafe@research.avayalabs.com.
+
+-------------------------------------------------------------------------------
+Build problems and notes:
+
+If you wish to obtain a core dump or stack dump of a program that has been
+terminated by libsafe, compile libsafe with the the desired debugging options
+enabled.  See "DEBUGGING OPTIONS" in libsafe/src/Makefile.  You can also do a
+"make debug".
+
+If you get a compiler error about environ already being defined, comment out
+line 40 in libsafe/src/util.c.
+
+If your system doesn't have the file ansidecl.h, you can find the file in the
+Debian package.  See ftp://ftp.rademaker.dhs.org/pub/debian/binary-i386/.
+Thanks to Ron Rademaker for creating the Debian package.

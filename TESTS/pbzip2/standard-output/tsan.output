@@ -1,0 +1,192 @@
+==================
+WARNING: ThreadSanitizer: data race (pid=16018)
+  Write of size 4 at 0x7d040000f7d8 by thread T1 (mutexes: write M8):
+    #0 consumer(void*) /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:967:34 (pbzip2+0x0000004a7762)
+
+  Previous read of size 4 at 0x7d040000f7d8 by thread T4:
+    #0 fileWriter(void*) /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:704:62 (pbzip2+0x0000004a6855)
+
+  Location is heap block of size 16 at 0x7d040000f7d0 allocated by main thread:
+    #0 operator new(unsigned long) /home/clarkyan/Downloads/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_new_delete.cc:37 (pbzip2+0x0000004a1d53)
+    #1 __gnu_cxx::new_allocator<outBuff>::allocate(unsigned long, void const*) /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../include/c++/4.8/ext/new_allocator.h:104:27 (pbzip2+0x0000004af3aa)
+    #2 std::_Vector_base<outBuff, std::allocator<outBuff> >::_M_allocate(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../include/c++/4.8/bits/stl_vector.h:168:27 (pbzip2+0x0000004aee62)
+    #3 std::vector<outBuff, std::allocator<outBuff> >::_M_fill_insert(__gnu_cxx::__normal_iterator<outBuff*, std::vector<outBuff, std::allocator<outBuff> > >, unsigned long, outBuff const&) /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../include/c++/4.8/bits/vector.tcc:483:28 (pbzip2+0x0000004afd16)
+    #4 std::vector<outBuff, std::allocator<outBuff> >::insert(__gnu_cxx::__normal_iterator<outBuff*, std::vector<outBuff, std::allocator<outBuff> > >, unsigned long, outBuff const&) /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../include/c++/4.8/bits/stl_vector.h:1024:9 (pbzip2+0x0000004af7b0)
+    #5 std::vector<outBuff, std::allocator<outBuff> >::resize(unsigned long, outBuff) /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../include/c++/4.8/bits/stl_vector.h:707:4 (pbzip2+0x0000004ac506)
+    #6 main /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:1799:3 (pbzip2+0x0000004ab444)
+
+  Mutex M8 (0x7d0c0000efa0) created at:
+    #0 pthread_mutex_init /home/clarkyan/Downloads/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1063 (pbzip2+0x000000431045)
+    #1 main /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:1577:2 (pbzip2+0x0000004aa2a3)
+
+  Thread T1 (tid=16020, running) created by main thread at:
+    #0 pthread_create /home/clarkyan/Downloads/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (pbzip2+0x0000004470f3)
+    #1 main /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:1843:11 (pbzip2+0x0000004ab832)
+
+  Thread T4 (tid=16023, running) created by main thread at:
+    #0 pthread_create /home/clarkyan/Downloads/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (pbzip2+0x0000004470f3)
+    #1 main /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:1851:10 (pbzip2+0x0000004ab8fd)
+
+SUMMARY: ThreadSanitizer: data race /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:967:34 in consumer(void*)
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=16018)
+  Read of size 4 at 0x00000153ca10 by thread T1 (mutexes: write M10):
+    #0 consumer(void*) /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:895:8 (pbzip2+0x0000004a7295)
+
+  Previous write of size 4 at 0x00000153ca10 by main thread:
+    #0 producer(int, long, int, queue*) /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:859:10 (pbzip2+0x0000004a7177)
+    #1 main /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:1859:4 (pbzip2+0x0000004ab96f)
+
+  Location is global 'allDone' of size 4 at 0x00000153ca10 (pbzip2+0x00000153ca10)
+
+  Mutex M10 (0x7d0c0000ef40) created at:
+    #0 pthread_mutex_init /home/clarkyan/Downloads/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1063 (pbzip2+0x000000431045)
+    #1 queueInit(int) /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:1020:2 (pbzip2+0x0000004a7d0d)
+    #2 main /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:1589:9 (pbzip2+0x0000004aa36f)
+
+  Thread T1 (tid=16020, running) created by main thread at:
+    #0 pthread_create /home/clarkyan/Downloads/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (pbzip2+0x0000004470f3)
+    #1 main /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:1843:11 (pbzip2+0x0000004ab832)
+
+SUMMARY: ThreadSanitizer: data race /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:895:8 in consumer(void*)
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=16018)
+  Read of size 8 at 0x7d040000f7d0 by thread T4:
+    #0 fileWriter(void*) /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:704:103 (pbzip2+0x0000004a6885)
+
+  Previous write of size 8 at 0x7d040000f7d0 by thread T1 (mutexes: write M8):
+    #0 consumer(void*) /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:966:30 (pbzip2+0x0000004a7707)
+
+  As if synchronized via sleep:
+    #0 usleep /home/clarkyan/Downloads/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:300 (pbzip2+0x0000004451d3)
+    #1 fileWriter(void*) /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:707:4 (pbzip2+0x0000004a689d)
+
+  Location is heap block of size 16 at 0x7d040000f7d0 allocated by main thread:
+    #0 operator new(unsigned long) /home/clarkyan/Downloads/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_new_delete.cc:37 (pbzip2+0x0000004a1d53)
+    #1 __gnu_cxx::new_allocator<outBuff>::allocate(unsigned long, void const*) /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../include/c++/4.8/ext/new_allocator.h:104:27 (pbzip2+0x0000004af3aa)
+    #2 std::_Vector_base<outBuff, std::allocator<outBuff> >::_M_allocate(unsigned long) /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../include/c++/4.8/bits/stl_vector.h:168:27 (pbzip2+0x0000004aee62)
+    #3 std::vector<outBuff, std::allocator<outBuff> >::_M_fill_insert(__gnu_cxx::__normal_iterator<outBuff*, std::vector<outBuff, std::allocator<outBuff> > >, unsigned long, outBuff const&) /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../include/c++/4.8/bits/vector.tcc:483:28 (pbzip2+0x0000004afd16)
+    #4 std::vector<outBuff, std::allocator<outBuff> >::insert(__gnu_cxx::__normal_iterator<outBuff*, std::vector<outBuff, std::allocator<outBuff> > >, unsigned long, outBuff const&) /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../include/c++/4.8/bits/stl_vector.h:1024:9 (pbzip2+0x0000004af7b0)
+    #5 std::vector<outBuff, std::allocator<outBuff> >::resize(unsigned long, outBuff) /usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../include/c++/4.8/bits/stl_vector.h:707:4 (pbzip2+0x0000004ac506)
+    #6 main /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:1799:3 (pbzip2+0x0000004ab444)
+
+  Mutex M8 (0x7d0c0000efa0) created at:
+    #0 pthread_mutex_init /home/clarkyan/Downloads/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1063 (pbzip2+0x000000431045)
+    #1 main /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:1577:2 (pbzip2+0x0000004aa2a3)
+
+  Thread T4 (tid=16023, running) created by main thread at:
+    #0 pthread_create /home/clarkyan/Downloads/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (pbzip2+0x0000004470f3)
+    #1 main /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:1851:10 (pbzip2+0x0000004ab8fd)
+
+  Thread T1 (tid=16020, running) created by main thread at:
+    #0 pthread_create /home/clarkyan/Downloads/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (pbzip2+0x0000004470f3)
+    #1 main /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:1843:11 (pbzip2+0x0000004ab832)
+
+SUMMARY: ThreadSanitizer: data race /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:704:103 in fileWriter(void*)
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=16018)
+  Read of size 8 at 0x7dc800000000 by thread T4:
+    #0 write /home/clarkyan/Downloads/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/../sanitizer_common/sanitizer_common_interceptors.inc:564 (pbzip2+0x00000043a7f9)
+    #1 fileWriter(void*) /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:716:9 (pbzip2+0x0000004a6914)
+
+  Previous write of size 8 at 0x7dc800000000 by thread T1 (mutexes: write M9):
+    #0 operator new[](unsigned long) /home/clarkyan/Downloads/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_new_delete.cc:43 (pbzip2+0x0000004a1df3)
+    #1 consumer(void*) /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:945:20 (pbzip2+0x0000004a7559)
+
+  As if synchronized via sleep:
+    #0 usleep /home/clarkyan/Downloads/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:300 (pbzip2+0x0000004451d3)
+    #1 fileWriter(void*) /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:707:4 (pbzip2+0x0000004a689d)
+
+  Location is heap block of size 83339 at 0x7dc800000000 allocated by thread T1:
+    #0 operator new[](unsigned long) /home/clarkyan/Downloads/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_new_delete.cc:43 (pbzip2+0x0000004a1df3)
+    #1 consumer(void*) /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:945:20 (pbzip2+0x0000004a7559)
+
+  Mutex M9 (0x7d0c0000ef70) created at:
+    #0 pthread_mutex_init /home/clarkyan/Downloads/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1063 (pbzip2+0x000000431045)
+    #1 main /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:1586:2 (pbzip2+0x0000004aa35e)
+
+  Thread T4 (tid=16023, running) created by main thread at:
+    #0 pthread_create /home/clarkyan/Downloads/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (pbzip2+0x0000004470f3)
+    #1 main /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:1851:10 (pbzip2+0x0000004ab8fd)
+
+  Thread T1 (tid=16020, running) created by main thread at:
+    #0 pthread_create /home/clarkyan/Downloads/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (pbzip2+0x0000004470f3)
+    #1 main /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:1843:11 (pbzip2+0x0000004ab832)
+
+SUMMARY: ThreadSanitizer: data race /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:716:9 in fileWriter(void*)
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=16018)
+  Write of size 4 at 0x7d140000efdc by main thread:
+    #0 main /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:1903:15 (pbzip2+0x0000004abb8a)
+
+  Previous read of size 4 at 0x7d140000efdc by thread T1 (mutexes: write M10):
+    #0 consumer(void*) /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:890:16 (pbzip2+0x0000004a7272)
+
+  Location is heap block of size 72 at 0x7d140000efb0 allocated by main thread:
+    #0 operator new(unsigned long) /home/clarkyan/Downloads/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_new_delete.cc:37 (pbzip2+0x0000004a1d53)
+    #1 queueInit(int) /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:992:6 (pbzip2+0x0000004a788d)
+    #2 main /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:1589:9 (pbzip2+0x0000004aa36f)
+
+  Mutex M10 (0x7d0c0000ef40) created at:
+    #0 pthread_mutex_init /home/clarkyan/Downloads/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:1063 (pbzip2+0x000000431045)
+    #1 queueInit(int) /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:1020:2 (pbzip2+0x0000004a7d0d)
+    #2 main /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:1589:9 (pbzip2+0x0000004aa36f)
+
+  Thread T1 (tid=16020, running) created by main thread at:
+    #0 pthread_create /home/clarkyan/Downloads/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (pbzip2+0x0000004470f3)
+    #1 main /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:1843:11 (pbzip2+0x0000004ab832)
+
+SUMMARY: ThreadSanitizer: data race /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:1903:15 in main
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=16018)
+  Write of size 8 at 0x7d0c0000ef40 by main thread:
+    #0 operator delete(void*) /home/clarkyan/Downloads/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_new_delete.cc:69 (pbzip2+0x0000004a1fe9)
+    #1 queueDelete(queue*) /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:1048:3 (pbzip2+0x0000004a8005)
+    #2 main /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:1913:2 (pbzip2+0x0000004abc7f)
+
+  Previous atomic read of size 1 at 0x7d0c0000ef40 by thread T1:
+    #0 pthread_mutex_lock /home/clarkyan/Downloads/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/../sanitizer_common/sanitizer_common_interceptors.inc:3194 (pbzip2+0x00000042f443)
+    #1 consumer(void*) /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:889:3 (pbzip2+0x0000004a7255)
+
+  Thread T1 (tid=16020, running) created by main thread at:
+    #0 pthread_create /home/clarkyan/Downloads/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (pbzip2+0x0000004470f3)
+    #1 main /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:1843:11 (pbzip2+0x0000004ab832)
+
+SUMMARY: ThreadSanitizer: data race /home/clarkyan/Downloads/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_new_delete.cc:69 in operator delete(void*)
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=16018)
+  Write of size 8 at 0x7d140000efe0 by main thread:
+    #0 queueDelete(queue*) /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:1049:10 (pbzip2+0x0000004a801c)
+    #1 main /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:1913:2 (pbzip2+0x0000004abc7f)
+
+  Previous read of size 8 at 0x7d140000efe0 by thread T1:
+    #0 consumer(void*) /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:889:28 (pbzip2+0x0000004a7248)
+
+  Location is heap block of size 72 at 0x7d140000efb0 allocated by main thread:
+    #0 operator new(unsigned long) /home/clarkyan/Downloads/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_new_delete.cc:37 (pbzip2+0x0000004a1d53)
+    #1 queueInit(int) /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:992:6 (pbzip2+0x0000004a788d)
+    #2 main /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:1589:9 (pbzip2+0x0000004aa36f)
+
+  Thread T1 (tid=16020, running) created by main thread at:
+    #0 pthread_create /home/clarkyan/Downloads/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/rtl/tsan_interceptors.cc:849 (pbzip2+0x0000004470f3)
+    #1 main /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:1843:11 (pbzip2+0x0000004ab832)
+
+SUMMARY: ThreadSanitizer: data race /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:1049:10 in queueDelete(queue*)
+==================
+==================
+WARNING: ThreadSanitizer: unlock of an unlocked mutex (or by a wrong thread) (pid=16018)
+    #0 pthread_mutex_unlock /home/clarkyan/Downloads/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/../sanitizer_common/sanitizer_common_interceptors.inc:3205 (pbzip2+0x00000042ba53)
+    #1 consumer(void*) /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:898:5 (pbzip2+0x0000004a72dd)
+
+  Mutex M12 (0x000000000000) created at:
+    #0 pthread_mutex_unlock /home/clarkyan/Downloads/llvm-3.7.1.src/projects/compiler-rt/lib/tsan/../sanitizer_common/sanitizer_common_interceptors.inc:3205 (pbzip2+0x00000042ba53)
+    #1 consumer(void*) /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:898:5 (pbzip2+0x0000004a72dd)
+
+SUMMARY: ThreadSanitizer: unlock of an unlocked mutex (or by a wrong thread) /home/clarkyan/Desktop/ConAnalysis/concurrency-exploits/pbzip2-0.9/pbzip2-0.9.4/pbzip2.cpp:898:5 in consumer(void*)
+==================

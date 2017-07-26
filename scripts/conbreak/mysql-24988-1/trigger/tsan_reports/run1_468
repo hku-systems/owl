@@ -1,0 +1,2 @@
+next_query_id (mysql_priv.h:64)
+THD::THD (sql_class.cc:272)
