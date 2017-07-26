@@ -1,0 +1,6 @@
+Debug/
+build/
+.ycm*
+*.o
+.color_coded
+*.ll

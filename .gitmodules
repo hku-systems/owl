@@ -1,0 +1,6 @@
+[submodule "whole-program-llvm"]
+	path = whole-program-llvm
+	url = https://github.com/SRI-CSL/whole-program-llvm.git
+[submodule "concurrency-exploits"]
+	path = concurrency-exploits
+	url = https://github.com/ruigulala/concurrency-exploits.git
