@@ -1,2 +1,0 @@
-apr_pool_cleanup_register (apr_pools.c:1925)
-apr_file_write (readwrite.c:233)

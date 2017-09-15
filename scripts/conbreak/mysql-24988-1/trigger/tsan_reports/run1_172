@@ -1,2 +1,0 @@
-mem_heap_create_block (mem0mem.c:177)
-btr_search_check_free_space_in_heap (btr0sea.c:111)

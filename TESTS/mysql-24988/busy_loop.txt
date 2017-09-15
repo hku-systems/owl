@@ -1,3 +1,0 @@
-race_report_sysbench1
-race_report_sysbench4
-race_report_sysbench7

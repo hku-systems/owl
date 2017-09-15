@@ -1,2 +1,0 @@
-safe_mutex_lock (thr_mutex.c:125)
-wait_if_global_read_lock (lock.cc:1218)

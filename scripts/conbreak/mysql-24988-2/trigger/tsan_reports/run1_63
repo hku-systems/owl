@@ -1,2 +1,0 @@
-rw_lock_set_writer (sync0rw.ic:80)
-rw_lock_get_writer (sync0rw.ic:71)

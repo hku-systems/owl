@@ -1,2 +1,0 @@
-signal_hand (mysqld.cc:2328)
-handle_connections_sockets (mysqld.cc:3978)
