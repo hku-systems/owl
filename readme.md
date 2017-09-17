@@ -14,7 +14,7 @@ export OWL=`pwd`
 ```
 ### Build GCC
 ```
-cd targets/gcc7
+cd $OWL/targets/gcc7
 mkdir build
 mkdir install
 cd build
@@ -22,7 +22,17 @@ cd build
 make -j48
 make install
 ```
-This project contains gcc 8.0 and linux 4.13.<br>
+### Build Linux kernel
+```
+cd $OWL/targets/linux
+make defconfig
+make kvmconfig
+cd ..
+cp ../cfg_files/linux4.13_syzkaller_cfg .config
+make oldconfig
+make CC='../gcc7/install/bin/gcc' -j48
+```
+This project contains gcc 7.1.0($OWL/targets/gcc7) and linux 4.13($OWL/targets/linux)<br>
 They are the latest versions when we build this project.<br>
 If you want to use a newer version, you can use following commands:<br>
 ```
