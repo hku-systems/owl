@@ -4,3 +4,6 @@
 [submodule "concurrency-exploits"]
 	path = concurrency-exploits
 	url = https://github.com/ruigulala/concurrency-exploits.git
+[submodule "targets/linux"]
+	path = targets/linux
+	url = https://github.com/torvalds/linux.git
