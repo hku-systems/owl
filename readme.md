@@ -1,8 +1,11 @@
 # OWL--a system for finding concurrency attacks.
 
 ### Install prerequisites:
+Firstly you will need python 2.7 before proceed because our project is mainly written in python.<br>
+Then run following commands:
 ```
-sudo apt-get install git subversion flex bison libc6-dev libc6-dev-i386 linux-libc-dev linux-libc-dev:i386 libgmp3-dev libmpfr-dev libmpc-dev build-essential bc debootstrap kvm qemu-kvm
+sudo apt-get install git subversion flex bison libc6-dev libc6-dev-i386 linux-libc-dev linux-libc-dev:i386 libgmp3-dev libmpfr-dev libmpc-dev build-essential bc debootstrap kvm qemu-kvm python-pip
+sudo pip install pyinotify
 ```
 
 ### Download OWL project:
@@ -55,7 +58,7 @@ And remember to edit the my.config file to fit your env. Then you can run syzkal
 cd $GOPATH
 ./bin/syz-manager -config=my.cfg
 ```
-If error "Could not access KVM kernel module: Permission denied" is reported, you may need to check priviledge setting of /dev/kvm.
+If error "Could not access KVM kernel module: Permission denied" is reported, you may need to check priviledge setting of /dev/kvm.<br><br>
 This project contains gcc 7.1.0($OWL/targets/gcc7) and linux 4.13($OWL/targets/linux)<br>
 They are the latest versions when we build this project.<br>
 If you want to use a newer version, you can use following commands:<br>
