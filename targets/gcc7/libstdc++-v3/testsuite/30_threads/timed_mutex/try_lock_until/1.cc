@@ -1,7 +1,6 @@
-// { dg-do run }
-// { dg-options "-pthread"  }
+// { dg-do run { target *-*-freebsd* *-*-dragonfly* *-*-netbsd* *-*-linux* *-*-gnu* *-*-solaris* *-*-cygwin *-*-rtems* *-*-darwin* powerpc-ibm-aix* } }
+// { dg-options "-pthread" { target *-*-freebsd* *-*-dragonfly* *-*-netbsd* *-*-linux* *-*-gnu* *-*-solaris* powerpc-ibm-aix* } }
 // { dg-require-effective-target c++11 }
-// { dg-require-effective-target pthread }
 // { dg-require-cstdint "" }
 
 // Copyright (C) 2008-2017 Free Software Foundation, Inc.
