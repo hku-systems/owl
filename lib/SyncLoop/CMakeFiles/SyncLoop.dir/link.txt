@@ -1,0 +1,1 @@
+/usr/bin/c++  -fPIC -Wall -Werror -g  -shared -Wl,-soname,libSyncLoop.so -o libSyncLoop.so CMakeFiles/SyncLoop.dir/SyncLoopAnalysis.cpp.o 

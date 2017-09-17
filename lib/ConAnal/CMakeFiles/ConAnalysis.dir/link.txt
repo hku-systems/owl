@@ -1,0 +1,1 @@
+/usr/bin/c++  -fPIC -Wall -Werror -g  -shared -Wl,-soname,libConAnalysis.so -o libConAnalysis.so CMakeFiles/ConAnalysis.dir/ConAnalysis.cpp.o 

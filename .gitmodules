@@ -7,3 +7,6 @@
 [submodule "targets/linux"]
 	path = targets/linux
 	url = https://github.com/torvalds/linux.git
+[submodule "memfuzz"]
+	path = memfuzz
+	url = https://github.com/SimonZsx/allocationcheck

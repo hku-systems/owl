@@ -1,0 +1,25 @@
+# Hashes of file build rules.
+00f9c4b93269511ee9488d8a7f7926cf TESTS/apache-2.4.18/CMakeFiles/apache-2.4.18
+00f9c4b93269511ee9488d8a7f7926cf TESTS/apache-2.4.18/apache-2.4.18.bc
+4c8f3b3a303614e663fba57ada39779e TESTS/apache-21287/CMakeFiles/apache-21287
+4c8f3b3a303614e663fba57ada39779e TESTS/apache-21287/apache-21287.bc
+f7749b805e2d77a67f4cefae8fe34939 TESTS/apache-25520/CMakeFiles/apache-25520
+f7749b805e2d77a67f4cefae8fe34939 TESTS/apache-25520/apache-25520.bc
+843442e48738b02ac404c53f3d5acce4 TESTS/apache-46215/CMakeFiles/apache-46215
+843442e48738b02ac404c53f3d5acce4 TESTS/apache-46215/apache-46215.bc
+1588e24779683bcad1494c68ab0795ee TESTS/libsafe-cve-1125/CMakeFiles/libsafe-cve-1125
+1588e24779683bcad1494c68ab0795ee TESTS/libsafe-cve-1125/libsafe-cve-1125.bc
+5a4b4dd86fdda71adfec962b8f023052 TESTS/libvirt-cve-1447/CMakeFiles/libvirt-cve-1447
+5a4b4dd86fdda71adfec962b8f023052 TESTS/libvirt-cve-1447/libvirt-cve-1447.bc
+24808ee5352651db3e7984aa33de4906 TESTS/linux-4.4.1/CMakeFiles/linux-4.4.1
+24808ee5352651db3e7984aa33de4906 TESTS/linux-4.4.1/linux-4.4.1.bc
+c8b1a68eaab7877c0af494d1d60ed7f8 TESTS/memcached-1.4.25/CMakeFiles/memcached-1.4.25
+c8b1a68eaab7877c0af494d1d60ed7f8 TESTS/memcached-1.4.25/memcached-1.4.25.bc
+e0f7363af8725c4d773820284c9da722 TESTS/mongoose-3.6/CMakeFiles/mongoose-3.6
+e0f7363af8725c4d773820284c9da722 TESTS/mongoose-3.6/mongoose-3.6.bc
+405de7e92bd810772f9f6632cf8919d6 TESTS/mysql-24988/CMakeFiles/mysql-24988
+405de7e92bd810772f9f6632cf8919d6 TESTS/mysql-24988/mysql-24988.bc
+3ff0731d5c71bcc7ff1efa8cb9faa32c TESTS/mysql-35589/CMakeFiles/mysql-35589
+3ff0731d5c71bcc7ff1efa8cb9faa32c TESTS/mysql-35589/mysql-35589.bc
+0bab3832f53782817f091f45fe6077fe TESTS/ssdb-1.9.2/CMakeFiles/ssdb-1.9.2
+0bab3832f53782817f091f45fe6077fe TESTS/ssdb-1.9.2/ssdb-1.9.2.bc

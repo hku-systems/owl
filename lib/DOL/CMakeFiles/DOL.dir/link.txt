@@ -1,0 +1,1 @@
+/usr/bin/c++  -fPIC -Wall -Werror -g  -shared -Wl,-soname,libDOL.so -o libDOL.so CMakeFiles/DOL.dir/DangerOpLabel.cpp.o 
