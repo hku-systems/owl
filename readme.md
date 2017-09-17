@@ -50,6 +50,12 @@ go get -u -d github.com/google/syzkaller/...
 cd $GOPATH/src/github.com/google/syzkaller/
 make
 ```
+And remember to edit the my.config file to fit your env. Then you can run syzkaller with
+```
+cd $GOPATH
+./bin/syz-manager -config=my.cfg
+```
+If error "Could not access KVM kernel module: Permission denied" is reported, you may need to check priviledge setting of /dev/kvm.
 This project contains gcc 7.1.0($OWL/targets/gcc7) and linux 4.13($OWL/targets/linux)<br>
 They are the latest versions when we build this project.<br>
 If you want to use a newer version, you can use following commands:<br>
