@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 def handle(full_path,relative_path):
-	l=len("syzkaller/")
+	l=len("syzkaller/crashes/")
 	r_path=relative_path[l:]
 	print r_path
 	if r_path.startswith("crashes"):
 		crash_log(full_path,r_path)
+
 def crash_log(full_path,r_path):
 	print "crash called"
 	clen=len("crashes/")
