@@ -2,7 +2,8 @@
 import pyinotify
 
 class NewFileHandler(pyinotify.ProcessEvent):
-	
+	def process_IN_CREATE(self, event):
+		print "Creating:", event.pathname	
 		
 
 def WatchNewFile():
