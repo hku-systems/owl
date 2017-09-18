@@ -700,6 +700,10 @@ instrument_gimple (gimple_stmt_iterator *gsi)
   bool instrumented = false;
 
   stmt = gsi_stmt (*gsi);
+  
+  if (gimple_has_volatile_ops (stmt))
+    return false;
+  
   if (is_gimple_call (stmt)
       && (gimple_call_fndecl (stmt)
 	  != builtin_decl_implicit (BUILT_IN_TSAN_INIT)))
@@ -861,12 +865,12 @@ tsan_finish_file (void)
   tree ctor_statements = NULL_TREE;
 
   initialize_sanitizer_builtins ();
-  tree init_decl = builtin_decl_implicit (BUILT_IN_TSAN_INIT);
+  /*tree init_decl = builtin_decl_implicit (BUILT_IN_TSAN_INIT);
   append_to_statement_list (build_call_expr (init_decl, 0),
 			    &ctor_statements);
   cgraph_build_static_cdtor ('I', ctor_statements,
 			     MAX_RESERVED_INIT_PRIORITY - 1);
-}
+*/}
 
 /* The pass descriptor.  */
 
