@@ -30,7 +30,6 @@ make install
 cd $OWL/targets/linux
 make defconfig
 make kvmconfig
-cd ..
 cp ../cfg_files/linux4.13_syzkaller_cfg .config
 make oldconfig
 make CC='../gcc7/install/bin/gcc' -j48
