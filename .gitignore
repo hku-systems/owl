@@ -6,3 +6,5 @@ build/
 *.ll
 nohup*
 vm*
+.gdb*
+peda*

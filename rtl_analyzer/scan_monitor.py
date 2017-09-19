@@ -37,3 +37,7 @@ def WatchNewFile():
 if __name__ == '__main__':
 	ScanFolder()
 	#WatchNewFile()
+
+
+
+#may need to do sth (kill all started components) before exit
