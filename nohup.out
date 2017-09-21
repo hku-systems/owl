@@ -4692,3 +4692,16 @@
 2017/09/21 10:40:22 received first connection from test machine vm-1
 2017/09/21 10:40:23 executed programs: 0, crashes: 0
 2017/09/21 10:40:33 executed programs: 4082, crashes: 0
+2017/09/21 10:40:43 executed programs: 11619, crashes: 0
+2017/09/21 10:40:53 executed programs: 15822, crashes: 0
+2017/09/21 10:41:03 executed programs: 25965, crashes: 0
+2017/09/21 10:41:13 executed programs: 31610, crashes: 0
+2017/09/21 10:41:23 executed programs: 36621, crashes: 0
+2017/09/21 10:41:33 executed programs: 40984, crashes: 0
+2017/09/21 10:41:43 executed programs: 48572, crashes: 0
+2017/09/21 10:41:53 executed programs: 56391, crashes: 0
+2017/09/21 10:42:03 executed programs: 63517, crashes: 0
+2017/09/21 10:42:11 vm-0: crash: lost connection to test machine
+2017/09/21 10:42:13 executed programs: 66925, crashes: 1
+2017/09/21 10:42:23 executed programs: 74683, crashes: 1
+2017/09/21 10:42:33 executed programs: 80447, crashes: 1
