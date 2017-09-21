@@ -7,18 +7,19 @@ abspath=os.path.abspath(rtl_dir)
 len_abspath=len(abspath)
 syz_crash="syzkaller/crashes/"
 def ClassifyDispatch(full_path,relative_path):
-        #print "* ",full_path, "\n- ",relative_path
 	if relative_path.startswith(syz_crash):
-                syzkaller_hdl.handle(full_path,relative_path)
+                syzkaller_hdl.handle(full_path,os.path.basename(full_path))
 
 def ScanFolder():
 	if os.path.exists(rtl_dir+syz_crash):
 		list_dir=os.walk(rtl_dir+syz_crash)
 		for root, dirs, files in list_dir:
-			for d in dirs:		
-				print d
-				#full_path=os.path.abspath(os.path.join(root,f))
-				#ClassifyDispatch(full_path,relative_path)
+			for crash_dir in dirs:		
+				list_crash=os.walk(rtl_dir+syz_crash+crash_dir)
+				for c_root,c_dir,c_files in list_crash:
+					for crash_file in c_files:
+						syzkaller_hdl.handle(os.path.abspath(os.path.join(c_root,crash_file)),crash_file)	
+
 
 
 class NewFileHandler(pyinotify.ProcessEvent):
@@ -37,7 +38,7 @@ def WatchNewFile():
 
 if __name__ == '__main__':
 	ScanFolder()
-	#WatchNewFile()
+	WatchNewFile()
 
 
 
