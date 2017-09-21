@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import os
 def start_syzkaller():
-	os.system("nohup ./fuzzers/syzkaller/bin/syz-manager -config ./fuzzers/syzkaller/ktsan.cfg &")
+	os.system("nohup ./fuzzers/syzkaller/bin/syz-manager -config ./fuzzers/syzkaller/my.cfg &")
 if __name__ == '__main__':
 	fp=open("owl.cfg","r")
 	line=fp.readline()
