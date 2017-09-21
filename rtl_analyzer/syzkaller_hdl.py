@@ -1,10 +1,11 @@
 #!/usr/bin/env python
+import os
 def handle(full_path,relative_path):
 	l=len("syzkaller/crashes/")
 	r_path=relative_path[l:]
+	hash_dir=r_path[:33]	
 	print r_path
-	if r_path.startswith("crashes"):
-		crash_log(full_path,r_path)
+	print hash_dir
 
 def crash_log(full_path,r_path):
 	print "crash called"

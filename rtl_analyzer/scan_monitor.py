@@ -2,22 +2,23 @@
 import pyinotify
 import os
 import syzkaller_hdl
-rtl_dir="../report_trace_log"
+rtl_dir="../report_trace_log/"
 abspath=os.path.abspath(rtl_dir)
 len_abspath=len(abspath)
-
+syz_crash="syzkaller/crashes/"
 def ClassifyDispatch(full_path,relative_path):
         #print "* ",full_path, "\n- ",relative_path
-	if relative_path.startswith("syzkaller"):
+	if relative_path.startswith(syz_crash):
                 syzkaller_hdl.handle(full_path,relative_path)
 
 def ScanFolder():
-	list_dir=os.walk(rtl_dir)
-	for root, dirs, files in list_dir:
-		for f in files:
-			relative_path=(os.path.join(root,f))[len(rtl_dir)+1:]		
-			full_path=os.path.abspath(os.path.join(root,f))
-			ClassifyDispatch(full_path,relative_path)
+	if os.path.exists(rtl_dir+syz_crash):
+		list_dir=os.walk(rtl_dir+syz_crash)
+		for root, dirs, files in list_dir:
+			for d in dirs:		
+				print d
+				#full_path=os.path.abspath(os.path.join(root,f))
+				#ClassifyDispatch(full_path,relative_path)
 
 
 class NewFileHandler(pyinotify.ProcessEvent):
