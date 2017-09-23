@@ -17,7 +17,7 @@ export OWL=`pwd`
 ```
 ### Build GCC
 ```
-cd $OWL/targets/gcc7
+cd $OWL/compilers/gcc7
 mkdir build
 mkdir install
 cd build
@@ -28,7 +28,7 @@ make install
 ### Build Linux kernel
 ```
 cd $OWL/targets/linux
-make CC='../gcc7/install/bin/gcc' -j48
+make CC='../../compilers/gcc7/install/bin/gcc' -j48
 ```
 ### Create image
 ```
@@ -38,7 +38,7 @@ sh create-image.sh
 ### Set Go environments
 For the following two commands you need to add corresponding env(replacing $OWL with real path) in ~/.bashrc file.
 ```
-export GOROOT=$OWL/fuzzers/goroot
+export GOROOT=$OWL/compilers/goroot
 export PATH=$PATH:$GOROOT/bin
 export GOPATH=$OWL/fuzzers/syzkaller
 ```
@@ -54,15 +54,13 @@ cd $GOPATH
 ./bin/syz-manager -config=my.cfg
 ```
 You can also start it by adding "syzkaller" to owl.cfg, and simply type "python start.py".<br>
+If error "Could not access KVM kernel module: Permission denied" is reported, you may need to check priviledge setting of /dev/kvm and do chmod.<br><br>
 ### Build Ktsan Linux Kernel
 Ktsan is a kernel built to find races in kernel.
 ```
 cd $OWL/targets/ktsan
-make CC='../gcc7/install/bin/gcc' -j48
+make CC='../../compilers/gcc7/install/bin/gcc' -j48
 ```
-
-If error "Could not access KVM kernel module: Permission denied" is reported, you may need to check priviledge setting of /dev/kvm and do chmod.<br><br>
-
 This project contains source code of gcc 7.1.0($OWL/targets/gcc7), linux 4.13($OWL/targets/linux), apache 4.2. <br>
 They are the latest versions when we build this project.<br>
 If you want to use a newer version, for gcc and linux you can use following commands:<br>
