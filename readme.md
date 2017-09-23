@@ -28,10 +28,6 @@ make install
 ### Build Linux kernel
 ```
 cd $OWL/targets/linux
-make defconfig
-make kvmconfig
-cp ../cfg_files/linux4.13_syzkaller_cfg .config
-make oldconfig
 make CC='../gcc7/install/bin/gcc' -j48
 ```
 ### Create image
@@ -52,18 +48,30 @@ go get -u -d github.com/google/syzkaller/...
 cd $GOPATH/src/github.com/google/syzkaller/
 make
 ```
-And remember to edit the my.config file to fit your env. Then you can run syzkaller with
+And remember to edit the my.config file to fit your env. Then you can try running syzkaller with
 ```
 cd $GOPATH
 ./bin/syz-manager -config=my.cfg
 ```
-If error "Could not access KVM kernel module: Permission denied" is reported, you may need to check priviledge setting of /dev/kvm.<br><br>
-This project contains gcc 7.1.0($OWL/targets/gcc7) and linux 4.13($OWL/targets/linux)<br>
+You can also start it by adding "syzkaller" to owl.cfg, and simply type "python start.py".<br>
+### Build Ktsan Linux Kernel
+Ktsan is a kernel built to find races in kernel.
+```
+cd $OWL/targets/ktsan
+make CC='../gcc7/install/bin/gcc' -j48
+```
+
+If error "Could not access KVM kernel module: Permission denied" is reported, you may need to check priviledge setting of /dev/kvm and do chmod.<br><br>
+
+This project contains source code of gcc 7.1.0($OWL/targets/gcc7), linux 4.13($OWL/targets/linux), apache 4.2. <br>
 They are the latest versions when we build this project.<br>
-If you want to use a newer version, you can use following commands:<br>
+If you want to use a newer version, for gcc and linux you can use following commands:<br>
 ```
 svn checkout svn://gcc.gnu.org/svn/gcc/trunk $GCC
 git clone https://github.com/torvalds/linux.git $KERNEL
 ```
-Or follow instructions on https://github.com/google/syzkaller/blob/master/docs/setup_ubuntu-host_qemu-vm_x86-64-kernel.md
-
+Or follow instructions on https://github.com/google/syzkaller/blob/master/docs/setup_ubuntu-host_qemu-vm_x86-64-kernel.md <br>
+And for other software you can go to following websites:
+```
+http://httpd.apache.org/download.cgi
+```
