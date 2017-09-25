@@ -1,0 +1,373 @@
+commit d2324bdda1265e6e91e0f411837fe9104419d0db (HEAD, tag: v1.26.0, origin/master, origin/HEAD, master)
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2017-09-20
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2017-09-20
+
+    Update bash_completion
+
+commit 6f0ae9d49a4522a3b3ba40821d892962bbe940c5
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2017-09-20
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2017-09-20
+
+    Update manual pages
+
+commit 0389af5724010627e19425237e9e5e0bf343bc6f
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2017-09-20
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2017-09-20
+
+    Bump up version number to 1.26.0
+
+commit 1766e25f457fd5c13338ce153e2646abfc577075
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2017-09-20
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2017-09-20
+
+    Update AUTHORS
+
+commit 323001238a944632a0521aac61b97279a1788bd1
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2017-09-20
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2017-09-20
+
+    clang-format
+
+commit 91f062f8738b2154605c2df00cf9b04b8b522455
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2017-09-20
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2017-09-20
+
+    src: Fix compile error
+
+commit 650a0cfbff8887c7338a85b326e763ea3559ae4a
+Merge: a170023f e6b8b3d1
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2017-09-13
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2017-09-13
+
+    Merge pull request #1013 from marcbachmann/patch-1
+    
+    Fix some typos in the nghttpx how-to doc
+
+commit e6b8b3d1d333064d3a2d383c382b487e5e299383
+Author:     Marc Bachmann <marc.brookman@gmail.com>
+AuthorDate: 2017-09-11
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2017-09-11
+
+    docs: Fix some typos in the nghttpx how-to
+
+commit a170023f2353c42af779190adc52d077c04d64b2
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2017-06-13
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2017-09-01
+
+    nghttpx: Verify OCSP response using trusted CA certificates
+
+commit 4be4c0cddc6edd87bd3f748e50cd60fd1497f012
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2017-08-30
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2017-08-30
+
+    Revert "nghttpx: Verify OCSP response using trusted CA certificates"
+    
+    This reverts commit 59c78d58092dd61380a2907a4798b45d5d47f5a1.
+
+commit 0de9d374dfdb6890102c3bdb006e9cc32ee655cd
+Merge: 0df19919 7646e376
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2017-08-26
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2017-08-26
+
+    Merge pull request #1002 from GitaiQAQ/master
+    
+    Just fix unreachable links and remove ndk...
+
+commit 0df199198ad1f8bca102adfb946a41f39ada0fd8
+Merge: 6fec5320 5996798a
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2017-08-26
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2017-08-26
+
+    Merge pull request #1001 from rlei/master
+    
+    Fix OCSP related error when building with BoringSSL
+
+commit 7646e376e0df8e9602aa471621f50218d3307414
+Author:     Gitai <i@gitai.me>
+AuthorDate: 2017-08-26
+Commit:     Gitai <i@gitai.me>
+CommitDate: 2017-08-26
+
+    Fix unreachable
+
+commit 5996798a34974baedffe347ccdf84be200b4c763
+Author:     Rick Lei <ricklei@gmail.com>
+AuthorDate: 2017-08-24
+Commit:     Rick Lei <ricklei@gmail.com>
+CommitDate: 2017-08-24
+
+    Fix OCSP related error when building with BoringSSL
+    
+    BoringSSL has no "openssl/ocsp.h" nor most OCSP related APIs used in
+    shrpx_tls.cc. This commit add ifdefs to disable related code to allow
+    building nghttp2 with BoringSSL (again).
+    
+    It's possible to use !defined(OPENSSL_IS_BORINGSSL), but since BoringSSL
+    defines OPENSSL_NO_OCSP which is more specific, I chose to go with the
+    latter one.
+
+commit 6fec5320125b513f8ee997ef1e9a4686a5b23582
+Merge: 15713e0b a6a561af
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2017-08-24
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2017-08-24
+
+    Merge pull request #998 from nghttp2/h2load-fix-timing-script-stall
+    
+    Fix bug that timing script stalls with -m1
+
+commit 15713e0b7c9e21f7da304ae1947a99f391ade0e1
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2017-08-23
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2017-08-23
+
+    h2load: Ignore -n for timing-based mode instead of requiring -n=0
+
+commit a6a561af47ca7bcca7c277d643aeabb369a813f6
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2017-08-23
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2017-08-23
+
+    Fix bug that timing script stalls with -m1
+
+commit 09c468a4b40050d5d6614909c0b23040fd61e968
+Merge: 1a44b5d5 bcda1c24
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2017-08-23
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2017-08-23
+
+    Merge branch 'sohamm17-master'
+
+commit bcda1c240925718fb5e9c37459b14e8fe6783d51
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2017-08-23
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2017-08-23
+
+    Fix assertion failure
+
+commit afcd8d9ab174996d361bda5da5bade7b9e66e2c6
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2017-08-23
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2017-08-23
+
+    clang-format
+
+commit c9b1c9194459d01bc2e7ee53a24bfec169d58983
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2017-08-23
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2017-08-23
+
+    Fix compile error
+
+commit 5d9434eb095bfe2b892710a82fa068118f9a33a0
+Merge: 1a44b5d5 1baf7d34
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2017-08-23
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2017-08-23
+
+    Merge branch 'master' of https://github.com/sohamm17/nghttp2 into sohamm17-master
+
+commit 1a44b5d52ac4fd0da1d1eaad1b533e55f2cadd4d
+Merge: 6635ca5e 83039ae2
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2017-08-23
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2017-08-23
+
+    Merge pull request #984 from nghttp2/h2load-reservoir-sampling
+    
+    h2load: Reservoir sampling
+
+commit 6635ca5e266f4b523e110bfe7f71e87afabc6ea6
+Merge: 9c6c7883 af926fbe
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2017-08-23
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2017-08-23
+
+    Merge pull request #988 from dvetutnev/refactoring_include_directories
+    
+    Refactoring include directories
+
+commit 9c6c78833b1db58789c5cfdf44dffd56d211ede7
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2017-08-18
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2017-08-18
+
+    Bump up version number to 1.26.0-DEV
+
+commit af926fbe1f2110a2584681207cc8b7f7a68892e9
+Author:     Dmitriy Vetutnev <d.vetutnev@gmail.com>
+AuthorDate: 2017-08-16
+Commit:     Dmitriy Vetutnev <d.vetutnev@gmail.com>
+CommitDate: 2017-08-16
+
+    Refactoring include directories for build as CMake subdirectory (add_subdirectory(nghttp2))
+
+commit 83039ae2d4e1df16d320023c330b155256956e90
+Author:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+AuthorDate: 2017-08-14
+Commit:     Tatsuhiro Tsujikawa <tatsuhiro.t@gmail.com>
+CommitDate: 2017-08-14
+
+    h2load: Reservoir sampling
+
+commit 1baf7d34b3a14a518767128afbd588cab131f8e9
+Author:     Soham Sinha <sohamcodes@google.com>
+AuthorDate: 2017-08-08
+Commit:     Soham Sinha <sohamcodes@google.com>
+CommitDate: 2017-08-08
+
+    Duration watcher and warmup watcher is initialised in Worker constructor. Statistic calculation is removed from duration watcher call_back, it's done in free_client.
+
+commit c78159469ac0427673bdf5a374940384fd0ba984
+Author:     Soham Sinha <sohamcodes@google.com>
+AuthorDate: 2017-08-07
+Commit:     Soham Sinha <sohamcodes@google.com>
+CommitDate: 2017-08-07
+
+    Added a function to free a client from Worker's list of client, if the client is destroyed
+
+commit b72ca0289c9db835cb6304a3f02d324e8b6f4a6a
+Author:     Soham Sinha <sohamcodes@google.com>
+AuthorDate: 2017-08-04
+Commit:     Soham Sinha <sohamcodes@google.com>
+CommitDate: 2017-08-04
+
+    formatting issue
+
+commit 46f670f8a225588e3bdde6b7d4cc34a6ada38cd9
+Author:     Soham Sinha <sohamcodes@google.com>
+AuthorDate: 2017-08-03
+Commit:     Soham Sinha <sohamcodes@google.com>
+CommitDate: 2017-08-03
+
+    concurrent connections are created in timing-based mode. Some safety asserts added.
+
+commit 4b44362b9fb2949f85b15d3ccd8b05306e566532
+Author:     Soham Sinha <sohamcodes@google.com>
+AuthorDate: 2017-08-01
+Commit:     Soham Sinha <sohamcodes@google.com>
+CommitDate: 2017-08-01
+
+    minor style changes
+
+commit d068a297981555def27877f27e59e903ace7b11d
+Author:     Soham Sinha <sohamcodes@google.com>
+AuthorDate: 2017-08-01
+Commit:     Soham Sinha <sohamcodes@google.com>
+CommitDate: 2017-08-01
+
+    removed unnecessary code
+
+commit 0836a514082281b2d57785e555ddf3cf6d65d5db
+Author:     Soham Sinha <sohamcodes@google.com>
+AuthorDate: 2017-08-01
+Commit:     Soham Sinha <sohamcodes@google.com>
+CommitDate: 2017-08-01
+
+    Handling requests starting in warm-up phase and ending in MAIN_DURATION
+
+commit 566cee8fe7b8168a22bff666fc14feb57a85f4b9
+Author:     Soham Sinha <sohamcodes@google.com>
+AuthorDate: 2017-08-01
+Commit:     Soham Sinha <sohamcodes@google.com>
+CommitDate: 2017-08-01
+
+    MAIN_DURATION is initiliazed in Worker constructor, MAIN_DURATION check is removed from two functions because those functions are needed in warm-up phase as well.
+
+commit e85698e13182a167776026ee55a58810f0739aec
+Author:     Soham Sinha <sohamcodes@google.com>
+AuthorDate: 2017-08-01
+Commit:     Soham Sinha <sohamcodes@google.com>
+CommitDate: 2017-08-01
+
+    MAIN_DURATION is initiliazed in Worker constructor, MAIN_DURATION check is removed from two functions because those functions are needed in warm-up phase as well.
+
+commit 5f3c541c4cc569bb7af09176a8286d068490a1c1
+Author:     Soham Sinha <sohamcodes@google.com>
+AuthorDate: 2017-07-28
+Commit:     Soham Sinha <sohamcodes@google.com>
+CommitDate: 2017-07-28
+
+    enabled --duration option.
+
+commit 3c43e00d8a05310d014f08a1d7d4cc73856561f4
+Author:     Soham Sinha <soham.m17@gmail.com>
+AuthorDate: 2017-07-28
+Commit:     GitHub <noreply@github.com>
+CommitDate: 2017-07-28
+
+    Timing (#1)
+    
+    * Adding timing-sensitive load test option in h2load.
+    
+    * more checks added for parameters
+    
+    * A worker thread can control its clients' warmup and main duration.
+    
+    * Changed warmup to an enum variable.
+    
+    * removed unnecessary call to ev_timer_stop
+    
+    * assertion is done before starting main measurement phase
+    
+    * phase variable is implemented only inside the Worker class
+    
+    * enum to enum class
+    
+    * else indentation corrected
+    
+    * check added for timing-based test when duration CB is called explicitly
+    
+    * New argument is introduced for timing-based benchmarking.
+    
+    * styling corrections
+    
+    * duration watcher initialization is pushed back into warmup timeout
+    
+    * Warmup and Duration timer is moved to Worker instead of clients. Now both timers and phase belongs to the Workers.
+    
+    * some client functions are modified to return if it's not main_duration phase. client is not destructed but sessions are terminated
+    
+    * outputs are adjusted for thread.
+    
+    * Needed to check if a session exist before terminating
+    
+    * formatting
+    
+    * more formatting
+    
+    * formatting
