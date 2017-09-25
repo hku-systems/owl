@@ -1,7 +1,7 @@
 # OWL--a system for finding concurrency attacks.
 
 ### Install prerequisites:
-Firstly you will need python 2.7 before proceed because our project is mainly written in python.<br>
+Firstly you will need python 2.7 before proceed because our project is mainly written in python. You will also need cmake.<br>
 Then run following commands:
 ```
 sudo apt-get install git subversion flex bison libc6-dev libc6-dev-i386 linux-libc-dev linux-libc-dev:i386 libgmp3-dev libmpfr-dev libmpc-dev build-essential bc debootstrap kvm qemu-kvm python-pip
