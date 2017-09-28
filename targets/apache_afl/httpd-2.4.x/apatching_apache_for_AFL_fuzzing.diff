@@ -1,0 +1,281 @@
+Index: server/main.c
+===================================================================
+--- server/main.c	(revision 1794194)
++++ server/main.c	(working copy)
+@@ -371,7 +371,11 @@
+     ap_log_error(APLOG_MARK, APLOG_STARTUP, 0, NULL,
+                  "  -c \"directive\"     : process directive after reading "
+                  "config files");
++    ap_log_error(APLOG_MARK, APLOG_STARTUP, 0, NULL,
++                 "  -F                   : hackish file to read as request  "
++                 "");
+ 
++
+ #ifdef NETWARE
+     ap_log_error(APLOG_MARK, APLOG_STARTUP, 0, NULL,
+                  "  -n name            : set screen name");
+@@ -437,8 +441,180 @@
+     destroy_and_exit_process(process, 1);
+ }
+ 
+-int main(int argc, const char * const argv[])
++#include <sched.h>
++#include <linux/sched.h>
++#include <arpa/inet.h>
++#include <errno.h>
++#include <net/if.h>
++#include <net/route.h>
++#include <netinet/ip6.h>
++#include <netinet/tcp.h>
++#include <sched.h>
++#include <stdio.h>
++#include <stdint.h>
++#include <stdlib.h>
++#include <string.h>
++#include <strings.h>
++#include <sys/ioctl.h>
++#include <sys/resource.h>
++#include <sys/socket.h>
++#include <sys/time.h>
++#include <sys/types.h>
++#include <sys/wait.h>
++#include <unistd.h>
++
++static void netIfaceUp(const char *ifacename)
+ {
++    int sock = socket(AF_INET, SOCK_STREAM, IPPROTO_IP);
++    if (sock == -1) {
++        perror("socket(AF_INET, SOCK_STREAM, IPPROTO_IP)");
++        _exit(1);
++    }
++
++    struct ifreq ifr;
++    memset(&ifr, '\0', sizeof(ifr));
++    snprintf(ifr.ifr_name, IF_NAMESIZE, "%s", ifacename);
++
++    if (ioctl(sock, SIOCGIFFLAGS, &ifr) == -1) {
++        perror("ioctl(iface='lo', SIOCGIFFLAGS, IFF_UP)");
++        _exit(1);
++    }
++
++    ifr.ifr_flags |= (IFF_UP | IFF_RUNNING);
++
++    if (ioctl(sock, SIOCSIFFLAGS, &ifr) == -1) {
++        perror("ioctl(iface='lo', SIOCSIFFLAGS, IFF_UP)");
++        _exit(1);
++    }
++
++    close(sock);
++}
++
++void unsh(void)
++{
++    unshare(CLONE_NEWUSER | CLONE_NEWNET | CLONE_NEWNS);
++
++    if (mount("tmpfs", "/tmp", "tmpfs", 0, "") == -1) {
++        perror("tmpfs");
++        _exit(1);
++    }
++    netIfaceUp("lo");
++}
++
++void HF_ITER(uint8_t ** buf_ptr, size_t * len_ptr);
++
++static void GETDATA(char *buf)
++{
++    if (buf == NULL){
++        printf("[-] buf is NULL\n");
++        perror("buf");
++    }
++    usleep(1000);
++    long fsize = strlen(buf);
++    for (;;) {
++        printf("[+] Looping\n");
++        //printf("[+] Read ->  %s <- from in file \n", buf);
++
++        int myfd = socket(AF_INET, SOCK_STREAM, IPPROTO_IP);
++        if (myfd == -1) {
++            printf("HORROR");
++            perror("socket");
++            _exit(1);
++        }
++
++        int sz = (1024 * 1024);
++        if (setsockopt(myfd, SOL_SOCKET, SO_SNDBUF, &sz, sizeof(sz)) == -1) {
++            printf("HORROR");
++            perror("setsockopt");
++            exit(1);
++        }
++
++        struct sockaddr_in saddr;
++        saddr.sin_family = AF_INET;
++        saddr.sin_port = htons(8085);
++        saddr.sin_addr.s_addr = htonl(INADDR_LOOPBACK);
++        if (connect(myfd, &saddr, sizeof(saddr)) == -1) {
++            printf("HORROR");
++            perror("connect");
++            continue;
++            // If we can't connect we keep looping untill everything is ready
++        }
++
++        if (send(myfd, buf, fsize, MSG_NOSIGNAL) != fsize) {
++            printf("[+] Buf not sent %s\n", buf);
++            printf("HORROR");
++            perror("send() failed 1");
++            exit(1);
++        }
++
++
++        if (shutdown(myfd, SHUT_WR) == -1) {
++            perror("shutdown");
++            exit(1);
++        }
++
++        char b[1024 * 1024];
++        while (recv(myfd, b, sizeof(b), MSG_WAITALL) > 0) ;
++
++        close(myfd);
++        printf("[+] Nice run\n");
++        usleep(500);
++        exit(0);
++    }
++}
++
++static void LAUNCHTHR(char *buf)
++{
++    pthread_t t;
++    pthread_attr_t attr;
++
++    pthread_attr_init(&attr);
++    pthread_attr_setstacksize(&attr, 1024 * 1024 * 8);
++    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
++
++    pthread_create(&t, &attr, GETDATA, buf);
++}
++
++int main(int argc, const char *const argv[])
++{
++    // Hackish way to get file from input
++    const char *finput = NULL;
++    for (int i = 0; i < argc; i++){
++        if (strcmp(argv[i],"-F")==0){
++            finput = argv[i+1];
++            break;
++        }
++    }
++
++    if (getenv("NO_FUZZ") == NULL) {
++        FILE *f;
++        char *buf;
++        long fsize;
++ 
++        printf("[+] Stdin file %s\n", finput);
++        f = fopen(finput, "rb");
++        if (f != NULL) {
++            fseek(f, 0, SEEK_END);
++            fsize = ftell(f);
++            fseek(f, 0, SEEK_SET);
++            buf = malloc(fsize + 2 + 1); // +2 for \r\n +1 for the null byte (not really needed)
++            fread(buf, fsize, 1, f);
++            // The following lines add terminator characters to the fuzzing input
++            // so it never hangs because of not being compliant to the RFC (always end with \r\n)
++            buf[fsize] = '\r'; 
++            buf[fsize+1] = '\n';
++            buf[fsize+2] = '\0';
++            fclose(f);
++        } else {
++            printf("[-] Couldn't fopen\n");
++            _exit(1);
++        }
++        unsh();
++        LAUNCHTHR(buf);
++        printf("[+] Launched loop\n");
++    }
++    printf("[+] Keep going ... \n");
++
+     char c;
+     int showcompile = 0, showdirectives = 0;
+     const char *confname = SERVER_CONFIG_FILE;
+@@ -596,7 +772,8 @@
+                 ap_run_mode = AP_SQ_RM_CONFIG_DUMP;
+             }
+             break;
+-
++        case 'F':
++            break;
+         case 'h':
+         case '?':
+             usage(process);
+@@ -629,22 +806,10 @@
+     }
+     ap_server_conf = ap_read_config(process, ptemp, confname, &ap_conftree);
+     if (!ap_server_conf) {
+-        if (showcompile) {
+-            /* Well, we tried. Show as much as we can, but exit nonzero to
+-             * indicate that something's not right. The cause should have
+-             * already been logged. */
+-            show_compile_settings();
+-        }
+         destroy_and_exit_process(process, 1);
+     }
+     apr_pool_cleanup_register(pconf, &ap_server_conf, ap_pool_cleanup_set_null,
+                               apr_pool_cleanup_null);
+-
+-    if (showcompile) { /* deferred due to dynamically loaded MPM */
+-        show_compile_settings();
+-        destroy_and_exit_process(process, 0);
+-    }
+-
+     /* sort hooks here to make sure pre_config hooks are sorted properly */
+     apr_hook_sort_all();
+ 
+@@ -673,7 +838,10 @@
+         }
+ 
+         if (ap_run_mode != AP_SQ_RM_NORMAL) {
+-            if (showdirectives) { /* deferred in case of DSOs */
++            if (showcompile) { /* deferred due to dynamically loaded MPM */
++                show_compile_settings();
++            }
++            else if (showdirectives) { /* deferred in case of DSOs */
+                 ap_show_directives();
+                 destroy_and_exit_process(process, 0);
+             }
+@@ -688,6 +856,7 @@
+ 
+     /* If our config failed, deal with that here. */
+     if (rv != OK) {
++        printf("[-] Config failed...\n");
+         destroy_and_exit_process(process, 1);
+     }
+ 
+@@ -696,6 +865,7 @@
+         int exit_status;
+ 
+         if (signal_server(&exit_status, pconf) != 0) {
++            printf("[-] Server signaled out\n");
+             destroy_and_exit_process(process, exit_status);
+         }
+     }
+@@ -792,7 +962,8 @@
+         rc = ap_run_mpm(pconf, plog, ap_server_conf);
+ 
+         apr_pool_lock(pconf, 0);
+-
++        rc = DONE;
++        usleep(500);
+     } while (rc == OK);
+ 
+     if (rc == DONE) {
+@@ -802,7 +973,11 @@
+         ap_log_error(APLOG_MARK, APLOG_EMERG, 0, NULL, APLOGNO(02818)
+                      "MPM run failed, exiting");
+     }
++    printf("Exiting cleanly\n");
++    sleep(1);
+     destroy_and_exit_process(process, rc);
++    _exit(0);
++    return 0;
+ 
+     /* NOTREACHED */
+     return !OK;
