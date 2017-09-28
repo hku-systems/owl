@@ -68,10 +68,11 @@ mkdir llvm_build && cd llvm_build
 cmake -G "Unix Makefiles" ../llvm
 make -j48
 ```
-### Build honggfuzz
+### Build honggfuzz and run against apache
 ```
-sudo apt-get install binutils-dev binutils libunwind8-dev
+sudo apt-get install binutils-dev binutils libunwind8-dev libblocksruntime-dev
 make -j48
+
 ```
 This project contains source code of gcc 7.1.0, linux 4.13, apache 4.2, llvm and clang 5.0, go 1.9. <br>
 If you want to use newer versions, you can go to their official websites to download.<br>

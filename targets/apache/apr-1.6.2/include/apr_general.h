@@ -153,7 +153,7 @@ int strncasecmp(const char *a, const char *b, size_t n);
 #endif
 
 #if (!APR_HAVE_MEMMOVE)
-#define memmove(a,b,c) bcopy(b,a,c)
+//#define memmove(a,b,c) bcopy(b,a,c)
 #endif
 
 #if (!APR_HAVE_MEMCHR)

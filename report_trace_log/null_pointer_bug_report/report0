@@ -1,0 +1,41 @@
+kasan: GPF could be caused by NULL-ptr deref or user memory access
+general protection fault: 0000 [#1] SMP KASAN
+Dumping ftrace buffer:
+   (ftrace buffer empty)
+Modules linked in:
+CPU: 0 PID: 27863 Comm: syz-executor6 Not tainted 4.13.0+ #2
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Bochs 01/01/2011
+task: ffff88003c846200 task.stack: ffff88003da18000
+RIP: 0010:assoc_array_apply_edit+0x21e/0x610 lib/assoc_array.c:1403
+RSP: 0018:ffff88003da1fc28 EFLAGS: 00010202
+RAX: dffffc0000000000 RBX: 0000000000000010 RCX: 00000000000008ed
+RDX: 0000000000000002 RSI: ffffc90001a46000 RDI: ffff88003bf6e908
+RBP: ffff88003da1fc60 R08: 0000000000000000 R09: 1ffff10007b43f4e
+R10: ffff88003c846200 R11: 0000000000000004 R12: ffff88003bf6e800
+R13: ffff88006c75b101 R14: ffff88003bf6e8e8 R15: 0000000000000000
+FS:  00007f06754f4700(0000) GS:ffff88003ec00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000709130 CR3: 00000000332f4000 CR4: 00000000000006f0
+Call Trace:
+ __key_link+0x9f/0xf0 security/keys/keyring.c:1299
+ construct_alloc_key security/keys/request_key.c:381 [inline]
+ construct_key_and_link security/keys/request_key.c:453 [inline]
+ request_key_and_link+0xe1a/0x1130 security/keys/request_key.c:567
+ SYSC_request_key security/keys/keyctl.c:213 [inline]
+ SyS_request_key+0x173/0x2a0 security/keys/keyctl.c:158
+ entry_SYSCALL_64_fastpath+0x1f/0xbe
+RIP: 0033:0x447299
+RSP: 002b:00007f06754f3c08 EFLAGS: 00000286 ORIG_RAX: 00000000000000f9
+RAX: ffffffffffffffda RBX: 0000000020000000 RCX: 0000000000447299
+RDX: 0000000020001000 RSI: 0000000020001ffb RDI: 0000000020000000
+RBP: 0000000000000046 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000286 R12: 00000000ffffffff
+R13: 0000000000005990 R14: 00000000006e8a50 R15: 0000000000000009
+Code: df 48 89 fa 48 c1 ea 03 80 3c 02 00 0f 85 63 03 00 00 48 89 da 48 b8 00 00 00 00 00 fc ff df 4d 8b ac 24 08 01 00 00 48 c1 ea 03 <80> 3c 02 00 0f 85 33 03 00 00 4c 89 2b e8 50 42 51 ff 49 8d bc 
+RIP: assoc_array_apply_edit+0x21e/0x610 lib/assoc_array.c:1403 RSP: ffff88003da1fc28
+---[ end trace 2758a5d29c2fa04d ]---
+Kernel panic - not syncing: Fatal exception
+Dumping ftrace buffer:
+   (ftrace buffer empty)
+Kernel Offset: 0xd200000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+Rebooting in 86400 seconds..
