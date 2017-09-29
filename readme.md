@@ -1,7 +1,7 @@
 # OWL--a system for finding concurrency attacks.
 
 ### Install prerequisites:
-Firstly you will need python 2.7 and cmake>=3.4.5  before proceed because our project is mainly written in python. You will also need cmake.<br>
+Firstly you will need python 2.7 and cmake>=3.4.5  before proceed because our project is mainly written in python.<br>
 Then run following commands:
 ```
 sudo apt-get install git subversion flex bison libc6-dev libc6-dev-i386 linux-libc-dev linux-libc-dev:i386 libgmp3-dev libmpfr-dev libmpc-dev build-essential bc debootstrap kvm qemu-kvm python-pip
@@ -78,3 +78,5 @@ This project contains source code of gcc 7.1.0, linux 4.13, apache 4.2, llvm and
 If you want to use newer versions, you can go to their official websites to download.<br>
 ### Reference
 https://github.com/google/syzkaller/blob/master/docs/setup_ubuntu-host_qemu-vm_x86-64-kernel.md <br>
+http://lcamtuf.coredump.cx/afl/ <br>
+https://sensepost.com/blog/2017/fuzzing-apache-httpd-server-with-american-fuzzy-lop-%2B-persistent-mode/
