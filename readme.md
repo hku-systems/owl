@@ -61,22 +61,7 @@ Ktsan is a kernel built to find races in kernel.
 cd $OWL/targets/ktsan
 make CC='../../compilers/gcc7/install/bin/gcc' -j48
 ```
-### Build llvm
-```
-cd $OWL/compilers/
-mkdir llvm_build && cd llvm_build
-cmake -G "Unix Makefiles" ../llvm
-make -j48
-```
-### Build honggfuzz and run against apache
-```
-sudo apt-get install binutils-dev binutils libunwind8-dev libblocksruntime-dev
-make -j48
-
-```
-This project contains source code of gcc 7.1.0, linux 4.13, apache 4.2, llvm and clang 5.0, go 1.9. <br>
+This project contains source code of gcc 7.1.0, linux 4.13, go 1.9. <br>
 If you want to use newer versions, you can go to their official websites to download.<br>
 ### Reference
 https://github.com/google/syzkaller/blob/master/docs/setup_ubuntu-host_qemu-vm_x86-64-kernel.md <br>
-http://lcamtuf.coredump.cx/afl/ <br>
-https://sensepost.com/blog/2017/fuzzing-apache-httpd-server-with-american-fuzzy-lop-%2B-persistent-mode/
