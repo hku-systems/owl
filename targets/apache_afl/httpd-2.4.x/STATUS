@@ -1,5 +1,5 @@
 APACHE 2.4 STATUS:                        -*- mode: text; coding: utf-8 -*-
-Last modified at [$Date: 2017-09-27 13:59:34 +0800 (Wed, 27 Sep 2017) $]
+Last modified at [$Date: 2017-09-30 01:23:46 +0800 (Sat, 30 Sep 2017) $]
 
 The current version of this file can be found at:
 
@@ -183,13 +183,24 @@ PATCHES PROPOSED TO BACKPORT FROM TRUNK:
    *) Quiet spurious gcc warning in ap_parse_form_data
       trunk patch: http://svn.apache.org/r1798785
       2.4.x patch: svn merge -c 1798785 ^/httpd/httpd/trunk .
-     +1: jailletc36
+     +1: jailletc36, ylavic
 
    *) mod_authz_dbd: Fix a segmentation fault if AuthzDBDQuery is not set.
       PR 61546
       trunk patch: http://svn.apache.org/r1809209
       2.4.x patch: svn merge -c 1809209 ^/httpd/httpd/trunk .
-      +1: jailletc36 (by inspection)
+      +1: jailletc36 (by inspection), ylavic
+
+   *) mod_http2: Fix race condition on request body handlign.
+      2.4.x patch: svn merge -c 1804096,1807238,1809981,1810088,1810089 ^/httpd/httpd/trunk .
+      +1: icing, steffenal
+
+   *) mod_rewrite,core: Avoid the 'Vary: Host' response header when HTTP_HOST
+                        is used in a condition that evaluates to true.
+      trunk patch: http://svn.apache.org/r1808746
+                   http://svn.apache.org/r1809028
+      2.4.x patch: svn merge -c 1808746,1809028 ^/httpd/httpd/trunk .
+      +1 elukey
 
 PATCHES/ISSUES THAT ARE BEING WORKED
   [ New entries should be added at the START of the list ]

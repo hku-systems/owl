@@ -1,0 +1,44 @@
+BUG: unable to handle kernel NULL pointer dereference at 0000000000000010
+IP: assoc_array_apply_edit+0xa0/0x180 lib/assoc_array.c:1403
+PGD 78524067 P4D 78524067 PUD 78b1b067 PMD 0 
+Oops: 0002 [#1] SMP
+Dumping ftrace buffer:
+   (ftrace buffer empty)
+Modules linked in:
+CPU: 3 PID: 1344 Comm: syz-executor1 Not tainted 4.14.0-rc2+ #1
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS Ubuntu-1.8.2-1ubuntu1 04/01/2014
+task: ffff959e3ea84b00 task.stack: ffff9a5f8999c000
+RIP: 0010:assoc_array_apply_edit+0xa0/0x180 lib/assoc_array.c:1403
+RSP: 0018:ffff9a5f8999fdb8 EFLAGS: 00010216
+RAX: ffff959e3e215a81 RBX: 0000000000000010 RCX: 0000000000000be9
+RDX: ffffffff8145ae39 RSI: ffff9a5f832d9000 RDI: ffff959e3dea8000
+RBP: ffff9a5f8999fdd8 R08: 0000000000000000 R09: ffff959e3e215600
+R10: ffff9a5f8999fdc8 R11: 00000000ab8d4c3d R12: 0000000000000000
+R13: ffff959e3dea8000 R14: ffff959e3dea80e8 R15: 0000000000000000
+FS:  00007fa8d949a700(0000) GS:ffff959e7fd00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000010 CR3: 0000000078ae5000 CR4: 00000000000006e0
+Call Trace:
+ __key_link+0x45/0x60 security/keys/keyring.c:1300
+ construct_alloc_key security/keys/request_key.c:381 [inline]
+ construct_key_and_link security/keys/request_key.c:453 [inline]
+ request_key_and_link+0x62f/0x6b0 security/keys/request_key.c:567
+ SYSC_request_key security/keys/keyctl.c:213 [inline]
+ SyS_request_key+0x11d/0x1f0 security/keys/keyctl.c:158
+ entry_SYSCALL_64_fastpath+0x1a/0xa5
+RIP: 0033:0x452009
+RSP: 002b:00007fa8d9499be8 EFLAGS: 00000212 ORIG_RAX: 00000000000000f9
+RAX: ffffffffffffffda RBX: 00007fa8d949a700 RCX: 0000000000452009
+RDX: 0000000020007000 RSI: 000000002000d000 RDI: 000000002000effb
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000212 R12: 0000000000000000
+R13: 00007fff0f8b48af R14: 00007fa8d949a9c0 R15: 0000000000000000
+Code: 48 83 c3 08 e8 12 e8 cc ff 4c 39 f3 75 d5 e8 08 e8 cc ff 49 8b 9d 00 01 00 00 48 85 db 74 0f e8 f7 e7 cc ff 49 8b 85 08 01 00 00 <48> 89 03 e8 e8 e7 cc ff 49 8b 9d 10 01 00 00 48 85 db 74 0f e8 
+RIP: assoc_array_apply_edit+0xa0/0x180 lib/assoc_array.c:1403 RSP: ffff9a5f8999fdb8
+CR2: 0000000000000010
+---[ end trace 30990d9c07ffac53 ]---
+Kernel panic - not syncing: Fatal exception
+Dumping ftrace buffer:
+   (ftrace buffer empty)
+Kernel Offset: 0x28e00000 from 0xffffffff81000000 (relocation range: 0xffffffff80000000-0xffffffffbfffffff)
+Rebooting in 86400 seconds..
