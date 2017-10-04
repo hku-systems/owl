@@ -65,6 +65,10 @@ If error "Could not access KVM kernel module: Permission denied" is reported, yo
 Ktsan is a kernel built to find races in kernel.
 ```
 cd $OWL/targets/ktsan
+make defconfig
+make kvmconfig
+cp ../cfg_files/ktsan_config ./.config
+make oldconfig
 make CC='../../compilers/gcc7/install/bin/gcc' -j48
 ```
 This project contains source code of gcc 7.1.0, linux 4.13, go 1.9. <br>
