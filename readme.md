@@ -53,8 +53,8 @@ And remember to edit the my.config file to fit your env. Then you can try runnin
 cd $GOPATH
 ./bin/syz-manager -config=my.cfg
 ```
-You can also start it by adding "syzkaller" to owl.cfg, and simply type "python start.py".<br>
 If error "Could not access KVM kernel module: Permission denied" is reported, you may need to check priviledge setting of /dev/kvm and do chmod.<br><br>
+
 ### Build Ktsan Linux Kernel
 Ktsan is a kernel built to find races in kernel.
 ```
