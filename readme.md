@@ -21,7 +21,7 @@ cd $OWL/compilers/gcc7
 mkdir build
 mkdir install
 cd build
-../configure --enable-languages=c,c++ --disable-bootstrap --enable-checking=no --with-gnu-as --with-gnu-ld --with-ld=/usr/bin/ld.bfd --disable-multilib --prefix=../install/  # the path to install/ should be absolute path
+../configure --enable-languages=c,c++ --disable-bootstrap --enable-checking=no --with-gnu-as --with-gnu-ld --with-ld=/usr/bin/ld.bfd --disable-multilib --prefix=/home/wfan/owl/compilers/gcc7/install/  # the path to install/ should be absolute path
 make -j48
 make install
 ```
