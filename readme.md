@@ -15,9 +15,12 @@ git clone https://github.com/hku-systems/owl.git
 cd owl
 export OWL=`pwd`
 ```
-### Build GCC
+### Get and build GCC
 ```
-cd $OWL/compilers/gcc7
+cd $OWL/compilers/gcc7 && export GCC=`pwd`
+svn checkout svn://gcc.gnu.org/svn/gcc/trunk $GCC
+cd $GCC
+svn up -r 247494
 mkdir build
 mkdir install
 cd build
