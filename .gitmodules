@@ -10,3 +10,6 @@
 [submodule "memfuzz"]
 	path = memfuzz
 	url = https://github.com/SimonZsx/allocationcheck
+[submodule "targets/ktsan"]
+	path = targets/ktsan
+	url = https://github.com/ab1gale/ktsan.git
