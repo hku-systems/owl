@@ -31,6 +31,9 @@ make install
 ### Build Linux kernel
 ```
 cd $OWL/targets/linux
+make defconfig
+make kvmconfig
+cp ../cfg_files/linux4.13_syzkaller_cfg ./.config
 make CC='../../compilers/gcc7/install/bin/gcc' -j48
 ```
 ### Create image
