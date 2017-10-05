@@ -1,16 +1,14 @@
 diff -Naur src/github.com/google/syzkaller/syz-manager/manager.go src_patched/github.com/google/syzkaller/syz-manager/manager.go
---- src/github.com/google/syzkaller/syz-manager/manager.go	2017-10-05 03:22:19.196942052 +0000
-+++ src_patched/github.com/google/syzkaller/syz-manager/manager.go	2017-10-05 10:12:38.817384827 +0000
-@@ -881,10 +881,10 @@
- 		Fatalf("mismatching target/executor arch: target=%v executor=%v",
+--- src/github.com/google/syzkaller/syz-manager/manager.go	2017-10-05 10:30:59.645404625 +0000
++++ src_patched/github.com/google/syzkaller/syz-manager/manager.go	2017-10-05 10:34:32.217408448 +0000
+@@ -882,8 +882,8 @@
  			mgr.target.Arch, a.ExecutorArch)
  	}
--	if sys.GitRevision != a.FuzzerGitRev || sys.GitRevision != a.ExecutorGitRev {
-+	/* if sys.GitRevision != a.FuzzerGitRev || sys.GitRevision != a.ExecutorGitRev {
- 		Fatalf("mismatching git revisions:\nmanager= %v\nfuzzer=  %v\nexecutor=%v",
- 			sys.GitRevision, a.FuzzerGitRev, a.ExecutorGitRev)
--	}
-+	}*/
+ 	if sys.GitRevision != a.FuzzerGitRev || sys.GitRevision != a.ExecutorGitRev {
+-		Fatalf("mismatching git revisions:\nmanager= %v\nfuzzer=  %v\nexecutor=%v",
+-			sys.GitRevision, a.FuzzerGitRev, a.ExecutorGitRev)
++		//Fatalf("mismatching git revisions:\nmanager= %v\nfuzzer=  %v\nexecutor=%v",
++		//	sys.GitRevision, a.FuzzerGitRev, a.ExecutorGitRev)
+ 	}
  	if mgr.target.Revision != a.FuzzerSyzRev || mgr.target.Revision != a.ExecutorSyzRev {
  		Fatalf("mismatching syscall descriptions:\nmanager= %v\nfuzzer=  %v\nexecutor=%v",
- 			mgr.target.Revision, a.FuzzerSyzRev, a.ExecutorSyzRev)
