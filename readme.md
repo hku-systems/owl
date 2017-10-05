@@ -41,20 +41,16 @@ make CC='../../compilers/gcc7/install/bin/gcc' -j48
 cd $OWL/targets/wheezy_image
 sh create-image.sh
 ```
-### Set Go environments
-For the following two commands you need to add corresponding env(replacing $OWL with real path) in ~/.bashrc file.
+### Set Go environments and install syzkaller
 ```
 export GOROOT=$OWL/compilers/goroot
 export PATH=$PATH:$GOROOT/bin
 export GOPATH=$OWL/fuzzers/syzkaller
-```
-### Install and config syzkaller
-```
 go get -u -d github.com/google/syzkaller/...
 cd $GOPATH/src/github.com/google/syzkaller/
 make -j48
 ```
-And remember to edit the my.config file to fit your env. Then you can try running syzkaller with
+Remember to edit the my.config file to fit your env. You can also add GOROOT and GOPATH to ~/.bashrc for convenience. <br>Then run syzkaller with
 ```
 cd $GOPATH
 ./bin/syz-manager -config=my.cfg
