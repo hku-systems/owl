@@ -1,8 +1,8 @@
 # OWL--a system for finding concurrency attacks.
 
 ### Install prerequisites:
-Firstly you will need python 2.7 and cmake>=3.4.5  before proceed because our project is mainly written in python.<br>
-Then run following commands:
+Firstly you will need python 2.7 before proceed.<br>
+Then run following commands to install other prerequisites:
 ```
 sudo apt-get install git subversion flex bison libc6-dev libc6-dev-i386 linux-libc-dev linux-libc-dev:i386 libgmp3-dev libmpfr-dev libmpc-dev build-essential bc debootstrap kvm qemu-kvm python-pip
 sudo pip install pyinotify
@@ -50,7 +50,9 @@ go get -u -d github.com/google/syzkaller/...
 cd $GOPATH/src/github.com/google/syzkaller/
 make -j48
 ```
-Remember to edit the my.config file to fit your env. You can also add GOROOT and GOPATH to ~/.bashrc for convenience. <br>Then run syzkaller with
+Remember to edit the my.cfg file to fit your env. <br>
+You can also add GOROOT and GOPATH to ~/.bashrc for convenience. <br>
+Then run syzkaller with
 ```
 cd $GOPATH
 ./bin/syz-manager -config=my.cfg
